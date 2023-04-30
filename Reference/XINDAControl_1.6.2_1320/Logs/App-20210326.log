@@ -1,0 +1,13 @@
+2021-03-26 11:21:55.719 +08:00|Level:Fatal|ThreadId:|ContextValue:|SourceContext:|Message:Version:1.5.14 無法載入 DLL 'rtapi_w32.dll': 找不到指定的模組。 (發生例外狀況於 HRESULT: 0x8007007E) 
+    於 DeltaRTX.RTX_DLL.ET_RtSetEvent(IntPtr hEvent)
+   於 DeltaRTX.RTX.CloseCallBack() 於 C:\Users\fantasy178\Desktop\projects\XINDAControl\DeltaRTX\RTX.cs: 行 200
+   於 System.Windows.Window.OnClosed(EventArgs e)
+   於 System.Windows.Window.WmDestroy()
+   於 System.Windows.Window.WindowFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   於 System.Windows.Interop.HwndSource.PublicHooksFilterMessage(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   於 MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   於 MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   於 System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   於 System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+   於 System.Windows.Threading.Dispatcher.LegacyInvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   於 MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)

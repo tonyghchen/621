@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Updater.Lan"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    
+    <sys:String x:Key="DR_Update">Update</sys:String>
+    <sys:String x:Key="DR_AutoUpdater">AutoUpdater</sys:String>
+    <sys:String x:Key="DR_Yes">Yes</sys:String>
+    <sys:String x:Key="DR_No">No</sys:String>
+    
+    <sys:String x:Key="DR_NoInternet">No Internet !</sys:String>
+    <sys:String x:Key="DR_ConfirmAuthorization">Confirm Authorization...</sys:String>
+    <sys:String x:Key="DR_NoAuthorization">No Authorization...</sys:String>
+    <sys:String x:Key="DR_LoginServerSuccuss">Login Server Succuss!</sys:String>
+    <sys:String x:Key="DR_LoginServerfail">Login Server fail!</sys:String>
+    <sys:String x:Key="DR_LatestVersion">Already the latest version!</sys:String>
+    <sys:String x:Key="DR_VerError">Wrong version, can't get new version!</sys:String>
+    <sys:String x:Key="DR_VersionInfo">---------------------Version Information---------------------</sys:String>
+    <sys:String x:Key="DR_Downloading">Downloading...</sys:String>
+    <sys:String x:Key="DR_DownloadFail">Download Fail!</sys:String>
+    <sys:String x:Key="DR_DownloadFinish">Download Finish!</sys:String>
+    <sys:String x:Key="DR_ExtractFile">Extract File...</sys:String>
+    <sys:String x:Key="DR_NoAvailableConfig">No available configuration!</sys:String>
+    <sys:String x:Key="DR_UpdateComplete">Update Complete!</sys:String>
+    <sys:String x:Key="DR_CompleteAndRestart">After the update is complete, need to "Power on again" to take effect, press "Yes" to shut down directly or press "No" to manually shut down later, and please "Power on again"!</sys:String>
+    <sys:String x:Key="DR_NoMachineSetting">No corresponding machine configuration, update failed!</sys:String>
+    <sys:String x:Key="DR_UpdateFail">Update Fail!</sys:String>
+    
+</ResourceDictionary>
