@@ -131,8 +131,38 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.horizontalSlider.valueChanged[int].connect(self.changeValue)  # 绑定滑块的 valueChanged 信号和 changeValue 槽函数
         self.horizontalSlider_gauge.valueChanged[int].connect(self.changeGaugeValue)  # 绑定滑块的 valueChanged 信号和 changeValue 槽函数
 
+        #self.horizontalSlider_gauge.setTickPosition(2)          # 下方加入刻度線
+        #self.horizontalSlider_gauge.setTickInterval(50)         # 刻度線間距 ( 會有十條刻度線 )
 
-        #self.slider.valueChanged[int].connect(self.changeValue)  # 绑定滑块的 valueChanged 信号和 changeValue 槽函数
+        # Setup Gauge H slider type
+        self.horizontalSlider_gauge.setStyleSheet('''
+            QSlider {
+                border-radius: 10px;
+            }
+            QSlider::groove:horizontal {
+                height: 5px;
+                background: #bbb;
+            }
+            QSlider::handle:horizontal{
+                background: #08d;
+                width: 16px;
+                height: 16px;
+                margin:-6px 0;
+                border-radius:8px;
+            }
+            QSlider::sub-page:horizontal{
+                background:#08d;
+            }
+        ''')
+
+        self.pushButton_Reset.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
+        self.pushButton_StopCycle.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
+        self.pushButton_Test.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
+        self.pushButton_MPG.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
+        self.pushButton_SPHome.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
+        self.pushButton_Home.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
+        self.pushButton_VR.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
+        self.pushButton_Auto.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
 
         # 创建一个 QLabel 控件用于显示方框的大小
         #self.label = QLabel('Size: 50', self)
@@ -154,7 +184,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.update()  # 调用 update() 方法触发重绘
 
     def changeGaugeValue(self, value):
-        self.label_Gauge.setText(str(value))  # 更新 QLabel 的文本
+        #self.label_Gauge.setText(str(value))  # 更新 QLabel 的文本
         self.widget.updateValue(value)
 
 

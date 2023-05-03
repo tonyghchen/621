@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>768</height>
+    <height>960</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,13 +22,13 @@
   <property name="minimumSize">
    <size>
     <width>1280</width>
-    <height>768</height>
+    <height>960</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>1280</width>
-    <height>768</height>
+    <height>960</height>
    </size>
   </property>
   <property name="font">
@@ -41,6 +41,9 @@
   </property>
   <property name="cursor">
    <cursorShape>ArrowCursor</cursorShape>
+  </property>
+  <property name="tabletTracking">
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>XINDA SERVO SYSTEM</string>
@@ -76,10 +79,10 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
+      <x>0</x>
+      <y>40</y>
       <width>1241</width>
-      <height>661</height>
+      <height>901</height>
      </rect>
     </property>
     <property name="tabShape">
@@ -95,9 +98,9 @@
      <widget class="QSlider" name="horizontalSlider_gauge">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>320</y>
-        <width>331</width>
+        <x>80</x>
+        <y>230</y>
+        <width>251</width>
         <height>22</height>
        </rect>
       </property>
@@ -117,9 +120,9 @@
      <widget class="QSlider" name="horizontalSlider">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>580</y>
-        <width>691</width>
+        <x>420</x>
+        <y>780</y>
+        <width>371</width>
         <height>22</height>
        </rect>
       </property>
@@ -136,8 +139,8 @@
      <widget class="QLabel" name="label_Silder">
       <property name="geometry">
        <rect>
-        <x>590</x>
-        <y>620</y>
+        <x>950</x>
+        <y>770</y>
         <width>161</width>
         <height>24</height>
        </rect>
@@ -157,10 +160,10 @@
      <widget class="AnalogGaugeWidget" name="widget" native="true">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>50</x>
         <y>10</y>
-        <width>331</width>
-        <height>300</height>
+        <width>311</width>
+        <height>231</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -171,8 +174,8 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>300</width>
-        <height>300</height>
+        <width>200</width>
+        <height>200</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -190,27 +193,130 @@
       <property name="styleSheet">
        <string notr="true"/>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout"/>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
+      </layout>
      </widget>
-     <widget class="QLabel" name="label_Gauge">
+     <widget class="QPushButton" name="pushButton_Reset">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>310</y>
+        <x>50</x>
+        <y>720</y>
         <width>161</width>
-        <height>24</height>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Reset</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_Test">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>620</y>
+        <width>161</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TEST</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_SPHome">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>630</y>
+        <width>161</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>SP-Home</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_StopCycle">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>720</y>
+        <width>161</width>
+        <height>121</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Calibri</family>
-        <pointsize>16</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <strikeout>false</strikeout>
        </font>
       </property>
       <property name="text">
-       <string>0</string>
+       <string>Stop 
+ Cycle</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_MPG">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>520</y>
+        <width>161</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>MPG</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_Home">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>560</y>
+        <width>161</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Home</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_Auto">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>520</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Auto</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_VR">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>520</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>VR</string>
       </property>
      </widget>
     </widget>
