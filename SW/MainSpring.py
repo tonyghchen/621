@@ -114,6 +114,8 @@ else:
 # ------------------------------------------------------------------
 #   Parameter
 # ------------------------------------------------------------------
+Graph_line_1 = pg.InfiniteLine(movable=True, angle=90) #Vertical Line Display
+Graph_line_2 = pg.InfiniteLine(movable=False, angle=90) #Vertical Line Display
 
 # ----------------------------------------------------------------------
 # Main Window
@@ -175,15 +177,45 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         y1 = [5, 5, 7, 10, 3, 8, 9, 1, 6, 2]
         width = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         brush = pg.mkBrush(color=(90, 90, 90))
+
         bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=1, brush=brush)
 
-        self.plotWdgt= pg.PlotWidget(self.graphicsView)
-        self.plotWdgt.setMinimumSize(700, 800)
-        self.plotWdgt.showGrid(x=True, y=True)
-        self.plotWdgt.addItem(bargraph)
+        self.plotWdgt= pg.PlotWidget(self.graphicsView)     # Fill in PlotWidge in graphicsView widge
+        self.plotWdgt.setMinimumSize(700, 800)              # Set pyqtgraph size
+        self.plotWdgt.showGrid(x=True, y=True)              # 顯示格線
+        self.plotWdgt.setRange(xRange=[5,20])
+        self.plotWdgt.setXRange(0, 50)                      # 設定顯示範圍 但Mouse Zoom 可調整
+        self.plotWdgt.setMouseEnabled(y=False)              # Fix Y Scale
+        self.plotWdgt.setLimits(xMin=0,xMax=100,yMin= 1,yMax=100)   # 設定Zoom 範圍
+
+        # Add Bar Display
+        self.plotWdgt.addItem(bargraph)                     
+
+        # Set Line 1,2 Initial location
+        global  Graph_line_1,Graph_line_2
+
+        Graph_line_1.setValue(10)     # Set location
+        Graph_line_2.setValue(20)
+        
+        self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)
+        self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)
+
+        Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
+    # Function:     initUi
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def Graph_LineMove(self):
+
+        global  Graph_line_1,Graph_line_2
+
+        Graph_line_2.setValue(Graph_line_1.value()+10)
+
+    # ----------------------------------------------------------------------
+    # Description:  Change Gauge Value
     # Function:     changeValue
     # Input :       
     # Return:       None
@@ -195,7 +227,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def changeGaugeValue(self, value):
         #self.label_Gauge.setText(str(value))  # 更新 QLabel 的文本
         self.widget.updateValue(value)
-
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
