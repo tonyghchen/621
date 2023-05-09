@@ -17,6 +17,6 @@ del /F/Q Ui_MainForm.py
 echo gen Ui_MainForm.py
 pyuic5 -o Ui_MainForm.py -x MainForm.ui
 echo copy "VertualKeyBoard.ui" to "uibk\VertualKeyBoard.ui.bk_%curTime%"
-copy /Y VertualKeyBoard.ui uibk\VertualKeyBoard.ui.bk_%curTime%
+echo copy /Y VertualKeyBoard.ui uibk\VertualKeyBoard.ui.bk_%curTime%
 echo done.
 pause

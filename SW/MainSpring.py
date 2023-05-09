@@ -47,7 +47,12 @@
 
     grc 資源檔 Complier
         pyrcc5 ..\Doc\ICON.qrc -o ICON_rc.py
-
+    
+    2023/5/3 安裝 plotly
+        pip install plotly
+        pip install pandas
+        pip install pyqtgraph   繪圖用
+        
 '''
 #from asyncio.windows_events import NULL
 from cmath import isclose
@@ -56,7 +61,9 @@ from fileinput import close
 import serial
 import sys
 import os
-#import analoggaugewidget #as analoggaugewidget
+
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph as pg
 
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QLabel
@@ -164,14 +171,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_VR.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
         self.pushButton_Auto.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
 
-        # 创建一个 QLabel 控件用于显示方框的大小
-        #self.label = QLabel('Size: 50', self)
-        #self.label_Silder.setGeometry(160, 40, 80, 30)     # 设置 QLabel 的位置和大小
+        x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        y1 = [5, 5, 7, 10, 3, 8, 9, 1, 6, 2]
+        width = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        brush = pg.mkBrush(color=(90, 90, 90))
+        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=1, brush=brush)
 
-        # 设置窗口标题和大小，并显示窗口
-        self.setWindowTitle('QSlider Example')
-        self.setGeometry(300, 300, 250, 150)
-        self.show()
+        self.plotWdgt= pg.PlotWidget(self.graphicsView)
+        self.plotWdgt.setMinimumSize(700, 800)
+        self.plotWdgt.showGrid(x=True, y=True)
+        self.plotWdgt.addItem(bargraph)
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -221,7 +230,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.initUI()
-        
+
+
 # ----------------------------------------------------------------------
 # Function : Main Program
 # ----------------------------------------------------------------------

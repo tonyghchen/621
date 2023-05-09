@@ -81,7 +81,7 @@
      <rect>
       <x>0</x>
       <y>40</y>
-      <width>1241</width>
+      <width>1271</width>
       <height>901</height>
      </rect>
     </property>
@@ -317,6 +317,16 @@
       </property>
       <property name="text">
        <string>VR</string>
+      </property>
+     </widget>
+     <widget class="QGraphicsView" name="graphicsView">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>10</y>
+        <width>700</width>
+        <height>800</height>
+       </rect>
       </property>
      </widget>
     </widget>
