@@ -144,6 +144,8 @@ gdicTableTemp       = dict()    # Keyin Tamp 為按下 Enter 暫存用
 Graph_line_1 = pg.InfiniteLine(movable=True, angle=90) #Vertical Line Display
 Graph_line_2 = pg.InfiniteLine(movable=False, angle=90) #Vertical Line Display
 
+Graph1_Label = None
+
 # ----------------------------------------------------------------------
 # Main Window
 # ----------------------------------------------------------------------
@@ -449,10 +451,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
         print("Direction Right- Current Col: " + str(giEditTableCurCol) + ", Last Col: " + str(giEditTableLastCol) )
 
-#        self.fEdit_SelectedColorUpdate()
-
-      
-        
+#        self.fEdit_SelectedColorUpdate()       
 
     # ----------------------------------------------------------------------
     # Description:  Edit
@@ -465,7 +464,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global gdicTableData
         global gdicTableTemp
 
-        # Clear dictionary and reset it
+        # Clear dictionary and reset it 
         gdicTableData.clear()
         gdicTableTemp.clear()
 
@@ -482,6 +481,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Return:       None
     # ----------------------------------------------------------------------
     def initUI(self):
+        
         
         # 创建一个 QSlider 控件
         #self.slider = QSlider(Qt.Horizontal, self)
@@ -527,30 +527,34 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_VR.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
         self.pushButton_Auto.setStyleSheet('background-color: rgb(244, 249, 253);border-radius: 10px; border: 3px groove gray;border-style: outset;')
 
-        # Set Table horizontalHeader display
-        self.tableWidget.horizontalHeader().setVisible(True)
-        self.tableWidget_VHeader.verticalHeader().setVisible(True)
-
-        # Graph initialize
-        self.plotWdgt= pg.PlotWidget(self.graphicsView)     # Fill in PlotWidge in graphicsView widge
-        self.plotWdgt.setMinimumSize(600, 800)              # Set pyqtgraph size
-        self.plotWdgt.showGrid(x=True, y=True)              # 顯示格線
-        self.plotWdgt.setRange(xRange=[5,20])
-        self.plotWdgt.setXRange(0, 200)                      # 設定顯示範圍 但Mouse Zoom 可調整
-        self.plotWdgt.setYRange(0, 10)                      # 設定顯示範圍 但Mouse Zoom 可調整
-        self.plotWdgt.setMouseEnabled(y=False)              # Fix Y Scale
-        self.plotWdgt.setLimits(xMin=0,xMax=100,yMin= 1,yMax=100)   # 設定Zoom 範圍
-
         # Table Widge initialize
+        self.tableWidget.horizontalHeader().setVisible(True)                    # Table Widge initialize
+        self.tableWidget_VHeader.verticalHeader().setVisible(True)
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
-        self.Graph_LineUpdate()
+
+        # Graph initialize 
+        self.plotWdgt= pg.PlotWidget(self.graphicsView)         # Fill in PlotWidge in graphicsView widge
+        self.plotWdgt.setMinimumSize(600, 800)                  # Set pyqtgraph size
+        self.plotWdgt.showGrid(x=True, y=True)                  # 顯示格線
+        self.plotWdgt.setRange(xRange=[5,20])
+        self.plotWdgt.setXRange(0, 200)                         # 設定顯示範圍 但Mouse Zoom 可調整
+        self.plotWdgt.setYRange(0, 10)                          # 設定顯示範圍 但Mouse Zoom 可調整
+        self.plotWdgt.setMouseEnabled(y=False)                  # Fix Y Scale
+        self.plotWdgt.setLimits(xMin=0, xMax=100, yMin=1, yMax=100)   # 設定Zoom 範圍
+
+        # 創建一個 Arial 字型，大小為 10
+        font = QtGui.QFont("Arial", 10) 
+        # 設置 x 軸標籤的字型
+        self.plotWdgt.getAxis("bottom").setStyle(tickFont=font)
+        # 設置 y 軸標籤的字型
+        self.plotWdgt.getAxis("left").setStyle(tickFont=font)
+
+        global  Graph_line_1, Graph_line_2
 
         # Set Line 1,2 Initial location
-        global  Graph_line_1,Graph_line_2
-
         Graph_line_1.setValue(10)     # Set location
-        Graph_line_2.setValue(20)
-        
+        Graph_line_2.setValue(20)       
+        self.Graph_LineUpdate()
         Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
 
         # Windows Key interrupt initialize
@@ -563,13 +567,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Return:       None
     # ----------------------------------------------------------------------
     def f5RowClick(self):
-        global  x
+        global  x, Graph1_Label
 
         iCnt = 0 
         for y_display in x:
             x[iCnt] = y_display + 10
             iCnt = iCnt + 1             
-        self.Graph_LineUpdate()       # Shift display
+        #self.Graph_LineUpdate()       # Shift display
+        #self.plotWdgt.removeItem(Graph1_Label)   
+        self.plotWdgt.removeItem(Graph1_Label)            
 
     def f4RowClick(self):
         global  x
@@ -580,7 +586,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             iCnt = iCnt + 1             
         self.Graph_LineUpdate()       # Shift display
 
-
     # ----------------------------------------------------------------------
     # Description:  Init UI 
     # Function:     initUi
@@ -589,17 +594,27 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_LineUpdate(self):
 
+        global  Graph_line_1,Graph_line_2, Graph1_Label
         global  y1
 
         brush = pg.mkBrush(color=(255, 255, 255))
         bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=0.5, brush=brush)
 
         # Add Bar Display
-        self.plotWdgt.clear()                   # 設定顯示範圍 但Mouse Zoom 可調整
-        self.plotWdgt.addItem(bargraph)                     
+        self.plotWdgt.clear()                       # 設定顯示範圍 但Mouse Zoom 可調整
 
-        self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)
-        self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)
+        sDisplayVal  = Graph_line_1.value()
+        Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
+        font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
+        Graph1_Label.setFont(font)
+
+        self.plotWdgt.addItem(bargraph)             # Display Bar        
+        self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
+        self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 2
+        self.plotWdgt.addItem(Graph1_Label)  
+
+        #self.plotWdgt.setLabel('left', text='RDF(r)')       # 座標旁顯示
+
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -609,10 +624,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_LineMove(self):
 
-        global  Graph_line_1,Graph_line_2
+        global  Graph_line_1, Graph_line_2, Graph1_Label
 
         Graph_line_2.setValue(Graph_line_1.value()+10)
         Graph_line_1.setCursor(QCursor(Qt.CursorShape.PointingHandCursor)) # ClosedHandCursor
+
+        if Graph1_Label is not None:   # 如果已經存在InfLineLabel對象，則從圖形中刪除它
+            self.plotWdgt.removeItem(Graph1_Label)            
+
+        sDisplayVal = Graph_line_1.value()
+
+        Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
+        font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
+        Graph1_Label.setFont(font)
+        self.plotWdgt.addItem(Graph1_Label)  
+
+        #sDisplayVal2 = Graph_line_2.value()
+        #Graph2_Label = pg.InfLineLabel(Graph_line_2, movable = False, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal2)) #, anchor=(-1, 1))             # 顯示數值
 
     # ----------------------------------------------------------------------
     # Description:  Change Gauge Value

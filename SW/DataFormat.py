@@ -313,6 +313,7 @@ Digs5_Format     = "{:0>5d}"        # "00000"
 Digs6_Format     = "{:0>6d}"        # "00000"
 Digs7_Format     = "{:0>7d}"        # "000000"
 Digs8_Format     = "{:0>8d}"        # "0000000"
+Digs2Dot0_Format = "{:02.0f}"       # "0.0",
 Digs1Dot1_Format = "{:03.1f}"       # "0.0",
 Digs1Dot2_Format = "{:04.2f}"       # "0.00"
 Digs4Dot2_Format = "{:07.2f}"       # "0000.00"

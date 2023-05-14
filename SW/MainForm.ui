@@ -322,8 +322,8 @@
      <widget class="QTabWidget" name="tabWidget_Home">
       <property name="geometry">
        <rect>
-        <x>550</x>
-        <y>10</y>
+        <x>400</x>
+        <y>0</y>
         <width>700</width>
         <height>860</height>
        </rect>
@@ -338,7 +338,7 @@
        <widget class="QGraphicsView" name="graphicsView">
         <property name="geometry">
          <rect>
-          <x>109</x>
+          <x>90</x>
           <y>0</y>
           <width>600</width>
           <height>840</height>
@@ -1769,8 +1769,8 @@ selection-color: rgb(250, 250, 130);</string>
      <widget class="QPushButton" name="pushButton_Left">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>350</y>
+        <x>50</x>
+        <y>340</y>
         <width>161</width>
         <height>51</height>
        </rect>
@@ -1782,8 +1782,8 @@ selection-color: rgb(250, 250, 130);</string>
      <widget class="QPushButton" name="pushButton_Right">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>350</y>
+        <x>230</x>
+        <y>340</y>
         <width>161</width>
         <height>51</height>
        </rect>
