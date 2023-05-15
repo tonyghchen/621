@@ -68,10 +68,12 @@ from pyqtgraph import PlotWidget
 import pyqtgraph as pg
 
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QLabel, QGraphicsView
 from PyQt5.QtGui import QPixmap, QPainter, QColor
+
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QCursor, QPalette, QColor
+
 
 #from analoggaugewidget import *
 
@@ -113,9 +115,12 @@ gVersion = "0.0.1"
 # ----------------------------------------------------------------------
 # Globle Definition
 # ----------------------------------------------------------------------
+# Graph Setup
 x       = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 y1      = [5, 5, 7, 10, 3, 8, 9, 1, 6, 2]
 width   = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+BarColor = pg.mkBrush(color=(0, 0, 230))        # R G B
 
 # ------------------------------------------------------------------
 #   Parameter
@@ -482,7 +487,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def initUI(self):
         
-        
         # 创建一个 QSlider 控件
         #self.slider = QSlider(Qt.Horizontal, self)
         self.horizontalSlider.setFocusPolicy(Qt.NoFocus)
@@ -533,58 +537,57 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
 
         # Graph initialize 
-        self.plotWdgt= pg.PlotWidget(self.graphicsView)         # Fill in PlotWidge in graphicsView widge
-        self.plotWdgt.setMinimumSize(600, 800)                  # Set pyqtgraph size
-        self.plotWdgt.showGrid(x=True, y=True)                  # 顯示格線
-        self.plotWdgt.setRange(xRange=[5,20])
-        self.plotWdgt.setXRange(0, 200)                         # 設定顯示範圍 但Mouse Zoom 可調整
-        self.plotWdgt.setYRange(0, 10)                          # 設定顯示範圍 但Mouse Zoom 可調整
-        self.plotWdgt.setMouseEnabled(y=False)                  # Fix Y Scale
-        self.plotWdgt.setLimits(xMin=0, xMax=100, yMin=1, yMax=100)   # 設定Zoom 範圍
+        self.graphicsView.setStyleSheet("background-color: black;") # 背景設定成 黑色
+        #self.graphicsView.setAttribute(Qt.WA_StyledBackground, True)
+
+        self.plotWdgt= pg.PlotWidget(self.graphicsView)             # Fill in PlotWidge in graphicsView widge
+        #self.plotWdgt.setMinimumSize(6 00, 700)                    # Set pyqtgraph size
+        self.plotWdgt.setGeometry(0, 30, 600, 700)                  # 設定顯示 位置 X1,Y1,X2,Y2
+
+        self.plotWdgt.setRange(xRange=(10, 100), yRange=(0, 10))    # # 設定顯示範圍 但Mouse Zoom 可調整
+
+        self.plotWdgt.showGrid(x=True, y=True)                      # 顯示格線
+        self.plotWdgt.getAxis('bottom').setTickSpacing(10, 0.01)    # X 軸間隔10, 刻度 1
+        self.plotWdgt.getAxis('left').setTickSpacing(1, 1)          # X 軸間隔10, 刻度 1
+        self.plotWdgt.setLimits(xMin=0, xMax=10, yMin=-1, yMax=1)
+
+        self.plotWdgt.setMouseEnabled(y=False)                      # 設定Mouse Zoom Y disable
+        #self.plotWdgt.plotItem.getViewBox().setMouseEnabled(y=False)    
+        self.plotWdgt.plotItem.getViewBox().setLimits(xMin=10, yMin=None)
+        self.plotWdgt.setLimits(xMin=1, xMax=100, yMin=None)        # 設定Zoom 範圍
 
         # 創建一個 Arial 字型，大小為 10
         font = QtGui.QFont("Arial", 10) 
-        # 設置 x 軸標籤的字型
-        self.plotWdgt.getAxis("bottom").setStyle(tickFont=font)
-        # 設置 y 軸標籤的字型
-        self.plotWdgt.getAxis("left").setStyle(tickFont=font)
+        self.plotWdgt.getAxis("bottom").setStyle(tickFont=font)     # 設置 x 軸標籤的字型
+        self.plotWdgt.getAxis("left").setStyle(tickFont=font)       # 設置 y 軸標籤的字型
 
-        global  Graph_line_1, Graph_line_2
+        global  Graph_line_1, Graph_line_2,Graph1_Label
 
         # Set Line 1,2 Initial location
         Graph_line_1.setValue(10)     # Set location
         Graph_line_2.setValue(20)       
-        self.Graph_LineUpdate()
+        self.Graph_DisplayUpdate()
         Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
 
         # Windows Key interrupt initialize
         self.Init_Keyinterrupt()
 
     # ----------------------------------------------------------------------
-    # Description:  fTimeLine_Right
-    # Function:     Initail Various Table Data
+    # Description:  Graph_BarValueDisplay
+    # Function:     Bar 數值的顯示
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
-    def f5RowClick(self):
-        global  x, Graph1_Label
+    def Graph_BarValueDisplay(self):
 
-        iCnt = 0 
-        for y_display in x:
-            x[iCnt] = y_display + 10
-            iCnt = iCnt + 1             
-        #self.Graph_LineUpdate()       # Shift display
-        #self.plotWdgt.removeItem(Graph1_Label)   
-        self.plotWdgt.removeItem(Graph1_Label)            
+        # 设置 Bar 的寬度顯示在中間
+        for i, val in enumerate(y1):
 
-    def f4RowClick(self):
-        global  x
-        
-        iCnt = 0 
-        for y_display in x:
-            x[iCnt] = y_display - 10
-            iCnt = iCnt + 1             
-        self.Graph_LineUpdate()       # Shift display
+            xpos = x[i] + width[i] / 2  # 柱形的 x 位置减去宽度的一半
+            ypos = val  # 柱形的高度
+            label = pg.TextItem(text=str(width[i]), color=(255, 255, 255), anchor=(0.5, 1))
+            label.setPos(xpos, ypos)  # 将标签放置在柱形的中心位置
+            self.plotWdgt.addItem(label)  # 将标签添加到绘图部件
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -592,29 +595,30 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
-    def Graph_LineUpdate(self):
+    def Graph_DisplayUpdate(self):
 
         global  Graph_line_1,Graph_line_2, Graph1_Label
         global  y1
 
-        brush = pg.mkBrush(color=(255, 255, 255))
-        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=0.5, brush=brush)
+        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=0.5, brush= BarColor)
 
         # Add Bar Display
         self.plotWdgt.clear()                       # 設定顯示範圍 但Mouse Zoom 可調整
 
-        sDisplayVal  = Graph_line_1.value()
-        Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
-        font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
-        Graph1_Label.setFont(font)
-
+        # Set Display label
         self.plotWdgt.addItem(bargraph)             # Display Bar        
         self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
         self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 2
+        Graph1_Label = pg.InfLineLabel(Graph_line_1)
         self.plotWdgt.addItem(Graph1_Label)  
 
-        #self.plotWdgt.setLabel('left', text='RDF(r)')       # 座標旁顯示
+        sDisplayVal  = Graph_line_1.value()
+        Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(), 10.5))     # 在座標周 Y = 10 位置顯示
+        Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
 
+        font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
+        Graph1_Label.setFont(font)
+        self.Graph_BarValueDisplay()
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -629,18 +633,46 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         Graph_line_2.setValue(Graph_line_1.value()+10)
         Graph_line_1.setCursor(QCursor(Qt.CursorShape.PointingHandCursor)) # ClosedHandCursor
 
-        if Graph1_Label is not None:   # 如果已經存在InfLineLabel對象，則從圖形中刪除它
-            self.plotWdgt.removeItem(Graph1_Label)            
-
+        #if Graph1_Label is not None:   # 如果已經存在InfLineLabel對象，則從圖形中刪除它
+        #    self.plotWdgt.removeItem(Graph1_Label)            
         sDisplayVal = Graph_line_1.value()
+        Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(), 10))     # 在座標周 Y = 10 位置顯示
+        Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
 
-        Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
+        #Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
         font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
         Graph1_Label.setFont(font)
-        self.plotWdgt.addItem(Graph1_Label)  
+        #self.plotWdgt.addItem(Graph1_Label)  
 
         #sDisplayVal2 = Graph_line_2.value()
         #Graph2_Label = pg.InfLineLabel(Graph_line_2, movable = False, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal2)) #, anchor=(-1, 1))             # 顯示數值
+
+    # ----------------------------------------------------------------------
+    # Description:  fTimeLine_Right
+    # Function:     Initail Various Table Data
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def f5RowClick(self):
+        global  x, Graph1_Label
+
+        iCnt = 0 
+        for y_display in x:
+            x[iCnt] = y_display + 10
+            iCnt = iCnt + 1             
+        self.Graph_DisplayUpdate()       # Shift display
+        # 设置柱形的属性和标签
+
+        #self.plotWdgt.removeItem(Graph1_Label)   
+
+    def f4RowClick(self):
+        global  x
+        
+        iCnt = 0 
+        for y_display in x:
+            x[iCnt] = y_display - 10
+            iCnt = iCnt + 1             
+        self.Graph_DisplayUpdate()       # Shift display
 
     # ----------------------------------------------------------------------
     # Description:  Change Gauge Value

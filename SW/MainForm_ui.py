@@ -118,7 +118,7 @@ class Ui_MainWindow(object):
         self.tab_TimeLine = QtWidgets.QWidget()
         self.tab_TimeLine.setObjectName("tab_TimeLine")
         self.graphicsView = QtWidgets.QGraphicsView(self.tab_TimeLine)
-        self.graphicsView.setGeometry(QtCore.QRect(90, 0, 600, 840))
+        self.graphicsView.setGeometry(QtCore.QRect(90, 49, 600, 791))
         self.graphicsView.setObjectName("graphicsView")
         self.tabWidget_Home.addTab(self.tab_TimeLine, "")
         self.tab_Table = QtWidgets.QWidget()
