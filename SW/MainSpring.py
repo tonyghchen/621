@@ -72,7 +72,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QLabel, QGraphic
 from PyQt5.QtGui import QPixmap, QPainter, QColor
 
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtGui import QCursor, QPalette, QColor
+from PyQt5.QtGui  import QCursor, QPalette, QColor
 
 
 #from analoggaugewidget import *
@@ -116,9 +116,9 @@ gVersion = "0.0.1"
 # Globle Definition
 # ----------------------------------------------------------------------
 # Graph Setup
-x       = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-y1      = [5, 5, 7, 10, 3, 8, 9, 1, 6, 2]
-width   = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+y1       = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+x        = [5, 5, 7, 10,3, 8, 9, 1, 6, 2]
+width    = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 BarColor = pg.mkBrush(color=(0, 0, 230))        # R G B
 
@@ -146,15 +146,16 @@ gdicTableTemp       = dict()    # Keyin Tamp 為按下 Enter 暫存用
 # ------------------------------------------------------------------
 #   Parameter
 # ------------------------------------------------------------------
-Graph_line_1 = pg.InfiniteLine(movable=True, angle=90) #Vertical Line Display
+Graph_line_1 = pg.InfiniteLine(movable=True,  angle=90) #Vertical Line Display
 Graph_line_2 = pg.InfiniteLine(movable=False, angle=90) #Vertical Line Display
-
 Graph1_Label = None
 
 # ----------------------------------------------------------------------
 # Main Window
 # ----------------------------------------------------------------------
 class MyMainWindow(QMainWindow, Ui_MainWindow):
+
+    
     #-------------------------------------------------------------
     # Initialize Windows Key interrupt
     # Description: Key press interrupt procedure
@@ -537,14 +538,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
 
         # Graph initialize 
-        self.graphicsView.setStyleSheet("background-color: black;") # 背景設定成 黑色
-        #self.graphicsView.setAttribute(Qt.WA_StyledBackground, True)
+        #self.graphicsView.setStyleSheet("background-color: black;") # 背景設定成 黑色
 
         self.plotWdgt= pg.PlotWidget(self.graphicsView)             # Fill in PlotWidge in graphicsView widge
         #self.plotWdgt.setMinimumSize(6 00, 700)                    # Set pyqtgraph size
         self.plotWdgt.setGeometry(0, 30, 600, 700)                  # 設定顯示 位置 X1,Y1,X2,Y2
-
-        self.plotWdgt.setRange(xRange=(10, 100), yRange=(0, 10))    # # 設定顯示範圍 但Mouse Zoom 可調整
+        self.plotWdgt.setRange(xRange=(10, 100), yRange=(1, 11))    # 設定顯示範圍 但Mouse Zoom 可調整
 
         self.plotWdgt.showGrid(x=True, y=True)                      # 顯示格線
         self.plotWdgt.getAxis('bottom').setTickSpacing(10, 0.01)    # X 軸間隔10, 刻度 1
@@ -556,6 +555,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.plotWdgt.plotItem.getViewBox().setLimits(xMin=10, yMin=None)
         self.plotWdgt.setLimits(xMin=1, xMax=100, yMin=None)        # 設定Zoom 範圍
 
+        # 調整邊框空白
+        margin = 20  # 指定邊框空白的大小
+        self.plotWdgt.getPlotItem().setContentsMargins(margin, margin, margin, margin)
+
         # 創建一個 Arial 字型，大小為 10
         font = QtGui.QFont("Arial", 10) 
         self.plotWdgt.getAxis("bottom").setStyle(tickFont=font)     # 設置 x 軸標籤的字型
@@ -566,6 +569,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # Set Line 1,2 Initial location
         Graph_line_1.setValue(10)     # Set location
         Graph_line_2.setValue(20)       
+        self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
+        self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 1
+
+        # Set Line label intirlize and relative to Graph_line_1 in 95% location
+        Graph1_Label = pg.InfLineLabel(Graph_line_1, movable=False)
+        Graph1_Label.setPosition(0.95)                          # Set lable display 95% 位置
+
         self.Graph_DisplayUpdate()
         Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
 
@@ -600,25 +610,28 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  Graph_line_1,Graph_line_2, Graph1_Label
         global  y1
 
-        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=0.5, brush= BarColor)
+        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=0.6, brush= BarColor)
 
         # Add Bar Display
         self.plotWdgt.clear()                       # 設定顯示範圍 但Mouse Zoom 可調整
 
         # Set Display label
         self.plotWdgt.addItem(bargraph)             # Display Bar        
+        self.Graph_BarValueDisplay()
+
+        # Display Line
         self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
         self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 2
-        Graph1_Label = pg.InfLineLabel(Graph_line_1)
-        self.plotWdgt.addItem(Graph1_Label)  
 
+        # Live Label
         sDisplayVal  = Graph_line_1.value()
-        Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(), 10.5))     # 在座標周 Y = 10 位置顯示
-        Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
 
+        #self.plotWdgt.addItem(Graph1_Label)  # Display infiniteLine 2
+
+        #Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(),10.8))     # 在座標周 Y = 10 位置顯示
+        Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
         font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
         Graph1_Label.setFont(font)
-        self.Graph_BarValueDisplay()
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -636,7 +649,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         #if Graph1_Label is not None:   # 如果已經存在InfLineLabel對象，則從圖形中刪除它
         #    self.plotWdgt.removeItem(Graph1_Label)            
         sDisplayVal = Graph_line_1.value()
-        Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(), 10))     # 在座標周 Y = 10 位置顯示
+        #Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(),10.8))     # 在座標周 Y = 10 位置顯示
         Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
 
         #Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
