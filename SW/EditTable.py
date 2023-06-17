@@ -15,6 +15,43 @@ def fEDIT_GetTableFormatFromGCode (GCode):
     return switch.get(GCode, dict())
 
 # ------------------------------------------------------------------
+#   Edit Table List
+# ------------------------------------------------------------------
+EditTableList = {
+    #ID     Asix
+    7   :   "X1",
+    6   :   "X2",
+    5   :   "X3",
+    4   :   "X4",
+    3   :   "X5",
+    2   :   "X6",
+    1   :   "X7",
+    0   :   "X8",
+}
+
+
+def fEDIT_GetAsixCode(GCode):
+    for lID, lAxis in EditTableList.items():
+        if GCode == lAxis :
+            return  lID     
+    return ("")
+
+# --------------------------------------------------------
+#               Table Data
+# --------------------------------------------------------
+ArrEDIT_TableList= {
+    "X1"       :{ "Location"  : 0,  "Location_Y":   1,  "Color" :   "red"   },
+    "X2"       :{ "Location"  : 1,  "Location_Y":   2,  "Color" :   "blue"  },
+    "X3"       :{ "Location"  : 2,  "Location_Y":   3,  "Color" :   "red"   },
+    "X4"       :{ "Location"  : 3,  "Location_Y":   4,  "Color" :   "blue"  },
+    "X5"       :{ "Location"  : 4,  "Location_Y":   5,  "Color" :   "red"   },
+    "X6"       :{ "Location"  : 5,  "Location_Y":   6,  "Color" :   "blue"  },
+    "X7"       :{ "Location"  : 6,  "Location_Y":   7,  "Color" :   "red"   },
+    "X8"       :{ "Location"  : 7,  "Location_Y":   8,  "Color" :   "blue"  },
+    }
+
+
+# ------------------------------------------------------------------
 #   Edit tab Mode Name
 # ------------------------------------------------------------------
 EditTabModeName = {
@@ -65,10 +102,6 @@ ArrEDIT_TableMark= {
     "X_ms"      : "ms",
     }
 
-
-# --------------------------------------------------------
-#               Table Data
-# --------------------------------------------------------
 # [ Col Location, ColWidth, Col Name, Col Editable]
 ArrEDIT_TableDataG1= {
     "Row"       :{ "Location8" : 0,  "Group" : "Row"    , "Width8" : 40, "Editable" : 1,  "DigitFormat" : "Digs3_Format"},

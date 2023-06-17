@@ -51,6 +51,11 @@
     2023/5/3 安裝 plotly
         pip install pyqtgraph   繪圖用
         
+    2023/6/10
+        pip install PyQtChart
+
+    2023/6/14
+        pip install matplotlib
 '''
 #from asyncio.windows_events import NULL
 from cmath import isclose
@@ -64,20 +69,22 @@ import Language as Language
 import EditTable as EditTable
 import DataFormat as DataFormat
 
-from pyqtgraph import PlotWidget
+import matplotlib
+import matplotlib.pyplot as plt
+
 import pyqtgraph as pg
 
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSlider, QLabel, QGraphicsView
-from PyQt5.QtGui import QPixmap, QPainter, QColor
-
-from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtGui  import QCursor, QPalette, QColor
-
-
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QSlider, QLabel, QGraphicsView
+from PyQt5.QtGui  import QCursor, QColor, QPainter,QPixmap
+from PyQt5.QtCore import Qt
 #from analoggaugewidget import *
-
 from Ui_MainForm import *
+
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
+from PyQt5.QtWidgets import QGraphicsScene
+import numpy as np
+
 
 # ----------------------------------------------------------------------
 # UART Setting
@@ -116,16 +123,16 @@ gVersion = "0.0.1"
 # Globle Definition
 # ----------------------------------------------------------------------
 # Graph Setup
-y1       = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-x        = [5, 5, 7, 10,3, 8, 9, 1, 6, 2]
-width    = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+y1       = []
+x        = []
+width    = []
 
 BarColor = pg.mkBrush(color=(0, 0, 230))        # R G B
 
 # ------------------------------------------------------------------
 #   Parameter
 # ------------------------------------------------------------------
-gdicTableData       = []        # Table data
+gdicTableData       = dict()        # Table data
 
 # ------------------------------------------------------------------
 #   EDIT Tab
@@ -141,6 +148,7 @@ giEditTableLastRow  = giEditTableCurRow
 giEditTableCurCol   = defDefaultTableCol    # Default Row at N
 giEditTableLastCol  = giEditTableCurCol
 
+
 gdicTableTemp       = dict()    # Keyin Tamp 為按下 Enter 暫存用
 
 # ------------------------------------------------------------------
@@ -149,6 +157,21 @@ gdicTableTemp       = dict()    # Keyin Tamp 為按下 Enter 暫存用
 Graph_line_1 = pg.InfiniteLine(movable=True,  angle=90) #Vertical Line Display
 Graph_line_2 = pg.InfiniteLine(movable=False, angle=90) #Vertical Line Display
 Graph1_Label = None
+
+# Mapline Setting
+plt.style.use('dark_background')            # Set black ground
+Graphfig, Graphax = plt.subplots()
+Graphline   = Graphax.axvline(1, color='r', linestyle='-', linewidth=1)
+Graphline_2 = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
+
+# Graphic Display initialize
+Graph_X1= None
+Graph_X2= None
+Graph_X3= None
+Graph_X4= None
+Graph_X5= None
+Graph_X6= None
+Graph_X7= None
 
 # ----------------------------------------------------------------------
 # Main Window
@@ -356,7 +379,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             #  TimeLine  Tab Page Process
             # ================================================================
             if lNextTab == "tab_Table" :
-                if sKeycode in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
+                if sKeycode in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0","Space"]:
                     self.fEDIT_TableKeyDigits(sKeycode)
 
                 elif sKeycode in ["Left", "Right", "Up", "Down", "PageUp", "PageDown"]:
@@ -371,10 +394,46 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Return:   None
     # -----------------------------------------------------------------
     def fEDIT_TableKeyDigits(self,iKeyNumber):
+        
         global gdicTableData
+        global giEditTableCurCol, giEditTableCurRow
 
-        #if giEditTableCurCol == 1:  # When Col on G Mode location
+        lAxisName = EditTable.EditTableList[giEditTableCurRow]
 
+        # check data exist
+        try:
+            if gdicTableData[giEditTableCurCol] is None :
+                gdicTableData[giEditTableCurCol] = {}
+        except:
+            gdicTableData[giEditTableCurCol] = {}
+
+        if iKeyNumber == "Space":       # Delete all string
+            if gdicTableData[giEditTableCurCol].get(lAxisName) is not None:
+                del gdicTableData[giEditTableCurCol][lAxisName]
+                self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(""))  # Col 1 display reset
+
+            print("Data Empty")
+            self.Graph_TableToArray()
+
+        else:
+            if gdicTableData[giEditTableCurCol].get(lAxisName) is None:
+                gdicTableData[giEditTableCurCol][lAxisName] = None
+
+            lsAxisData = gdicTableData[giEditTableCurCol].get(lAxisName)
+
+            if lsAxisData is None:
+                gdicTableData[giEditTableCurCol][lAxisName] = iKeyNumber 
+            else:
+                if len(lsAxisData) >= 4 :
+                    lsAxisData = lsAxisData[1:]
+
+                lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
+                gdicTableData[giEditTableCurCol][lAxisName] = str(lsAxisData)
+        
+            self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[giEditTableCurCol][lAxisName])))  # Col 1 display reset
+
+            print("Data:", gdicTableData[giEditTableCurCol][lAxisName])
+            
     # ----------------------------------------------------------------------
     # Function : Find SubTable Column start and End location
     # Input: Sub TableWidge
@@ -424,7 +483,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             giEditTableLastCol = giEditTableCurCol
 
             if giEditTableCurCol <= litableColStart:
-                giEditTableCurCol = litableColEnd
+                giEditTableCurCol = litableColStart
             else:
                 giEditTableCurCol -= 1
 
@@ -476,9 +535,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # Initialize Row count
         gdicTableTemp["Col"] = 0
-
-        for iRowCnt in range(0, defTableMaxCol):
-            gdicTableData.append({"Col" : iRowCnt})
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -537,50 +593,99 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget_VHeader.verticalHeader().setVisible(True)
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
 
-        # Graph initialize 
-        #self.graphicsView.setStyleSheet("background-color: black;") # 背景設定成 黑色
 
-        self.plotWdgt= pg.PlotWidget(self.graphicsView)             # Fill in PlotWidge in graphicsView widge
-        #self.plotWdgt.setMinimumSize(6 00, 700)                    # Set pyqtgraph size
-        self.plotWdgt.setGeometry(0, 30, 600, 700)                  # 設定顯示 位置 X1,Y1,X2,Y2
-        self.plotWdgt.setRange(xRange=(10, 100), yRange=(1, 11))    # 設定顯示範圍 但Mouse Zoom 可調整
-
-        self.plotWdgt.showGrid(x=True, y=True)                      # 顯示格線
-        self.plotWdgt.getAxis('bottom').setTickSpacing(10, 0.01)    # X 軸間隔10, 刻度 1
-        self.plotWdgt.getAxis('left').setTickSpacing(1, 1)          # X 軸間隔10, 刻度 1
-        self.plotWdgt.setLimits(xMin=0, xMax=10, yMin=-1, yMax=1)
-
-        self.plotWdgt.setMouseEnabled(y=False)                      # 設定Mouse Zoom Y disable
-        #self.plotWdgt.plotItem.getViewBox().setMouseEnabled(y=False)    
-        self.plotWdgt.plotItem.getViewBox().setLimits(xMin=10, yMin=None)
-        self.plotWdgt.setLimits(xMin=1, xMax=100, yMin=None)        # 設定Zoom 範圍
-
-        # 調整邊框空白
-        margin = 20  # 指定邊框空白的大小
-        self.plotWdgt.getPlotItem().setContentsMargins(margin, margin, margin, margin)
-
-        # 創建一個 Arial 字型，大小為 10
-        font = QtGui.QFont("Arial", 10) 
-        self.plotWdgt.getAxis("bottom").setStyle(tickFont=font)     # 設置 x 軸標籤的字型
-        self.plotWdgt.getAxis("left").setStyle(tickFont=font)       # 設置 y 軸標籤的字型
-
-        global  Graph_line_1, Graph_line_2,Graph1_Label
-
-        # Set Line 1,2 Initial location
-        Graph_line_1.setValue(10)     # Set location
-        Graph_line_2.setValue(20)       
-        self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
-        self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 1
-
-        # Set Line label intirlize and relative to Graph_line_1 in 95% location
-        Graph1_Label = pg.InfLineLabel(Graph_line_1, movable=False)
-        Graph1_Label.setPosition(0.95)                          # Set lable display 95% 位置
-
-        self.Graph_DisplayUpdate()
+#        self.Graph_DisplayUpdate()
         Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
-
+        
         # Windows Key interrupt initialize
         self.Init_Keyinterrupt()
+
+        # 隐藏 matplotlib 工具条
+        # https://developer.aliyun.com/article/396490
+
+        # ---------------------------------------------------
+        # X start, width / Y start, height      
+        # broken_barh([(start_time, duration)], (lower_yaxis, height), facecolors=('tab:colours'))
+        
+        #fig, ax = plt.subplots()
+        Graphax.get_yaxis().set_visible(False)           # Y 座標隱藏
+        Graphax.xaxis.set_ticks_position('top')          # X 座標顯示在上邊
+        #ax.tick_params(axis='x', pad=-10)
+        Graphax.grid(True, color='white', linestyle='--', linewidth=0.5)   
+        #Graphax.axvspan(2, 18, facecolor='gray', alpha=0.3)    
+        # 添加文字標籤
+        #xmin = 2
+        #xmax = 8        
+        #x_label = f'{xmin}  {xmax}'
+        #x_label_pos = (xmin + xmax) / 2
+        #Graphax.text(x_label_pos, Graphax.get_ylim()[1], x_label, ha='center', va='bottom')
+        
+        global Graph_X1, Graph_X2, Graph_X3
+
+        Graph_X1= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (20, 9), facecolors =('tab:red'))
+        Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
+        Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
+        plt.ylim(0,100)     # Set Y display range
+
+        # Initialie Display
+        canvas = FigureCanvas(Graphfig)         # 创建一个 FigureCanvas 对象
+        scene = QGraphicsScene()                # 创建一个 QGraphicsScene 对象并设置大小
+        #scene.setSceneRect(0, 0, 200, 300)
+        scene.addWidget(canvas)                 # 将 FigureCanvas 添加到 QGraphicsScene 中
+        self.graphicsView.setScene(scene)       # 创建一个 QGraphicsView 对象并设置场景
+
+        Graphfig.canvas.mpl_connect('button_press_event', self.on_button_press)
+        Graphfig.canvas.mpl_connect('motion_notify_event',self.on_move)
+
+
+    # 滑鼠按鈕按下事件處理函數
+    def on_button_press(self,event):
+        if event.button == 1 and event.inaxes == Graphax:
+            Graphline.set_xdata(event.xdata)
+            Graphfig.canvas.draw()
+
+    # 滑鼠移動事件處理函數
+    def on_move(self, event):
+        if event.button == 1 and event.inaxes == Graphax:
+            Graphline.set_xdata(event.xdata)
+            #text = Graphax.text(x, Graphax.get_ylim()[1], f'X: {x}', ha='left', va='top', color='r')
+
+            Graphfig.canvas.draw()
+
+    # ----------------------------------------------------------------------
+    # Description:  Graph_BarValueDisplay
+    # Function:     Bar 數值的顯示
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def Graph_TableToArray(self):
+
+        global y1, x , width
+
+        y1  = [] 
+        x   = []
+        width = []
+        liDisplayWidth = 0
+
+        # Transform Dictionary to array data
+        for lx_Position, lData in gdicTableData.items():
+            for lsAxis, lsWidth in lData.items():
+                x.append(lx_Position)
+                y1.append(EditTable.fEDIT_GetAsixCode(lsAxis))
+                width.append(int(lsWidth))
+
+                lNewDisplayWidth = lx_Position + int(lsWidth)
+                if lNewDisplayWidth > liDisplayWidth :
+                    liDisplayWidth = lNewDisplayWidth
+
+        pg.BarGraphItem(x0=[], y0=[], width=[], height=0.7, brush= BarColor) # Reset all bar
+        liDisplayWidth = int(liDisplayWidth * 1.2)
+
+        self.plotwidget.setRange(xRange=(0, liDisplayWidth))     # 設定顯示範圍 但Mouse Zoom 可調整
+
+        self.plotwidget.setLimits(xMin=1, xMax=liDisplayWidth, yMin=None)        # 設定Zoom 範圍
+        self.plotwidget.setRange(xRange=(10, liDisplayWidth))     # 設定顯示範圍 但Mouse Zoom 可調整
+        self.Graph_DisplayUpdate()
 
     # ----------------------------------------------------------------------
     # Description:  Graph_BarValueDisplay
@@ -590,14 +695,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_BarValueDisplay(self):
 
+        global y1, x , width
+       
         # 设置 Bar 的寬度顯示在中間
         for i, val in enumerate(y1):
-
             xpos = x[i] + width[i] / 2  # 柱形的 x 位置减去宽度的一半
             ypos = val  # 柱形的高度
             label = pg.TextItem(text=str(width[i]), color=(255, 255, 255), anchor=(0.5, 1))
             label.setPos(xpos, ypos)  # 将标签放置在柱形的中心位置
-            self.plotWdgt.addItem(label)  # 将标签添加到绘图部件
+            self.plotwidget.addItem(label)  # 将标签添加到绘图部件
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -608,25 +714,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def Graph_DisplayUpdate(self):
 
         global  Graph_line_1,Graph_line_2, Graph1_Label
-        global  y1
+        global  y1, x , width
 
-        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height=0.6, brush= BarColor)
-
+        self.plotwidget.clear()                       # 設定顯示範圍 但Mouse Zoom 可調整
         # Add Bar Display
-        self.plotWdgt.clear()                       # 設定顯示範圍 但Mouse Zoom 可調整
+        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height = 0.9, brush= BarColor)
 
         # Set Display label
-        self.plotWdgt.addItem(bargraph)             # Display Bar        
+        self.plotwidget.addItem(bargraph)             # Display Bar        
         self.Graph_BarValueDisplay()
 
         # Display Line
-        self.plotWdgt.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
-        self.plotWdgt.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 2
+        self.plotwidget.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
+        self.plotwidget.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 2
 
         # Live Label
         sDisplayVal  = Graph_line_1.value()
-
-        #self.plotWdgt.addItem(Graph1_Label)  # Display infiniteLine 2
+        #self.plotwidget.addItem(Graph1_Label)  # Display infiniteLine 2
 
         #Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(),10.8))     # 在座標周 Y = 10 位置顯示
         Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
@@ -641,13 +745,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_LineMove(self):
 
+
+
         global  Graph_line_1, Graph_line_2, Graph1_Label
 
         Graph_line_2.setValue(Graph_line_1.value()+10)
         Graph_line_1.setCursor(QCursor(Qt.CursorShape.PointingHandCursor)) # ClosedHandCursor
 
         #if Graph1_Label is not None:   # 如果已經存在InfLineLabel對象，則從圖形中刪除它
-        #    self.plotWdgt.removeItem(Graph1_Label)            
+        #    self.plotwidget.removeItem(Graph1_Label)            
         sDisplayVal = Graph_line_1.value()
         #Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(),10.8))     # 在座標周 Y = 10 位置顯示
         Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
@@ -655,7 +761,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         #Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
         font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
         Graph1_Label.setFont(font)
-        #self.plotWdgt.addItem(Graph1_Label)  
+        #self.plotwidget.addItem(Graph1_Label)  
 
         #sDisplayVal2 = Graph_line_2.value()
         #Graph2_Label = pg.InfLineLabel(Graph_line_2, movable = False, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal2)) #, anchor=(-1, 1))             # 顯示數值
@@ -667,25 +773,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Return:       None
     # ----------------------------------------------------------------------
     def f5RowClick(self):
-        global  x, Graph1_Label
 
-        iCnt = 0 
-        for y_display in x:
-            x[iCnt] = y_display + 10
-            iCnt = iCnt + 1             
-        self.Graph_DisplayUpdate()       # Shift display
-        # 设置柱形的属性和标签
+        if  Graph_X1 is not None:
+            Graph_X1.remove()     # 清除特定的绘图范围
+        else:
+            Graph_X2.remove()     # 清除特定的绘图范围
 
-        #self.plotWdgt.removeItem(Graph1_Label)   
+        #plt.xlim(0,200)     # Set display range
+        plt.draw()          # Refresh Display
+
 
     def f4RowClick(self):
-        global  x
-        
-        iCnt = 0 
-        for y_display in x:
-            x[iCnt] = y_display - 10
-            iCnt = iCnt + 1             
-        self.Graph_DisplayUpdate()       # Shift display
+
+        if  Graph_X2 is not None:
+            Graph_X2.remove()     # 清除特定的绘图范围
+
+#        plt.xlim(0,1000)     # Set display range
+        plt.draw()          # Refresh Display
 
     # ----------------------------------------------------------------------
     # Description:  Change Gauge Value
@@ -734,6 +838,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         self.initUI()
+        self.fEdit_InitTableData()
 
     # ----------------------------------------------------------------------
     # Description:     File
