@@ -68,6 +68,7 @@ import os
 import Language as Language
 import EditTable as EditTable
 import DataFormat as DataFormat
+import ast
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -403,38 +404,53 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # check data exist
         try:
-            if gdicTableData[giEditTableCurCol] is None :
-                gdicTableData[giEditTableCurCol] = {}
+            if gdicTableData[lAxisName] is None :
+                gdicTableData[lAxisName] = {}
         except:
-            gdicTableData[giEditTableCurCol] = {}
+            gdicTableData[lAxisName] = {}
 
         if iKeyNumber == "Space":       # Delete all string
-            if gdicTableData[giEditTableCurCol].get(lAxisName) is not None:
-                del gdicTableData[giEditTableCurCol][lAxisName]
+            if gdicTableData[lAxisName].get(giEditTableCurCol) is not None:
+                del gdicTableData[lAxisName][giEditTableCurCol]
                 self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(""))  # Col 1 display reset
 
             print("Data Empty")
             self.Graph_TableToArray()
 
         else:
-            if gdicTableData[giEditTableCurCol].get(lAxisName) is None:
-                gdicTableData[giEditTableCurCol][lAxisName] = None
+            if gdicTableData[lAxisName].get(giEditTableCurCol) is None:
+                gdicTableData[lAxisName][giEditTableCurCol] = None
 
-            lsAxisData = gdicTableData[giEditTableCurCol].get(lAxisName)
+            lsAxisData = gdicTableData[lAxisName].get(giEditTableCurCol)
 
             if lsAxisData is None:
-                gdicTableData[giEditTableCurCol][lAxisName] = iKeyNumber 
+                gdicTableData[lAxisName][giEditTableCurCol] = iKeyNumber 
             else:
                 if len(lsAxisData) >= 4 :
                     lsAxisData = lsAxisData[1:]
 
                 lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
-                gdicTableData[giEditTableCurCol][lAxisName] = str(lsAxisData)
+                gdicTableData[lAxisName][giEditTableCurCol]= str(lsAxisData)
+
+
+            # if gdicTableData[giEditTableCurCol].get(lAxisName) is None:
+            #     gdicTableData[giEditTableCurCol][lAxisName] = None
+
+            # lsAxisData = gdicTableData[giEditTableCurCol].get(lAxisName)
+
+            # if lsAxisData is None:
+            #     gdicTableData[giEditTableCurCol][lAxisName] = iKeyNumber 
+            # else:
+            #     if len(lsAxisData) >= 4 :
+            #         lsAxisData = lsAxisData[1:]
+
+            #     lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
+            #     gdicTableData[giEditTableCurCol][lAxisName] = str(lsAxisData)
         
-            self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[giEditTableCurCol][lAxisName])))  # Col 1 display reset
+            self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[lAxisName][giEditTableCurCol])))  # Col 1 display reset
 
             #print("Data:", gdicTableData[giEditTableCurCol][lAxisName])
-            print("Data:", gdicTableData)
+        print("Data:", gdicTableData)
             
     # ----------------------------------------------------------------------
     # Function : Find SubTable Column start and End location
@@ -655,65 +671,32 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             Graphfig.canvas.draw()
 
     # ----------------------------------------------------------------------
-    # Description:  Graph_BarValueDisplay
+    # Description:  Graph_TableToArray
     # Function:     Bar 數值的顯示
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
     def Graph_TableToArray(self):
 
-        #Graph_X1.remove()     # 清除特定的绘图范围
-
         global Graph_X1,Graph_X2,Graph_X3,Graph_X4,Graph_X5,Graph_X6,Graph_X7,Graph_X8
 
-        Local_X1 = ""
+        for lsAxis, lData in gdicTableData.items():
+            coord_list = []
+            lvariable_name = "Graph_"+str(lsAxis)
 
-        for lx_Position, lData in gdicTableData.items():
-            for lsAxis, lsWidth in lData.items():
-                
-                lsColor = "tab:"+ EditTable.ArrEDIT_TableList[lsAxis].get("Color")      # Color setup
-                liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
+            lsColor = "tab:"+ EditTable.ArrEDIT_TableList[lsAxis].get("Color")      # Color setup
+            liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
 
-                lvariable_name = "Local_"+str(lsAxis)
+            if globals()[lvariable_name] is not None:                               # 先清除再填入
+                globals()[lvariable_name].remove()
 
-                if lsAxis == "X1":
-                    Local_X1 += ("({},{})".format(lx_Position, int(lsWidth)) + ",")
+            for lx_Position, lsWidth in lData.items():               
+                coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
+                Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value
 
-                #exec( lvariable_name )
+            globals()[lvariable_name] = plt.broken_barh(coord_list, (liYDisplay, 9), facecolors =(lsColor)) # Bar 顯示
 
-                #lvariable_name = "Graph_"+str(lsAxis)
-                #if globals()[lvariable_name] is not None:
-                #    globals()[lvariable_name].remove()
-
-                # 将字符串变量名转换为实际变量
-                #globals()[lvariable_name] = plt.broken_barh([(lx_Position,int(lsWidth))], (liYDisplay, 9), facecolors =(lsColor))
-
-                #exec(f"{lvariable_name} = plt.broken_barh([(lx_Position,int(lsWidth))], (liYDisplay, 9), facecolors =(lsColor))")
-    
-                Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, lsWidth, ha='center', va='center') # Disply Barh width value
-
-        Local_X1 = Local_X1.rstrip(',')
-
-        print("Local = ", Local_X1)
         plt.draw()      # Redrew display
-
-    # ----------------------------------------------------------------------
-    # Description:  Graph_BarValueDisplay
-    # Function:     Bar 數值的顯示
-    # Input :       
-    # Return:       None
-    # ----------------------------------------------------------------------
-    def Graph_BarValueDisplay(self):
-
-        global y1, x , width
-       
-        # 设置 Bar 的寬度顯示在中間
-        for i, val in enumerate(y1):
-            xpos = x[i] + width[i] / 2  # 柱形的 x 位置减去宽度的一半
-            ypos = val  # 柱形的高度
-            label = pg.TextItem(text=str(width[i]), color=(255, 255, 255), anchor=(0.5, 1))
-            label.setPos(xpos, ypos)  # 将标签放置在柱形的中心位置
-            self.plotwidget.addItem(label)  # 将标签添加到绘图部件
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -722,8 +705,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Return:       None
     # ----------------------------------------------------------------------
     def Graph_DisplayUpdate(self):
-
-         #self.Graph_BarValueDisplay()
 
         global Graph_X1, Graph_X2, Graph_X3
 
@@ -790,7 +771,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  Graph_X2
         
         Graph_X2.remove()
-
         plt.draw()          # Refresh Display
 
 
