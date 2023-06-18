@@ -19,14 +19,14 @@ def fEDIT_GetTableFormatFromGCode (GCode):
 # ------------------------------------------------------------------
 EditTableList = {
     #ID     Asix
-    7   :   "X1",
-    6   :   "X2",
-    5   :   "X3",
-    4   :   "X4",
-    3   :   "X5",
-    2   :   "X6",
-    1   :   "X7",
-    0   :   "X8",
+    7   :   "X8",
+    6   :   "X7",
+    5   :   "X6",
+    4   :   "X5",
+    3   :   "X4",
+    2   :   "X3",
+    1   :   "X2",
+    0   :   "X1",
 }
 
 
@@ -40,14 +40,14 @@ def fEDIT_GetAsixCode(GCode):
 #               Table Data
 # --------------------------------------------------------
 ArrEDIT_TableList= {
-    "X1"       :{ "Location"  : 0,  "Location_Y":   1,  "Color" :   "red"   },
-    "X2"       :{ "Location"  : 1,  "Location_Y":   2,  "Color" :   "blue"  },
-    "X3"       :{ "Location"  : 2,  "Location_Y":   3,  "Color" :   "red"   },
-    "X4"       :{ "Location"  : 3,  "Location_Y":   4,  "Color" :   "blue"  },
-    "X5"       :{ "Location"  : 4,  "Location_Y":   5,  "Color" :   "red"   },
-    "X6"       :{ "Location"  : 5,  "Location_Y":   6,  "Color" :   "blue"  },
-    "X7"       :{ "Location"  : 6,  "Location_Y":   7,  "Color" :   "red"   },
-    "X8"       :{ "Location"  : 7,  "Location_Y":   8,  "Color" :   "blue"  },
+    "X1"       :{ "Location"  : 0,  "Location_Y":  80,  "Color" :   "red"   },
+    "X2"       :{ "Location"  : 1,  "Location_Y":  70,  "Color" :   "blue"  },
+    "X3"       :{ "Location"  : 2,  "Location_Y":  60,  "Color" :   "red"   },
+    "X4"       :{ "Location"  : 3,  "Location_Y":  50,  "Color" :   "blue"  },
+    "X5"       :{ "Location"  : 4,  "Location_Y":  40,  "Color" :   "red"   },
+    "X6"       :{ "Location"  : 5,  "Location_Y":  30,  "Color" :   "blue"  },
+    "X7"       :{ "Location"  : 6,  "Location_Y":  20,  "Color" :   "red"   },
+    "X8"       :{ "Location"  : 7,  "Location_Y":  10,  "Color" :   "blue"  },
     }
 
 

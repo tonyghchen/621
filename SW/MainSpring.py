@@ -172,6 +172,7 @@ Graph_X4= None
 Graph_X5= None
 Graph_X6= None
 Graph_X7= None
+Graph_X8= None
 
 # ----------------------------------------------------------------------
 # Main Window
@@ -432,7 +433,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         
             self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[giEditTableCurCol][lAxisName])))  # Col 1 display reset
 
-            print("Data:", gdicTableData[giEditTableCurCol][lAxisName])
+            #print("Data:", gdicTableData[giEditTableCurCol][lAxisName])
+            print("Data:", gdicTableData)
             
     # ----------------------------------------------------------------------
     # Function : Find SubTable Column start and End location
@@ -620,11 +622,11 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         #x_label_pos = (xmin + xmax) / 2
         #Graphax.text(x_label_pos, Graphax.get_ylim()[1], x_label, ha='center', va='bottom')
         
-        global Graph_X1, Graph_X2, Graph_X3
+        #global Graph_X1, Graph_X2, Graph_X3
 
-        Graph_X1= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (20, 9), facecolors =('tab:red'))
-        Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
-        Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
+        #Graph_X1= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (20, 9), facecolors =('tab:red'))
+        #Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
+        #Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
         plt.ylim(0,100)     # Set Y display range
 
         # Initialie Display
@@ -660,32 +662,40 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_TableToArray(self):
 
-        global y1, x , width
+        #Graph_X1.remove()     # 清除特定的绘图范围
 
-        y1  = [] 
-        x   = []
-        width = []
-        liDisplayWidth = 0
+        global Graph_X1,Graph_X2,Graph_X3,Graph_X4,Graph_X5,Graph_X6,Graph_X7,Graph_X8
 
-        # Transform Dictionary to array data
+        Local_X1 = ""
+
         for lx_Position, lData in gdicTableData.items():
             for lsAxis, lsWidth in lData.items():
-                x.append(lx_Position)
-                y1.append(EditTable.fEDIT_GetAsixCode(lsAxis))
-                width.append(int(lsWidth))
+                
+                lsColor = "tab:"+ EditTable.ArrEDIT_TableList[lsAxis].get("Color")      # Color setup
+                liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
 
-                lNewDisplayWidth = lx_Position + int(lsWidth)
-                if lNewDisplayWidth > liDisplayWidth :
-                    liDisplayWidth = lNewDisplayWidth
+                lvariable_name = "Local_"+str(lsAxis)
 
-        pg.BarGraphItem(x0=[], y0=[], width=[], height=0.7, brush= BarColor) # Reset all bar
-        liDisplayWidth = int(liDisplayWidth * 1.2)
+                if lsAxis == "X1":
+                    Local_X1 += ("({},{})".format(lx_Position, int(lsWidth)) + ",")
 
-        self.plotwidget.setRange(xRange=(0, liDisplayWidth))     # 設定顯示範圍 但Mouse Zoom 可調整
+                #exec( lvariable_name )
 
-        self.plotwidget.setLimits(xMin=1, xMax=liDisplayWidth, yMin=None)        # 設定Zoom 範圍
-        self.plotwidget.setRange(xRange=(10, liDisplayWidth))     # 設定顯示範圍 但Mouse Zoom 可調整
-        self.Graph_DisplayUpdate()
+                #lvariable_name = "Graph_"+str(lsAxis)
+                #if globals()[lvariable_name] is not None:
+                #    globals()[lvariable_name].remove()
+
+                # 将字符串变量名转换为实际变量
+                #globals()[lvariable_name] = plt.broken_barh([(lx_Position,int(lsWidth))], (liYDisplay, 9), facecolors =(lsColor))
+
+                #exec(f"{lvariable_name} = plt.broken_barh([(lx_Position,int(lsWidth))], (liYDisplay, 9), facecolors =(lsColor))")
+    
+                Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, lsWidth, ha='center', va='center') # Disply Barh width value
+
+        Local_X1 = Local_X1.rstrip(',')
+
+        print("Local = ", Local_X1)
+        plt.draw()      # Redrew display
 
     # ----------------------------------------------------------------------
     # Description:  Graph_BarValueDisplay
@@ -713,29 +723,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_DisplayUpdate(self):
 
-        global  Graph_line_1,Graph_line_2, Graph1_Label
-        global  y1, x , width
+         #self.Graph_BarValueDisplay()
 
-        self.plotwidget.clear()                       # 設定顯示範圍 但Mouse Zoom 可調整
-        # Add Bar Display
-        bargraph = pg.BarGraphItem(x0=x, y0=y1, width=width, height = 0.9, brush= BarColor)
+        global Graph_X1, Graph_X2, Graph_X3
 
-        # Set Display label
-        self.plotwidget.addItem(bargraph)             # Display Bar        
-        self.Graph_BarValueDisplay()
+        #Graph_X1= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (20, 9), facecolors =('tab:red'))
+        #Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
+        #Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
 
-        # Display Line
-        self.plotwidget.addItem(Graph_line_1, ignoreBounds=True)  # Display infiniteLine 1
-        self.plotwidget.addItem(Graph_line_2, ignoreBounds=True)  # Display infiniteLine 2
-
-        # Live Label
-        sDisplayVal  = Graph_line_1.value()
-        #self.plotwidget.addItem(Graph1_Label)  # Display infiniteLine 2
-
-        #Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(),10.8))     # 在座標周 Y = 10 位置顯示
-        Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
-        font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
-        Graph1_Label.setFont(font)
 
     # ----------------------------------------------------------------------
     # Description:  Init UI 
@@ -744,8 +739,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # Return:       None
     # ----------------------------------------------------------------------
     def Graph_LineMove(self):
-
-
 
         global  Graph_line_1, Graph_line_2, Graph1_Label
 
@@ -774,22 +767,38 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def f5RowClick(self):
 
-        if  Graph_X1 is not None:
-            Graph_X1.remove()     # 清除特定的绘图范围
-        else:
-            Graph_X2.remove()     # 清除特定的绘图范围
+        #Graph_X1.remove()     # 清除特定的绘图范围
 
-        #plt.xlim(0,200)     # Set display range
+#        xDisplay = 200
+#        plt.xlim(0,xDisplay)     # Set display range
+#        plt.xticks(np.arange(0, xDisplay, int(xDisplay/10)))       # 设置x轴的刻度值为10的倍数
+
+
+        # 清除Y軸範圍在10到50的broken_barh
+        for collection in plt.gca().collections:
+            heights = collection.get_paths()[0].vertices[:, 1]
+            if (heights >= 10).any() and (heights <= 50).any():
+                collection.remove()
+        
         plt.draw()          # Refresh Display
 
 
     def f4RowClick(self):
 
-        if  Graph_X2 is not None:
-            Graph_X2.remove()     # 清除特定的绘图范围
+        #if  Graph_X2 is not None:
+        #    Graph_X2.remove()     # 清除特定的绘图范围
+        global  Graph_X2
+        
+        Graph_X2.remove()
 
-#        plt.xlim(0,1000)     # Set display range
         plt.draw()          # Refresh Display
+
+
+        #xDisplay = 1000
+        #plt.xlim(0,xDisplay)     # Set display range
+        #plt.xticks(np.arange(0, xDisplay, int(xDisplay/10)))       # 设置x轴的刻度值为10的倍数
+
+        #plt.draw()          # Refresh Display
 
     # ----------------------------------------------------------------------
     # Description:  Change Gauge Value
