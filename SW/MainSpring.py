@@ -70,10 +70,9 @@ import EditTable as EditTable
 import DataFormat as DataFormat
 import ast
 
-import matplotlib
 import matplotlib.pyplot as plt
-
 import pyqtgraph as pg
+import numpy as np
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QSlider, QLabel, QGraphicsView
 from PyQt5.QtGui  import QCursor, QColor, QPainter,QPixmap
@@ -84,7 +83,7 @@ from Ui_MainForm import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from PyQt5.QtWidgets import QGraphicsScene
-import numpy as np
+from PyQt5.QtCore import QRect
 
 
 # ----------------------------------------------------------------------
@@ -160,10 +159,14 @@ Graph_line_2 = pg.InfiniteLine(movable=False, angle=90) #Vertical Line Display
 Graph1_Label = None
 
 # Mapline Setting
+GraphLableXPos = 1
+GraphLableYPos = -3
 plt.style.use('dark_background')            # Set black ground
 Graphfig, Graphax = plt.subplots()
-Graphline   = Graphax.axvline(1, color='r', linestyle='-', linewidth=1)
-Graphline_2 = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
+Graphline       = Graphax.axvline(GraphLableXPos, color='r', linestyle='-', linewidth=1)
+Graphline_2     = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
+GraphlineLable  = Graphax.text(GraphLableXPos , GraphLableYPos, GraphLableXPos , ha='left', va='top', color='r')
+gGraphline_Click = 0
 
 # Graphic Display initialize
 Graph_X1= None
@@ -387,6 +390,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 elif sKeycode in ["Left", "Right", "Up", "Down", "PageUp", "PageDown"]:
                     self.fEDIT_TableDirectionChange(sKeycode)
 
+        print("Keyin:",sKeycode)
+
         #self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
 
     # -----------------------------------------------------------------
@@ -414,8 +419,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 del gdicTableData[lAxisName][giEditTableCurCol]
                 self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(""))  # Col 1 display reset
 
-            print("Data Empty")
-            self.Graph_TableToArray()
+            print("Data Delete")
+            self.Graph_TableDisplay()
 
         else:
             if gdicTableData[lAxisName].get(giEditTableCurCol) is None:
@@ -432,6 +437,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
                 gdicTableData[lAxisName][giEditTableCurCol]= str(lsAxisData)
 
+
+            self.Graph_TableDisplay()
 
             # if gdicTableData[giEditTableCurCol].get(lAxisName) is None:
             #     gdicTableData[giEditTableCurCol][lAxisName] = None
@@ -611,91 +618,189 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget_VHeader.verticalHeader().setVisible(True)
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
 
-
 #        self.Graph_DisplayUpdate()
-        Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
+#         Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
         
         # Windows Key interrupt initialize
         self.Init_Keyinterrupt()
 
         # 隐藏 matplotlib 工具条
         # https://developer.aliyun.com/article/396490
-
-        # ---------------------------------------------------
-        # X start, width / Y start, height      
-        # broken_barh([(start_time, duration)], (lower_yaxis, height), facecolors=('tab:colours'))
-        
-        #fig, ax = plt.subplots()
         Graphax.get_yaxis().set_visible(False)           # Y 座標隱藏
         Graphax.xaxis.set_ticks_position('top')          # X 座標顯示在上邊
+
         #ax.tick_params(axis='x', pad=-10)
-        Graphax.grid(True, color='white', linestyle='--', linewidth=0.5)   
+        Graphax.grid(True, color='white', linestyle='--', linewidth=0.5)   # 顯示 Vertical line
         #Graphax.axvspan(2, 18, facecolor='gray', alpha=0.3)    
         # 添加文字標籤
-        #xmin = 2
-        #xmax = 8        
-        #x_label = f'{xmin}  {xmax}'
-        #x_label_pos = (xmin + xmax) / 2
-        #Graphax.text(x_label_pos, Graphax.get_ylim()[1], x_label, ha='center', va='bottom')
-        
-        #global Graph_X1, Graph_X2, Graph_X3
+        plt.ylim(0,200)     # Set Y display range
+        plt.xlim(0,10)     # Set Y display range
 
-        #Graph_X1= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (20, 9), facecolors =('tab:red'))
-        #Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
-        #Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
-        plt.ylim(0,100)     # Set Y display range
+        canvas = FigureCanvas(Graphfig)  # 创建一个 FigureCanvas 对象
+        canvas.setGeometry(self.graphicsView.rect())
+        scene = QGraphicsScene()  # 创建一个 QGraphicsScene 对象并设置大小
+        scene.setSceneRect(60, 45, 600, 600)
+        scene.addWidget(canvas)  # 将 FigureCanvas 添加到 QGraphicsScene 中
+        self.graphicsView.setScene(scene)  # 创建一个 QGraphicsView 对象并设置场景
+        self.graphicsView.setAlignment(Qt.AlignLeft | Qt.AlignTop)
 
-        # Initialie Display
-        canvas = FigureCanvas(Graphfig)         # 创建一个 FigureCanvas 对象
-        scene = QGraphicsScene()                # 创建一个 QGraphicsScene 对象并设置大小
-        #scene.setSceneRect(0, 0, 200, 300)
-        scene.addWidget(canvas)                 # 将 FigureCanvas 添加到 QGraphicsScene 中
-        self.graphicsView.setScene(scene)       # 创建一个 QGraphicsView 对象并设置场景
+        # 自动缩放场景以适应视图的大小
+        #self.graphicsView.fitInView(scene.sceneRect(), Qt.IgnoreAspectRatio)
 
-        Graphfig.canvas.mpl_connect('button_press_event', self.on_button_press)
-        Graphfig.canvas.mpl_connect('motion_notify_event',self.on_move)
+        # 设置 canvas 在 graphicsView 中的位置和大小
+        #canvas_rect = QRect(-80, 0, 600, 500)
+        #canvas.setGeometry(canvas_rect)
 
+        # Graph event handling
+        Graphfig.canvas.mpl_connect('button_press_event', self.Graph_mouse_click)
+        Graphfig.canvas.mpl_connect('motion_notify_event',self.Graph_mouse_move)
+        Graphfig.canvas.mpl_connect('button_release_event', self.Graph_mouse_release)
 
-    # 滑鼠按鈕按下事件處理函數
-    def on_button_press(self,event):
-        if event.button == 1 and event.inaxes == Graphax:
-            Graphline.set_xdata(event.xdata)
-            Graphfig.canvas.draw()
-
-    # 滑鼠移動事件處理函數
-    def on_move(self, event):
-        if event.button == 1 and event.inaxes == Graphax:
-            Graphline.set_xdata(event.xdata)
-            #text = Graphax.text(x, Graphax.get_ylim()[1], f'X: {x}', ha='left', va='top', color='r')
-
-            Graphfig.canvas.draw()
+        # tableWidget event handling
+        self.tableWidget.cellClicked.connect(self.TableWidget_clicked)  
 
     # ----------------------------------------------------------------------
-    # Description:  Graph_TableToArray
+    # Event Functions 
+    # ----------------------------------------------------------------------
+    # Description:  Graph_mouse_click
+    # Function:     Graphic screen mouse click 
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def TableWidget_clicked(self, row, column):
+
+        global giEditTableCurCol, giEditTableCurRow
+
+        # Update column, row
+        giEditTableCurCol = column
+        giEditTableCurRow = row
+        print("Clicked cell:", row, "Colume:", column)
+
+    # ----------------------------------------------------------------------
+    # Description:  TableWidget_clicked
+    # Function:     TableWidget cell click check 滑鼠按鈕按下事件處理函數
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def Graph_mouse_click(self,event):
+
+        global  gGraphline_Click
+
+        if event.button == 1 and event.inaxes == Graphax:
+
+            lGraphX = Graphline.get_xdata()       
+
+            if lGraphX[0] == round(event.xdata) :
+                gGraphline_Click = 1
+            else:
+                gGraphline_Click = 0
+            
+            print("Click:",lGraphX[0], ",Graph:", round(event.xdata))
+
+        # Check mouse click x, y position
+#        if event.ydata is not None:
+#            print("Event Y:", event.ydata , "Event X:", event.xdata)
+
+
+    # ----------------------------------------------------------------------
+    # Description:  TableWidget_clicked
+    # Function:     TableWidget cell click check
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    # 滑鼠Button 放開事件處理函數
+    def Graph_mouse_release(self, event):
+
+        global  gdicTableData
+        global  gGraphline_Click
+
+        NewTableData = dict()       # New shift locations
+
+        if event.button == 1 and event.inaxes == Graphax and gGraphline_Click == 1:
+            liXShift = round(event.xdata)
+            Graphline.set_xdata(liXShift)
+
+            for lsAxis, lData in gdicTableData.items():
+                NewTableData[lsAxis] = {}               # Create new dictionary
+                for lx_Position, lsWidth in lData.items():   
+
+                    if gdicTableData[lsAxis].get(lx_Position) is not None:
+                        NewTableData[lsAxis][liXShift] = gdicTableData[lsAxis][lx_Position]
+
+            gdicTableData = NewTableData.copy()         # 複製新移動位置
+            self.Graph_TableDisplay()
+        
+        gGraphline_Click = 0
+
+    # 滑鼠移動事件處理函數
+    def Graph_mouse_move(self, event):
+
+        global  GraphlineLable
+        global  gGraphline_Click
+
+        if event.button == 1 and event.inaxes == Graphax and gGraphline_Click == 1:
+            Graphline.set_xdata(event.xdata)           
+            x_position = round(event.xdata)
+
+            GraphlineLable.set_text(str("  "))      # Clear original
+            GraphlineLable.set_position((x_position, GraphLableYPos))   # Set display position
+            GraphlineLable.set_text(str(x_position))                    # Set display value
+            Graphfig.canvas.draw()
+                   
+
+    # ----------------------------------------------------------------------
+    # Description:  Graph_TableDisplay
     # Function:     Bar 數值的顯示
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
-    def Graph_TableToArray(self):
+    def Graph_TableDisplay(self):
 
         global Graph_X1,Graph_X2,Graph_X3,Graph_X4,Graph_X5,Graph_X6,Graph_X7,Graph_X8
 
+        lxlimMax = 0
         for lsAxis, lData in gdicTableData.items():
             coord_list = []
             lvariable_name = "Graph_"+str(lsAxis)
-
-            lsColor = "tab:"+ EditTable.ArrEDIT_TableList[lsAxis].get("Color")      # Color setup
             liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
 
-            if globals()[lvariable_name] is not None:                               # 先清除再填入
-                globals()[lvariable_name].remove()
+            try:
+                if globals()[lvariable_name] is not None:                           # 先清除再填入
+                    globals()[lvariable_name].remove()
+                    globals()[lvariable_name] = None
+            except:
+                globals()[lvariable_name] = None
 
+            lx_Position = 0         # Set initiall value
             for lx_Position, lsWidth in lData.items():               
                 coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
                 Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value
 
-            globals()[lvariable_name] = plt.broken_barh(coord_list, (liYDisplay, 9), facecolors =(lsColor)) # Bar 顯示
+            # Find out Max X Lim display
+            lxlimData = lx_Position + int(lsWidth)
+            if lxlimData > lxlimMax :
+                lxlimMax = lxlimData
 
+            try:
+                if coord_list == None :
+                    globals()[lvariable_name].remove()
+                    globals()[lvariable_name] = None
+                    print("coord_list Empty")
+            except:
+                globals()[lvariable_name] = None
+
+            if coord_list == None :
+                globals()[lvariable_name].remove()      # Remove
+
+            # X start, width / Y start, height      
+            # broken_barh([(start_time, duration)], (lower_yaxis, height), facecolors=('tab:colours'))
+            globals()[lvariable_name] = plt.broken_barh(coord_list, (liYDisplay, 8), 
+                                                        facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Color")) # Bar 顯示
+
+        if lxlimMax < 10:       lxlimMax = 10       # <10 resize
+            
+        plt.xlim(0,lxlimMax)     # Set Y display range
+        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
         plt.draw()      # Redrew display
 
     # ----------------------------------------------------------------------

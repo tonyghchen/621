@@ -339,9 +339,9 @@
         <property name="geometry">
          <rect>
           <x>130</x>
-          <y>49</y>
+          <y>0</y>
           <width>600</width>
-          <height>600</height>
+          <height>731</height>
          </rect>
         </property>
        </widget>
@@ -351,10 +351,10 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>130</y>
+          <x>10</x>
+          <y>50</y>
           <width>120</width>
-          <height>591</height>
+          <height>681</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -428,6 +428,9 @@ selection-color: rgb(250, 250, 130);</string>
         <property name="autoScroll">
          <bool>false</bool>
         </property>
+        <property name="autoScrollMargin">
+         <number>15</number>
+        </property>
         <property name="selectionMode">
          <enum>QAbstractItemView::SingleSelection</enum>
         </property>
@@ -483,7 +486,7 @@ selection-color: rgb(250, 250, 130);</string>
          <bool>false</bool>
         </attribute>
         <attribute name="verticalHeaderDefaultSectionSize">
-         <number>39</number>
+         <number>32</number>
         </attribute>
         <attribute name="verticalHeaderHighlightSections">
          <bool>false</bool>
@@ -581,10 +584,10 @@ selection-color: rgb(250, 250, 130);</string>
         </property>
         <property name="geometry">
          <rect>
-          <x>190</x>
-          <y>0</y>
+          <x>170</x>
+          <y>20</y>
           <width>500</width>
-          <height>533</height>
+          <height>651</height>
          </rect>
         </property>
         <property name="sizePolicy">
@@ -1957,8 +1960,8 @@ selection-color: rgb(250, 250, 130);</string>
    <slot>f4RowClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>361</x>
-     <y>492</y>
+     <x>352</x>
+     <y>501</y>
     </hint>
     <hint type="destinationlabel">
      <x>54</x>
@@ -1973,8 +1976,8 @@ selection-color: rgb(250, 250, 130);</string>
    <slot>f5RowClick()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>538</x>
-     <y>487</y>
+     <x>532</x>
+     <y>501</y>
     </hint>
     <hint type="destinationlabel">
      <x>71</x>

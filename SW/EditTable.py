@@ -29,7 +29,6 @@ EditTableList = {
     0   :   "X1",
 }
 
-
 def fEDIT_GetAsixCode(GCode):
     for lID, lAxis in EditTableList.items():
         if GCode == lAxis :
@@ -40,48 +39,20 @@ def fEDIT_GetAsixCode(GCode):
 #               Table Data
 # --------------------------------------------------------
 ArrEDIT_TableList= {
-    "X1"       :{ "Location"  : 0,  "Location_Y":  80,  "Color" :   "red"   },
-    "X2"       :{ "Location"  : 1,  "Location_Y":  70,  "Color" :   "blue"  },
-    "X3"       :{ "Location"  : 2,  "Location_Y":  60,  "Color" :   "red"   },
-    "X4"       :{ "Location"  : 3,  "Location_Y":  50,  "Color" :   "blue"  },
-    "X5"       :{ "Location"  : 4,  "Location_Y":  40,  "Color" :   "red"   },
-    "X6"       :{ "Location"  : 5,  "Location_Y":  30,  "Color" :   "blue"  },
-    "X7"       :{ "Location"  : 6,  "Location_Y":  20,  "Color" :   "red"   },
-    "X8"       :{ "Location"  : 7,  "Location_Y":  10,  "Color" :   "blue"  },
+    "X1"       :{ "Location"  : 0,  "Location_Y":  185,  "Color" :   "blue"   },
+    "X2"       :{ "Location"  : 1,  "Location_Y":  175,  "Color" :   "#FFcc00"},
+    "X3"       :{ "Location"  : 2,  "Location_Y":  165,  "Color" :   "blue"   },
+    "X4"       :{ "Location"  : 3,  "Location_Y":  155,  "Color" :   "#FFcc00"  },
+    "X5"       :{ "Location"  : 4,  "Location_Y":  145,  "Color" :   "blue"   },
+    "X6"       :{ "Location"  : 5,  "Location_Y":  135,  "Color" :   "#FFcc00"  },
+    "X7"       :{ "Location"  : 6,  "Location_Y":  125,  "Color" :   "blue"   },
+    "X8"       :{ "Location"  : 7,  "Location_Y":  115,  "Color" :   "#FFcc00"  },
     }
 
 
 # ------------------------------------------------------------------
 #   Edit tab Mode Name
 # ------------------------------------------------------------------
-EditTabModeName = {
-    'EditTable'         : 0,
-    'CylindarTable'     : 1,
-    'ProducePanel'      : 2,
-    'Cylindar'          : 3,
-    'CylindarSetting'   : 4
-}
-
-# Tab Manual Edit Template
-ArrEDIT_TabDefault = {
-    "Man_X"     : 10,        #"000",
-    "Man_Y"     : 10,      #"0.00",
-    "Man_Z"     : 10,      #"00.0",
-    "Man_A"     : 10,      #"00.0",
-    "Man_B"     : 10,      #"00.0",
-    "Man_C"     : 10,        #"000"
-    "Man_D"     : 10,        #"000"
-    "Man_E"     : 10,        #"000"
-    "Rate"      : 25,        #"000"
-    "FileComment" : '',        #"000"
-    "FileNo"   : 0,        #"000"
-    "SetFail"   : 0,        #"000"
-    "SetQty"    : 0,        #"000000"
-    "CurrFail"  : 0,        #"000"
-    "CurrQty"   : 0         #"000000"
-    }        
-
-
 # all Table Template
 ArrEDIT_TableMark= {
     "X_tmp"     : "",
