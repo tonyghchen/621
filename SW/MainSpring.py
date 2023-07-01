@@ -51,9 +51,6 @@
     2023/5/3 安裝 plotly
         pip install pyqtgraph   繪圖用
         
-    2023/6/10
-        pip install PyQtChart
-
     2023/6/14
         pip install matplotlib
 '''
@@ -993,7 +990,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         print("ProgramConfig Save: " + fileName)
         with open(fileName,'w',encoding='utf-8') as fileStream:
             json.dump(gProgramConfig_Data, fileStream, indent = 2, ensure_ascii = False)  #save file to Json file    
+    # ----------------------------------------------------------------------
+    # Description:  Main Window initialize
+    # Function:     Main System All initialize
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def __init__(self, parent=None):
 
+        super(MyMainWindow, self).__init__(parent)
 # ----------------------------------------------------------------------
 # Function : Main Program
 # ----------------------------------------------------------------------
