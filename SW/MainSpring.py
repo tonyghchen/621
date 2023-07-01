@@ -51,6 +51,9 @@
     2023/5/3 安裝 plotly
         pip install pyqtgraph   繪圖用
         
+    2023/6/10
+        pip install PyQtChart
+
     2023/6/14
         pip install matplotlib
 '''
@@ -62,10 +65,10 @@ from fileinput import close
 import serial
 import sys
 import os
+import copy
 import Language as Language
 import EditTable as EditTable
 import DataFormat as DataFormat
-import ast
 
 import matplotlib.pyplot as plt
 import pyqtgraph as pg
@@ -80,7 +83,6 @@ from Ui_MainForm import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT
 from PyQt5.QtWidgets import QGraphicsScene
-from PyQt5.QtCore import QRect
 
 
 # ----------------------------------------------------------------------
@@ -131,6 +133,9 @@ BarColor = pg.mkBrush(color=(0, 0, 230))        # R G B
 # ------------------------------------------------------------------
 gdicTableData       = dict()        # Table data
 gGraphBarh          = dict()
+
+# 宣告一个 8x1000 的空数组
+gaGraphBarh = [[None]*8 for i in range(1000)]
 gGraphText          = dict()
 
 # ------------------------------------------------------------------
@@ -404,58 +409,58 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global gdicTableData
         global giEditTableCurCol, giEditTableCurRow
 
-        lAxisName = EditTable.EditTableList[giEditTableCurRow]
+        liAxisName = EditTable.EditTableList[giEditTableCurRow]
 
         # check data exist
         try:
-            if gdicTableData[lAxisName] is None :
-                gdicTableData[lAxisName] = {}
+            if gdicTableData[liAxisName] is None :
+                gdicTableData[liAxisName] = {}
         except:
-            gdicTableData[lAxisName] = {}
+            gdicTableData[liAxisName] = {}
 
         if iKeyNumber == "Space":       # Delete all string
-            if gdicTableData[lAxisName].get(giEditTableCurCol) is not None:
-                del gdicTableData[lAxisName][giEditTableCurCol]
+            if gdicTableData[liAxisName].get(giEditTableCurCol) is not None:
+                gdicTableData[liAxisName][giEditTableCurCol] = ""
                 self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(""))  # Col 1 display reset
 
             print("Data Delete")
-            #self.Graph_TableDisplay()
+            self.Graph_TableDisplay()
 
         else:
-            if gdicTableData[lAxisName].get(giEditTableCurCol) is None:
-                gdicTableData[lAxisName][giEditTableCurCol] = None
+            if gdicTableData[liAxisName].get(giEditTableCurCol) is None:
+                gdicTableData[liAxisName][giEditTableCurCol] = None
 
-            lsAxisData = gdicTableData[lAxisName].get(giEditTableCurCol)
+            lsAxisData = gdicTableData[liAxisName].get(giEditTableCurCol)
 
             if lsAxisData is None:
-                gdicTableData[lAxisName][giEditTableCurCol] = iKeyNumber 
+                gdicTableData[liAxisName][giEditTableCurCol] = iKeyNumber 
             else:
                 if len(lsAxisData) >= 4 :
                     lsAxisData = lsAxisData[1:]
 
                 lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
-                gdicTableData[lAxisName][giEditTableCurCol]= str(lsAxisData)
+                gdicTableData[liAxisName][giEditTableCurCol]= str(lsAxisData)
 
 
             self.Graph_TableDisplay()
 
-            # if gdicTableData[giEditTableCurCol].get(lAxisName) is None:
-            #     gdicTableData[giEditTableCurCol][lAxisName] = None
+            # if gdicTableData[giEditTableCurCol].get(liAxisName) is None:
+            #     gdicTableData[giEditTableCurCol][liAxisName] = None
 
-            # lsAxisData = gdicTableData[giEditTableCurCol].get(lAxisName)
+            # lsAxisData = gdicTableData[giEditTableCurCol].get(liAxisName)
 
             # if lsAxisData is None:
-            #     gdicTableData[giEditTableCurCol][lAxisName] = iKeyNumber 
+            #     gdicTableData[giEditTableCurCol][liAxisName] = iKeyNumber 
             # else:
             #     if len(lsAxisData) >= 4 :
             #         lsAxisData = lsAxisData[1:]
 
             #     lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
-            #     gdicTableData[giEditTableCurCol][lAxisName] = str(lsAxisData)
+            #     gdicTableData[giEditTableCurCol][liAxisName] = str(lsAxisData)
         
-            self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[lAxisName][giEditTableCurCol])))  # Col 1 display reset
+            self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[liAxisName][giEditTableCurCol])))  # Col 1 display reset
 
-            #print("Data:", gdicTableData[giEditTableCurCol][lAxisName])
+            #print("Data:", gdicTableData[giEditTableCurCol][liAxisName])
         print("Data:", gdicTableData)
             
     # ----------------------------------------------------------------------
@@ -758,51 +763,48 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  Graph_X1,Graph_X2,Graph_X3,Graph_X4,Graph_X5,Graph_X6,Graph_X7,Graph_X8
         global  gGraphBarh
         global  gGraphText
+        global  gaGraphBarh
+        global  gdicTableData
 
-        #gGraphBarh = {}
         lxlimMax = 0
+
+        gdicTableTemp = copy.deepcopy(gdicTableData)
 
         for lsAxis, lData in gdicTableData.items():
             coord_list = []
-            lvariable_name = "Graph_"+str(lsAxis)
-            liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
 
-            try:
-                if globals()[lvariable_name] is not None:                           # 先清除再填入
-                    globals()[lvariable_name].remove()
-                    globals()[lvariable_name] = None
-            except:
-                globals()[lvariable_name] = None
+            liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
+            liAxis = EditTable.ArrEDIT_TableList[lsAxis].get("Location")
 
             lx_Position = 0         # Set initiall value
 
-            for lx_Position, lsWidth in lData.items():               
-                coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
-                globals()["gGraphText[lx_Position]"] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value              
+            for lx_Position, lsWidth in lData.items():            
 
-            # Find out Max X Lim display
-            lxlimData = lx_Position + int(lsWidth)
-            if lxlimData > lxlimMax :
-                lxlimMax = lxlimData
+                #globals()["gGraphText[lx_Position]"] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value              
 
-            try:
-                if coord_list == None :
-                    globals()[lvariable_name].remove()
-                    globals()[lvariable_name] = None
+                if gdicTableData[lsAxis][lx_Position] == "":
+                    gaGraphBarh[liAxis][lx_Position].remove()
+                    gaGraphBarh[liAxis][lx_Position] = None
+                    del gdicTableTemp[lsAxis][lx_Position]
                     print("coord_list Empty")
-            except:
-                globals()[lvariable_name] = None
-
-            if coord_list == None :
-                globals()[lvariable_name].remove()      # Remove
-
-            # X start, width / Y start, height      
-            # broken_barh([(start_time, duration)], (lower_yaxis, height), facecolors=('tab:colours'))
-            globals()[lvariable_name] = plt.broken_barh(coord_list, (liYDisplay, 8), 
+                else:
+                    coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
+                    # X start, width / Y start, height      
+                    gaGraphBarh[liAxis][lx_Position] = plt.broken_barh(coord_list, (liYDisplay, 8), 
                                                         facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Color")) # Bar 顯示
 
+            # Find out Max X Lim display
+            if lsWidth != "":
+                lxlimData = lx_Position + int(lsWidth)
+                if lxlimData > lxlimMax :
+                    lxlimMax = lxlimData
+
+#            globals()[lvariable_name] = plt.broken_barh(coord_list, (liYDisplay, 8), 
+#                                                        facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Color")) # Bar 顯示
+        gdicTableData = copy.deepcopy(gdicTableTemp)
+
         if lxlimMax < 10:       lxlimMax = 10       # <10 resize
-            
+           
         print("Graph:",globals()["gGraphText"])
 
         plt.xlim(0,lxlimMax)     # Set Y display range
@@ -859,7 +861,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def f5RowClick(self):
 
-        global  gGraphText
+        global  gaGraphBarh
 
         #globals()["gGraphText[0]"].remove()
 
@@ -875,26 +877,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 #            if (heights >= 10).any() and (heights <= 50).any():
 #                collection.remove()
 
-        lxlimMax = 1000
-        plt.xlim(0,lxlimMax)     # Set Y display range
-        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
-
+        gaGraphBarh[2][0].remove()
         plt.draw()          # Refresh Display
 
 
     def f4RowClick(self):
 
-        global  gGraphText
+        global  gaGraphBarh
         #if  Graph_X2 is not None:
         #    Graph_X2.remove()     # 清除特定的绘图范围       
         #Graph_X2.remove()
         #gGraphText[0].remove()
 
 
-        lxlimMax = 100
-        plt.xlim(0,lxlimMax)     # Set Y display range
-        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
-
+        gaGraphBarh[1][0].remove()
         plt.draw()          # Refresh Display
 
 
@@ -990,15 +986,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         print("ProgramConfig Save: " + fileName)
         with open(fileName,'w',encoding='utf-8') as fileStream:
             json.dump(gProgramConfig_Data, fileStream, indent = 2, ensure_ascii = False)  #save file to Json file    
-    # ----------------------------------------------------------------------
-    # Description:  Main Window initialize
-    # Function:     Main System All initialize
-    # Input :       
-    # Return:       None
-    # ----------------------------------------------------------------------
-    def __init__(self, parent=None):
 
-        super(MyMainWindow, self).__init__(parent)
 # ----------------------------------------------------------------------
 # Function : Main Program
 # ----------------------------------------------------------------------
