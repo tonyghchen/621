@@ -133,6 +133,8 @@ BarColor = pg.mkBrush(color=(0, 0, 230))        # R G B
 #   Parameter
 # ------------------------------------------------------------------
 gdicTableData       = dict()        # Table data
+gGraphBarh          = dict()
+gGraphText          = dict()
 
 # ------------------------------------------------------------------
 #   EDIT Tab
@@ -420,7 +422,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(""))  # Col 1 display reset
 
             print("Data Delete")
-            self.Graph_TableDisplay()
+            #self.Graph_TableDisplay()
 
         else:
             if gdicTableData[lAxisName].get(giEditTableCurCol) is None:
@@ -756,9 +758,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_TableDisplay(self):
 
-        global Graph_X1,Graph_X2,Graph_X3,Graph_X4,Graph_X5,Graph_X6,Graph_X7,Graph_X8
+        global  Graph_X1,Graph_X2,Graph_X3,Graph_X4,Graph_X5,Graph_X6,Graph_X7,Graph_X8
+        global  gGraphBarh
+        global  gGraphText
 
+        #gGraphBarh = {}
         lxlimMax = 0
+
         for lsAxis, lData in gdicTableData.items():
             coord_list = []
             lvariable_name = "Graph_"+str(lsAxis)
@@ -772,9 +778,10 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 globals()[lvariable_name] = None
 
             lx_Position = 0         # Set initiall value
+
             for lx_Position, lsWidth in lData.items():               
                 coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
-                Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value
+                globals()["gGraphText[lx_Position]"] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value              
 
             # Find out Max X Lim display
             lxlimData = lx_Position + int(lsWidth)
@@ -799,6 +806,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if lxlimMax < 10:       lxlimMax = 10       # <10 resize
             
+        print("Graph:",globals()["gGraphText"])
+
         plt.xlim(0,lxlimMax)     # Set Y display range
         plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
         plt.draw()      # Redrew display
@@ -853,29 +862,42 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def f5RowClick(self):
 
-        #Graph_X1.remove()     # 清除特定的绘图范围
+        global  gGraphText
 
+        #globals()["gGraphText[0]"].remove()
+
+        #Graph_X1.remove()     # 清除特定的绘图范围
+        #gGraphText[0].remove()
 #        xDisplay = 200
 #        plt.xlim(0,xDisplay)     # Set display range
 #        plt.xticks(np.arange(0, xDisplay, int(xDisplay/10)))       # 设置x轴的刻度值为10的倍数
 
-
         # 清除Y軸範圍在10到50的broken_barh
-        for collection in plt.gca().collections:
-            heights = collection.get_paths()[0].vertices[:, 1]
-            if (heights >= 10).any() and (heights <= 50).any():
-                collection.remove()
-        
+#        for collection in plt.gca().collections:
+#            heights = collection.get_paths()[0].vertices[:, 1]
+#            if (heights >= 10).any() and (heights <= 50).any():
+#                collection.remove()
+
+        lxlimMax = 1000
+        plt.xlim(0,lxlimMax)     # Set Y display range
+        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
+
         plt.draw()          # Refresh Display
 
 
     def f4RowClick(self):
 
+        global  gGraphText
         #if  Graph_X2 is not None:
-        #    Graph_X2.remove()     # 清除特定的绘图范围
-        global  Graph_X2
-        
-        Graph_X2.remove()
+        #    Graph_X2.remove()     # 清除特定的绘图范围       
+        #Graph_X2.remove()
+        #gGraphText[0].remove()
+
+
+        lxlimMax = 100
+        plt.xlim(0,lxlimMax)     # Set Y display range
+        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
+
         plt.draw()          # Refresh Display
 
 
