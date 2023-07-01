@@ -1,0 +1,724 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:XINDAControl.View.Cultures"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!-- Global -->
+    <sys:String x:Key="DR_NoRWFRatio">沒選擇機型,補線值無法找到!</sys:String>
+
+    <!-- MainWindow -->
+    <sys:String x:Key="DR_ProduceAndTest">生產測試</sys:String>
+    <sys:String x:Key="DR_FileManage">檔案處理</sys:String>
+    <sys:String x:Key="DR_ParamSetting">參數設定</sys:String>
+
+    <!-- State -->
+    <sys:String x:Key="DR_AUTO">自動</sys:String>
+    <sys:String x:Key="DR_IDLE">編輯</sys:String>
+    <sys:String x:Key="DR_ERROR">錯誤</sys:String>
+    <sys:String x:Key="DR_TEST">測試</sys:String>
+    <sys:String x:Key="DR_MPG">手輪</sys:String>
+    <sys:String x:Key="DR_ZRT">歸零</sys:String>
+    <sys:String x:Key="DR_TROUBLESHOOTING">錯誤排除</sys:String>
+
+    <!-- AxisParamView-->
+    <sys:String x:Key="DR_MotorType">馬達類型</sys:String>
+    <sys:String x:Key="DR_MotorVendor">馬達廠牌</sys:String>
+    <sys:String x:Key="DR_MotorName">馬達名稱</sys:String>
+    <sys:String x:Key="DR_MotorGrad">馬達格數</sys:String>
+    <sys:String x:Key="DR_VirtualGrad">虛擬格數</sys:String>
+    <sys:String x:Key="DR_MaxValue">最大值</sys:String>
+    <sys:String x:Key="DR_MinValue">最小值</sys:String>
+    <sys:String x:Key="DR_MotorRPM">馬達速度</sys:String>
+    <sys:String x:Key="DR_MoveCurve">加速度曲線</sys:String>
+    <sys:String x:Key="DR_IncSpeedTime">加速時間</sys:String>
+    <sys:String x:Key="DR_DecSpeedTime">減速時間</sys:String>
+    <sys:String x:Key="DR_GearNummerator">齒輪分子</sys:String>
+    <sys:String x:Key="DR_GearDenominator">齒輪分母</sys:String>
+    <sys:String x:Key="DR_Unit">單位</sys:String>
+    <sys:String x:Key="DR_MmRatio">mm比例</sys:String>
+    <sys:String x:Key="DR_ProUseModulo">生產最近回原點</sys:String>
+    <sys:String x:Key="DR_ZRTUseModulo">歸零最近回原點</sys:String>
+    <sys:String x:Key="DR_ZrtSequence">歸零順序</sys:String>
+    <sys:String x:Key="DR_ZrtMode">歸零模式</sys:String>
+    <sys:String x:Key="DR_ZrtFirstSpeed">歸零速度</sys:String>
+    <sys:String x:Key="DR_ZrtSecSpeed">歸零二速</sys:String>
+    <sys:String x:Key="DR_ZrtPreMove">歸零預走</sys:String>
+    <sys:String x:Key="DR_ZrtSet">新設原點</sys:String>
+    <sys:String x:Key="DR_AbsOrigin">絕對值原點</sys:String>
+    <sys:String x:Key="DR_AxisNo">軸號</sys:String>
+    <sys:String x:Key="DR_OSet">原點記憶</sys:String>
+    <sys:String x:Key="DR_Delete">刪除</sys:String>
+    <sys:String x:Key="DR_AddAxis">加入新軸</sys:String>
+    <sys:String x:Key="DR_SetOCheck">是否記憶</sys:String>
+    <sys:String x:Key="DR_DeleteCheck">是否刪除</sys:String>
+    <sys:String x:Key="DR_LimitDisable">極限解除</sys:String>
+    <sys:String x:Key="DR_ExceedLimit">超過極限,請先回原點</sys:String>
+    <sys:String x:Key="DR_EncoderDirection">編碼器方向</sys:String>
+    <sys:String x:Key="DR_MustOpen">必須開啟</sys:String>
+    <sys:String x:Key="DR_DuplicateName">名稱重複!</sys:String>
+    <sys:String x:Key="DR_WrongOSetNotABS">該軸並非絕對值模式, 請將原點位置填入欄位"新設原點"</sys:String>
+    <sys:String x:Key="DR_WrongOSetABS">該軸為絕對值模式, 請使用"原點記憶"按鈕新設原點</sys:String>
+    <sys:String x:Key="DR_WrongOSetNone">該軸模式無須新設原點</sys:String>
+    <sys:String x:Key="DR_SetDefaultParam">設定預設值</sys:String>
+
+    <!-- BigTableView-->
+    <sys:String x:Key="DR_Name">名稱</sys:String>
+    <sys:String x:Key="DR_ManMoveValue">手動值</sys:String>
+    <sys:String x:Key="DR_ManMovePower1">倍1</sys:String>
+    <sys:String x:Key="DR_ManMovePower2">倍2</sys:String>
+    <sys:String x:Key="DR_ManMovePower3">倍3</sys:String>
+    <sys:String x:Key="DR_Complete">完成</sys:String>
+
+    <!-- FileManage -->
+    <sys:String x:Key="DR_MainProgram">主程式</sys:String>
+    <sys:String x:Key="DR_SubProgram">副程式</sys:String>
+    <sys:String x:Key="DR_ProgramName">程式名稱</sys:String>
+    <sys:String x:Key="DR_Date">日期</sys:String>
+    <sys:String x:Key="DR_CurProgram">目前程式</sys:String>
+    <sys:String x:Key="DR_ReplaceCheck">是否覆蓋</sys:String>
+    <sys:String x:Key="DR_File">檔案</sys:String>
+    <sys:String x:Key="DR_Yes">是</sys:String>
+    <sys:String x:Key="DR_No">否</sys:String>
+    <sys:String x:Key="DR_ModifySave">已修改,是否儲存</sys:String>
+    <sys:String x:Key="DR_DeleteOrNot">是否刪除</sys:String>
+    <sys:String x:Key="DR_Save">儲存</sys:String>
+    <sys:String x:Key="DR_Open">開啟</sys:String>
+    <sys:String x:Key="DR_Import">匯入</sys:String>
+    <sys:String x:Key="DR_Export">匯出</sys:String>
+    <sys:String x:Key="DR_Single">單筆</sys:String>
+    <sys:String x:Key="DR_Multiple">多筆</sys:String>
+    <sys:String x:Key="DR_Picture">圖片</sys:String>
+    <sys:String x:Key="DR_Photograph">拍照</sys:String>
+    <sys:String x:Key="DR_D_NotExit">D槽不存在,無法存檔!</sys:String>
+    <sys:String x:Key="DR_DeletePicture">是否刪除照片?</sys:String>
+    <sys:String x:Key="DR_CantExport">無程式無法匯出!</sys:String>
+    <sys:String x:Key="DR_WrongImportFormat">格式錯誤, 無法匯入</sys:String>
+    <sys:String x:Key="DR_WrongMachineType">機型錯誤, 無法匯入</sys:String>
+    <sys:String x:Key="DR_DataException">資料異常, 無法匯入</sys:String>
+    <sys:String x:Key="DR_AddPictures">新增圖片</sys:String>
+
+    <!-- GeneralParamView -->
+    <sys:String x:Key="DR_LanguagePanel">語言切換</sys:String>
+    <sys:String x:Key="DR_IOSwitch">I/O開關</sys:String>
+    <sys:String x:Key="DR_FuncSwitch">功能開關</sys:String>
+    <sys:String x:Key="DR_AdvanceSetting">進階設定</sys:String>
+    <sys:String x:Key="DR_AdvanceParam">進階參數</sys:String>
+    <sys:String x:Key="DR_EnterPwd">輸入密碼</sys:String>
+    <sys:String x:Key="DR_WrongPwd">密碼錯誤!</sys:String>
+    <sys:String x:Key="DR_Safty">安全門</sys:String>
+    <sys:String x:Key="DR_SaftyOn">安全門 開</sys:String>
+    <sys:String x:Key="DR_SaftyOff">安全門 關</sys:String>
+    <sys:String x:Key="DR_NCSlideOil">滑座油機</sys:String>
+    <sys:String x:Key="DR_GlobalTouchSwitch">探針全域檢查</sys:String>
+    <sys:String x:Key="DR_GlobalTouchEnableTips">必須設定探針動作並有失誤量! (建議:使用在實體探針)</sys:String>
+    <sys:String x:Key="DR_EditAIDelete">編輯智慧刪除</sys:String>
+    <sys:String x:Key="DR_CollisionProtection">防撞保護</sys:String>
+    <sys:String x:Key="DR_SlideCollisionProtection">滑座防撞保護</sys:String>
+    <sys:String x:Key="DR_ExDevice">外部裝置</sys:String>
+    <sys:String x:Key="DR_ExRobot">機械手臂</sys:String>
+    <sys:String x:Key="DR_ExClip">夾耳</sys:String>
+    <sys:String x:Key="DR_ExKnife">切刀</sys:String>
+    <sys:String x:Key="DR_Exception">異常</sys:String>
+    <sys:String x:Key="DR_CollisionSwitchTips">程式超過防撞極限會在編輯/測試/生產時警示.</sys:String>
+    <sys:String x:Key="DR_SafetyLock">鎖開關</sys:String>
+    <sys:String x:Key="DR_FeaturesSwitch">功能開關</sys:String>
+    <sys:String x:Key="DR_Scope">示波器</sys:String>
+    <sys:String x:Key="DR_ManUpdate">手動更新</sys:String>
+    
+    <!-- ManMovPanel -->
+    <sys:String x:Key="DR_BigTable">倍率表</sys:String>
+    <sys:String x:Key="DR_SetMotion">記憶動作</sys:String>
+    <sys:String x:Key="DR_Feeder">送線</sys:String>
+    <sys:String x:Key="DR_Clr">清除</sys:String>
+    <sys:String x:Key="DR_Power">倍率</sys:String>
+    <sys:String x:Key="DR_AxisEnable">開啟</sys:String>
+    <sys:String x:Key="DR_AxisDisable">關閉</sys:String>
+    <sys:String x:Key="DR_ManMovValueLimit1">超過最大手動值10!</sys:String>
+    <sys:String x:Key="DR_ManMovValueLimit2">超過最大手動值20!</sys:String>
+    <sys:String x:Key="DR_IsAtMaximumCollision">到達防撞最大值!(Code:100)</sys:String>
+    <sys:String x:Key="DR_IsAtMinimumCollision">到達防撞最小值!(Code:101)</sys:String>
+    
+    <!-- MotionDataItemPropertyWindow -->
+    <sys:String x:Key="DR_StartTime">開始時間</sys:String>
+    <sys:String x:Key="DR_EndTime">結束時間</sys:String>
+    <sys:String x:Key="DR_TimeSpan">時間長度</sys:String>
+    <sys:String x:Key="DR_Group">群組</sys:String>
+    <sys:String x:Key="DR_Position">位置</sys:String>
+    <sys:String x:Key="DR_Distance">距離</sys:String>
+    <sys:String x:Key="DR_Speed">速度</sys:String>
+    <sys:String x:Key="DR_Cancel">取消</sys:String>
+    <sys:String x:Key="DR_TouchMissProgram">失誤程式</sys:String>
+    <sys:String x:Key="DR_CBClear">無</sys:String>
+    <sys:String x:Key="DR_IsExit">已存在</sys:String>
+    <sys:String x:Key="DR_AirPreMove">汽缸提前</sys:String>
+
+    <!-- SubProgramPropWinVM -->
+    <sys:String x:Key="DR_Reaction">情況</sys:String>
+    <sys:String x:Key="DR_NotExecuted">不執行</sys:String>
+    <sys:String x:Key="DR_Execute">執行</sys:String>
+    <sys:String x:Key="DR_TouchMissRunToEnd">探針失誤執行後結束</sys:String>
+    <sys:String x:Key="DR_NGExecute">NG執行</sys:String>
+    <sys:String x:Key="DR_AlreadyHaveSubProg">此欄已經有副程式!</sys:String>
+    <sys:String x:Key="DR_ThisColFMotion">此欄送線動作</sys:String>
+    <sys:String x:Key="DR_SubAirSyncTime">此欄汽缸時間同步為</sys:String>
+
+    <!-- ParamSettingView -->
+    <sys:String x:Key="DR_GeneralParam">一般參數</sys:String>
+    <sys:String x:Key="DR_AxisParam">馬達參數</sys:String>
+    <sys:String x:Key="DR_MachineParam">機台參數</sys:String>
+    <sys:String x:Key="DR_AdvancedParam">進階參數</sys:String>
+
+    <!-- PowerWindow -->
+    <sys:String x:Key="DR_PowerOn">開機</sys:String>
+    <sys:String x:Key="DR_ShutDown">關機</sys:String>
+    <sys:String x:Key="DR_Restart">重新開機</sys:String>
+    <sys:String x:Key="DR_APPClose">程式關閉</sys:String>
+
+    <!-- ProdutionView -->
+    <sys:String x:Key="DR_ProSpeed">目前產速</sys:String>
+    <sys:String x:Key="DR_CumulativeF">累積送線</sys:String>
+    <sys:String x:Key="DR_ProduceCurNum">目前生產量</sys:String>
+    <sys:String x:Key="DR_ProduceNum">設定生產量</sys:String>
+    <sys:String x:Key="DR_TouchMissCurNum">目前失誤量</sys:String>
+    <sys:String x:Key="DR_TouchMissSetNum">設定失誤量</sys:String>
+    <sys:String x:Key="DR_TouchDist1">探針1</sys:String>
+    <sys:String x:Key="DR_TouchDist2">探針2</sys:String>
+    <sys:String x:Key="DR_TouchDist3">探針3</sys:String>
+    <sys:String x:Key="DR_TouchDist4">探針4</sys:String>
+    <sys:String x:Key="DR_Home">原點</sys:String>
+    <sys:String x:Key="DR_VHome">選軸原點</sys:String>
+    <sys:String x:Key="DR_Modify">修改</sys:String>
+    <sys:String x:Key="DR_Stop">停機</sys:String>
+    <sys:String x:Key="DR_MotionCalculate">計算運動...</sys:String>
+    <sys:String x:Key="DR_MotionPrepare">運動準備...</sys:String>
+    <sys:String x:Key="DR_MotionProcessComplete">完成,開始運動!</sys:String>
+    <sys:String x:Key="DR_NoAxisTurnOn">無開啟軸,無法開始!</sys:String>
+    <sys:String x:Key="DR_NoMotion">無動作,無法開始!</sys:String>
+    <sys:String x:Key="DR_Close">關閉</sys:String>
+    <sys:String x:Key="DR_MoveToVO">移動到虛擬原點</sys:String>
+    <sys:String x:Key="DR_VRToVO">請使用VR移動到虛擬原點</sys:String>
+    <sys:String x:Key="DR_MPGToVO">請使用MPG移動到虛擬原點</sys:String>
+    <sys:String x:Key="DR_CalculationInterrupt">計算中斷!</sys:String>
+    <sys:String x:Key="DR_MustLessThan">需小於</sys:String>
+    <sys:String x:Key="DR_MustBiggerThan">需大於</sys:String>
+    <sys:String x:Key="DR_NotKeep">不記憶</sys:String>
+
+    <!--ProTimerV-->
+    <sys:String x:Key="DR_ProductionProgress">生產進度:</sys:String>
+    <sys:String x:Key="DR_RemainingTime">剩餘時間:</sys:String>
+    <sys:String x:Key="DR_EstimatedTime">預計時間:</sys:String>
+
+    <!-- ProTestView -->
+    <sys:String x:Key="DR_ControlPanel">控制面板</sys:String>
+    <sys:String x:Key="DR_ProducePanel">生產面板</sys:String>
+    <sys:String x:Key="DR_TimeLineLB">時間軸</sys:String>
+    <sys:String x:Key="DR_TableLB">表格</sys:String>
+    <sys:String x:Key="DR_Repeat">重複</sys:String>
+    <sys:String x:Key="DR_ModeConfig">設定</sys:String>
+    <sys:String x:Key="DR_LockPage">鎖定頁籤</sys:String>
+    <sys:String x:Key="DR_LayoutChange">更換排版樣式</sys:String>
+    
+    <!-- IOViewModel -->
+    <sys:String x:Key="DR_T1Touch">探針1 測試成功!</sys:String>
+    <sys:String x:Key="DR_T2Touch">探針2 測試成功!</sys:String>
+    <sys:String x:Key="DR_T3Touch">探針3 測試成功!</sys:String>
+    <sys:String x:Key="DR_T4Touch">探針4 測試成功!</sys:String>
+    <sys:String x:Key="DR_TouchMiss">探針失誤,是否繼續?</sys:String>
+    <sys:String x:Key="DR_GlobalTouchMiss">全域探針失誤,是否繼續?</sys:String>
+    <sys:String x:Key="DR_TouchBelowDownBound">"探針值"小於"探針值下限",是否繼續?</sys:String>
+    <sys:String x:Key="DR_TouchOverUpBound">"探針值"大於"探針值上限",是否繼續?</sys:String>
+    <sys:String x:Key="DR_ExFToContinue">線架異常,是否繼續?</sys:String>
+    <sys:String x:Key="DR_ResumeConfirm">是否繼續?(可先切換 測試/生產)</sys:String>
+    <sys:String x:Key="DR_ResetPress">Reset壓下!</sys:String>
+    <sys:String x:Key="DR_ExFeederError">線架異常!(Code:12)</sys:String>
+    <sys:String x:Key="DR_OilError">油機異常!(Code:13)</sys:String>
+    <sys:String x:Key="DR_SafetyError">安全門異常!(Code:14)</sys:String>
+    <sys:String x:Key="DR_ExDeviceError">外部裝置異常!(Code:15)</sys:String>
+    <sys:String x:Key="DR_EMGStopPressed">緊急停止壓下!</sys:String>
+    <sys:String x:Key="DR_SWPressed">SW壓下!</sys:String>
+    <sys:String x:Key="DR_EditLock">按鍵鎖住!</sys:String>
+    <sys:String x:Key="DR_FAlarm1370">送線異常!(Code:16)</sys:String>
+    <sys:String x:Key="DR_OpenDuration">油開設</sys:String>
+    <sys:String x:Key="DR_CloseDuration">油關設</sys:String>
+    <sys:String x:Key="DR_OpenRemain">油開計時</sys:String>
+    <sys:String x:Key="DR_CloseRemain">油關計時</sys:String>
+    <sys:String x:Key="DR_OilTest">油機測試</sys:String>
+    <sys:String x:Key="DR_Enable">啟用</sys:String>
+    <sys:String x:Key="DR_Disable">關閉</sys:String>
+    <sys:String x:Key="DR_NG">NG</sys:String>
+    <sys:String x:Key="DR_SafetyError1">前方安全門異常!</sys:String>
+    <sys:String x:Key="DR_SafetyError2">側邊安全門異常!</sys:String>
+    <sys:String x:Key="DR_SafetyError3">後方安全門異常!</sys:String>
+    <sys:String x:Key="DR_SafetyError4">安全門異常!</sys:String>
+    <sys:String x:Key="DR_PanelEStop">面板緊急停止壓下!</sys:String>
+    <sys:String x:Key="DR_FrontEStop">前方緊急停止壓下!</sys:String>
+    <sys:String x:Key="DR_SideEStop">側邊緊急停止壓下!</sys:String>
+    <sys:String x:Key="DR_RearEStop">後方緊急停止壓下!</sys:String>
+    <sys:String x:Key="DR_DecoilorEStop">線架緊急停止壓下!</sys:String>
+
+    <!-- TimeLineEditorView -->
+    <sys:String x:Key="DR_DragTimeReset">拖曳時間重置</sys:String>
+    <sys:String x:Key="DR_PlsSetGroup">請先設定群組!</sys:String>
+
+    <!-- TimeLineEditorViewModel -->
+    <sys:String x:Key="DR_ExceedMax">超過最大值</sys:String>
+    <sys:String x:Key="DR_ExceedMin">小於最小值</sys:String>
+    <sys:String x:Key="DR_MoveTips">是否調整後方動作?</sys:String>
+    <sys:String x:Key="DR_GroupTips">請設定群組顏色!</sys:String>
+    <sys:String x:Key="DR_ReCalMotions">是否重新計算動作?</sys:String>
+    <sys:String x:Key="DR_AskUseModulo">是否找最近原點?</sys:String>
+    <sys:String x:Key="DR_PreMotionAlreadyHome">前一個動作已經在原點位置!</sys:String>
+    <sys:String x:Key="DR_PlsSelectInsertCol">請選擇要插入動作的表格欄位!(Code:53)</sys:String>
+    <sys:String x:Key="DR_SelectTableToAddMotions">選擇"表格"編輯後才能加入動作!</sys:String>
+
+    <!-- TableEditor -->
+    <sys:String x:Key="DR_PositionChangedConfirm">確定修改?</sys:String>
+    <sys:String x:Key="DR_ColumnDeleteConfirm">確定刪除欄位?</sys:String>
+    <sys:String x:Key="DR_WrongFormat">輸入格式錯誤!</sys:String>
+    <sys:String x:Key="DR_InsertEmptyColumn">請在空行插入!</sys:String>
+    <sys:String x:Key="DR_Addition">插入空行</sys:String>
+    <sys:String x:Key="DR_Deletion">刪除行</sys:String>
+    <sys:String x:Key="DR_CheckAndToModifyAgain">修改失敗,請檢察程式後再修改!</sys:String>
+
+    <sys:String x:Key="DR_Undo">復原</sys:String>
+    <sys:String x:Key="DR_Redo">取消復原</sys:String>
+    <sys:String x:Key="DR_TimeResetConfirm">是否重置回未拖曳時間,仍可使用復原恢復?</sys:String>
+
+    <sys:String x:Key="DR_Overlapping">有動作重疊!</sys:String>
+    <sys:String x:Key="DR_EmptyMotion">有空動作!</sys:String>
+    <sys:String x:Key="DR_SP_EP_Diff">起始位置和前一個結束位置不同!</sys:String>
+    <sys:String x:Key="DR_ProgramO">程式沒有回原點!</sys:String>
+    <sys:String x:Key="DR_CantSamePos">不能與前面位置相同!</sys:String>
+    <sys:String x:Key="DR_CantSameNextPos">不能與後面位置相同!</sys:String>
+    <sys:String x:Key="DR_FeederOver100">送線值超過100mm!</sys:String>
+    <sys:String x:Key="DR_IsAirColumn">有汽缸動作,不能再加入軸動作!</sys:String>
+    <sys:String x:Key="DR_ProgNotHome">程式結束未回原點</sys:String>
+    <sys:String x:Key="DR_WhetherVirtualO">是否使用虛擬原點?</sys:String>
+    <sys:String x:Key="DR_ProgramCheck1">第一個動作結束位置跟最後動作結束位置相同!</sys:String>
+    <sys:String x:Key="DR_ProgramCheck2">第一個動作開始位置跟最後動作結束位置不同!</sys:String>
+    <sys:String x:Key="DR_AlreadyHaveMotion">此時間點已有動作!</sys:String>
+    <sys:String x:Key="DR_TouchFMustMoveTogether">和送線動作必須同動!</sys:String>
+    <sys:String x:Key="DR_HaveMotionCantAddSubProg">有動作無法加入副程式!</sys:String>
+    <sys:String x:Key="DR_HaveSubProgCantAddMotion">有副程式無法加入動作!</sys:String>
+    <sys:String x:Key="DR_VirtualOUpdate">虛擬原點已更新!</sys:String>
+    <sys:String x:Key="DR_SetRpeeatRangeError">重複範圍不能為空值!</sys:String>
+    <sys:String x:Key="DR_CheckRepeatRange">重複範圍動作不連續!</sys:String>
+    <sys:String x:Key="DR_CheckColumnStartTimeAction">有動作重疊到"重複開始欄"的時間, 請檢查時間軸位置!</sys:String>
+    <sys:String x:Key="DR_CheckColumnEndTimeAction">有動作重疊到"重複結束欄"的時間, 請檢查時間軸位置!</sys:String>
+    <sys:String x:Key="DR_CheckUpperLimit">已達上限情況!</sys:String>
+    <sys:String x:Key="DR_CheckTableStartAndEnd">起始大於結束!</sys:String>
+    <sys:String x:Key="DR_CheckColumn">欄位有重疊!</sys:String>
+    <sys:String x:Key="DR_TimeMovedCantAddMotion">此欄已經改過時間無法加入動作!</sys:String>
+    <sys:String x:Key="DR_RepeatInvalid">重複功能失效, 已取消啟用, 請調整重複範圍!</sys:String>
+    <sys:String x:Key="DR_RepeatCheck1">進入位置</sys:String>
+    <sys:String x:Key="DR_RepeatCheck2">出來位置</sys:String>
+    <sys:String x:Key="DR_ShouldBeTheSame">必須相同</sys:String>
+    <sys:String x:Key="DR_and">和</sys:String>
+    <sys:String x:Key="DR_at">在</sys:String>
+    <sys:String x:Key="DR_willCollide">會碰撞</sys:String>
+    <sys:String x:Key="DR_CantBeforePos">該軸動作不能反向(往回), 輸入位置小於前面位置</sys:String>
+    <sys:String x:Key="DR_CantAfterPos">該軸動作不能反向(往回), 輸入位置大於後面位置</sys:String>
+    <sys:String x:Key="DR_CollisionTips">("參數設定"->"一般參數"->"防撞保護" 可開關設定)</sys:String>
+
+    <!--FlashMode-->
+    <sys:String x:Key="DR_FlashMode">閃電模式</sys:String>
+    <sys:String x:Key="DR_FlashEditAlert">閃電模式無法編輯,如需編輯請關閉閃電模式!</sys:String>
+    <sys:String x:Key="DR_FlashCheckPassed">程式檢查通過,開啟閃電模式!</sys:String>
+    <sys:String x:Key="DR_MotionsShouldOverlap">無重疊效果,請將第二條動作拉至與第一條動作重疊!</sys:String>
+    <sys:String x:Key="DR_FlashTurnOnAsk">是否開啟閃電模式開啟,會先執行程式檢查!</sys:String>
+    <sys:String x:Key="DR_FlashDisable">閃電模式關閉!</sys:String>
+    <sys:String x:Key="DR_FlashCantUseG5">閃電模式無法和重複功能一起使用!</sys:String>
+    <sys:String x:Key="DR_FlashCantUseHookModeA">閃電模式無法和夾耳模式A一起使用!</sys:String>
+    <sys:String x:Key="DR_FlashCantUseSub">閃電模式無法和副程式一起使用</sys:String>
+    <sys:String x:Key="DR_FlashCantUseTAdjust">閃電模式無法和探針補長一起使用</sys:String>
+    
+    <!-- ProduceViewModel -->
+    <sys:String x:Key="DR_ProduceNumReach">已到達生產量!</sys:String>
+    <sys:String x:Key="DR_MissNumReach">已到達失誤量!</sys:String>
+    <sys:String x:Key="DR_HomingTips">請先手動回原點!</sys:String>
+
+    <!-- MachineParam -->
+    <sys:String x:Key="DR_MachineType">機型</sys:String>
+    <sys:String x:Key="DR_SoftInfo">軟體資訊</sys:String>
+    <sys:String x:Key="DR_SoftVer">版本</sys:String>
+    <sys:String x:Key="DR_SerialNo">序號</sys:String>
+    <sys:String x:Key="DR_ControlUnit">控制</sys:String>
+
+    <!-- UIControl -->
+    <sys:String x:Key="DR_Confirm">確認</sys:String>
+    <sys:String x:Key="DR_Alert">警告</sys:String>
+    <sys:String x:Key="DR_TroubleShooting">錯誤排除</sys:String>
+    <sys:String x:Key="DR_UIControlString1">第</sys:String>
+    <sys:String x:Key="DR_UIControlString2">欄</sys:String>
+
+    <!--SelectHomeWin-->
+    <sys:String x:Key="DR_UnSelect">全選/不選</sys:String>
+
+    <!--AlertVM-->
+    <sys:String x:Key="DR_EnClrDialog">馬達可能有插拔或是換電池,是否清除錯誤? 確認後將關機並且請自行將機台重新開電!(Code:39)</sys:String>
+    <sys:String x:Key="DR_ServoError">伺服異常(Code:40)</sys:String>
+    <sys:String x:Key="DR_DriveConnectionException">驅動器連線異常(Code:41)</sys:String>
+    <sys:String x:Key="DR_UIConnectionError">通訊異常或程式不正常關閉, 請確認連線(Code:106)</sys:String>
+    <sys:String x:Key="DR_FServoError">因安全性考量送線軸不可關閉</sys:String>
+
+    <!--ZRT-->
+    <sys:String x:Key="DR_RWMoveToSensorByMan">手動引導翻線回原點</sys:String>
+    <sys:String x:Key="DR_HomeBeforeRun">測試生產前必須回一次原點!</sys:String>
+
+    <!--EtherCAT Quality-->
+    <sys:String x:Key="DR_MasterError">主機異常!(Code:42)</sys:String>
+    <sys:String x:Key="DR_ErrorCode">異常碼</sys:String>
+    <sys:String x:Key="DR_LostFrames">連線品質異常 有丟失封包</sys:String>
+
+    <!--RepeatTable-->
+    <sys:String x:Key="DR_StartColumn">開始欄</sys:String>
+    <sys:String x:Key="DR_EndColumn">結束欄</sys:String>
+    <sys:String x:Key="DR_RepeatTimes">重複次數</sys:String>
+
+    <!--ErrorCodePDF-->
+    <sys:String x:Key="DR_Vendor">廠商</sys:String>
+    <sys:String x:Key="DR_VandorPDF">PDF 廠商:</sys:String>
+    
+    <!--Cut-->
+    <sys:String x:Key="DR_FastCut">快速切刀</sys:String>
+    <sys:String x:Key="DR_CantExeCutState">目前狀態無法使用切刀程式!</sys:String>
+    <sys:String x:Key="DR_CutWin1">是否執行</sys:String>
+    <sys:String x:Key="DR_CutWin2">切刀程式?</sys:String>
+    <sys:String x:Key="DR_AutoRun">自動執行</sys:String>
+    <sys:String x:Key="DR_VRControl">旋鈕控制</sys:String>
+    <sys:String x:Key="DR_TurnOffVR">請將VR切到OFF!</sys:String>
+    <sys:String x:Key="DR_NoChoiceCutProgram">無選擇切刀程式!</sys:String>
+    <sys:String x:Key="DR_Homing">歸零中</sys:String>
+    <sys:String x:Key="DR_SubCutting">執行切刀程式中</sys:String>
+
+    <!--SubProgramTool-->
+    <sys:String x:Key="DR_SubProgramCheck1">此時間點不能有其他動作重疊!</sys:String>
+    <sys:String x:Key="DR_SubProgramCheck2">開始位置需為</sys:String>
+    <sys:String x:Key="DR_SubProgramCheck3">結束位置需為</sys:String>
+    <sys:String x:Key="DR_SubProgramTips" xml:space="preserve">
+• 情況1 快速切刀
+ 1. 送線(自行判斷RQ,RW位置)
+ 2. 切刀動作
+ 3. 各軸回原點
+
+• 情況2 探針失誤執行步驟
+ 1. 建議插入在探針動作後一欄,且不能與其他動作時間重疊
+ 2. 滑座回原點/虛擬原點
+ 3. 送線(自行判斷RQ,RW位置)
+ 4. 切刀動作
+ 5. 建議縮線至軸心內
+ 6. 各軸回原點/虛擬原點(和彈簧程式原點相同)
+
+• 情況3 汽缸
+ 1. 汽缸和其它軸同欄時，汽缸無法調整時間
+ 2. 同欄位有多段汽缸時，會以最後設定時間為主
+        
+注意事項:
+ 1.副程式不可與閃電模式一起使用
+    </sys:String>
+    
+    <!--TouchFunc-->
+    <sys:String x:Key="DR_TAdjust">探針補長</sys:String>
+    <sys:String x:Key="DR_Touch">探針</sys:String>
+    <sys:String x:Key="DR_TouchMotion">探針動作</sys:String>
+    <sys:String x:Key="DR_TouchValue">探針值</sys:String>
+    <sys:String x:Key="DR_UpBound">探針值上限</sys:String>
+    <sys:String x:Key="DR_DownBound">探針值下限</sys:String>
+    <sys:String x:Key="DR_AdjustMotion">變更動作</sys:String>
+    <sys:String x:Key="DR_AdjustUpBound">變更上限</sys:String>
+    <sys:String x:Key="DR_AdjustDownBound">變更下限</sys:String>
+    <sys:String x:Key="DR_AdjustValue">變更量</sys:String>
+    <sys:String x:Key="DR_OD">外徑</sys:String>
+    <sys:String x:Key="DR_WD">線徑</sys:String>
+    <sys:String x:Key="DR_NumOfTurns">圈數</sys:String>
+    <sys:String x:Key="DR_Pitch">節距</sys:String>
+    <sys:String x:Key="DR_PTolerance">上公差</sys:String>
+    <sys:String x:Key="DR_NTolerance">下公差</sys:String>
+    <sys:String x:Key="DR_AdjustRangeUp">修正上</sys:String>
+    <sys:String x:Key="DR_AdjustRangeDown">修正下</sys:String>
+    <sys:String x:Key="DR_SelectTFMotion">請選擇"探針送線動作"</sys:String>
+    <sys:String x:Key="DR_CheckAdjustUpBound1">"修正上限"值無法整除,請調整!</sys:String>
+    <sys:String x:Key="DR_CheckAdjustUpBound2">"修正上限"不能小於變更動作</sys:String>
+    <sys:String x:Key="DR_CheckAdjustDownBound1">"修正下限"值無法整除,請調整!</sys:String>
+    <sys:String x:Key="DR_CheckAdjustDownBound2">"修正下限"不能大於變更動作</sys:String>
+    <sys:String x:Key="DR_CheckAdjustValue">"修正量"無法整除,請調整!</sys:String>
+    <sys:String x:Key="DR_TAdjustProCheck">資料不全無法執行,請關閉!(Code:68)</sys:String>
+    <sys:String x:Key="DR_Count">計數</sys:String>
+    <sys:String x:Key="DR_Clear">清除</sys:String>
+    <sys:String x:Key="DR_MotionLinkToDataCheck1">"送線動作"遺失, 請重新設定!(Code:69)</sys:String>
+    <sys:String x:Key="DR_MotionLinkToDataCheck2">"探針動作"遺失, 請重新設定!(Code:70)</sys:String>
+    <sys:String x:Key="DR_MotionLinkToDataCheck3">"變更動作"遺失, 請重新設定!(Code:71)</sys:String>
+    <sys:String x:Key="DR_FeederIsModPlsSet">"送線動作"有被修改, 請重新設定!(Code:72)</sys:String>
+    <sys:String x:Key="DR_TouchIsModPlsSet">"探針動作"有被修改, 請重新設定!(Code:73)</sys:String>
+    <sys:String x:Key="DR_AdjustMotionIsModPlsSet">"變更動作"有被修改, 請重新設定!(Code:74)</sys:String>
+    <sys:String x:Key="DR_AdjustPos">變更位置</sys:String>
+    <sys:String x:Key="DR_RangeUpShouldGThanT">"修正上"需大於"探針值"(Code:75)</sys:String>
+    <sys:String x:Key="DR_RangeUpShouldLessThanF">"修正上"需小於"送線動作"!(Code:76)</sys:String>
+    <sys:String x:Key="DR_RangeUpShouldLessThanUpBound">"修正上"不可大於"探針值上限"!(Code:77)</sys:String>
+    <sys:String x:Key="DR_RangeDownShouldLThanT">"修正下"需小於"探針值"(Code:78)</sys:String>
+    <sys:String x:Key="DR_RangeDownShouldGThan0">"修正下"需大於0!(Code:79)</sys:String>
+    <sys:String x:Key="DR_RangeDownShouldGThanDownBound">"修正下"不可小於"探針值下限"!(Code:80)</sys:String>
+    <sys:String x:Key="DR_AdUpShouldGThanMotion">"修正上限"需大於"變更動作"(Code:81)</sys:String>
+    <sys:String x:Key="DR_AdUpShouldLessThanMax">"修正上限"超過"變更動作最大值"(Code:82)</sys:String>
+    <sys:String x:Key="DR_AdDownShouldLThanMotion">"修正下限"需小於"變更動作"(Code:83)</sys:String>
+    <sys:String x:Key="DR_AdDownShouldGThanMin">"修正下限"超過"變更動作最小值"(Code:84)</sys:String>
+    <sys:String x:Key="DR_UpBoundShouldLThanF">"探針值上限"不可大於"送線", 請調整"上公差"!(Code:85)</sys:String>
+    <sys:String x:Key="DR_DownBoundShouldGThan0">"探針值下限"不可小於0, 請調整"下公差"!(Code:86)</sys:String>
+    <sys:String x:Key="DR_CloseTAdjustConfirm">確認關閉探針補長? 頁面 :</sys:String>
+    <sys:String x:Key="DR_HasBeenUsed">已經被使用!</sys:String>
+    <sys:String x:Key="DR_CumulativeChart">累積圖</sys:String>
+    
+    <!--HistoryV-->
+    <sys:String x:Key="DR_History">歷史</sys:String>
+    <sys:String x:Key="DR_RecordType">類別</sys:String>
+    <sys:String x:Key="DR_Message">訊息</sys:String>
+    <sys:String x:Key="DR_UnexpectedShutdown">曾發生意外的關機, 可能導致資料流失或系統無法開啟. 關閉電源前請先按 "畫面右上的電源按鈕" 將電腦先行關機</sys:String>
+
+    <!--AxesProgramLimitV-->
+    <sys:String x:Key="DR_AxesProgramLimit">程式極限</sys:String>
+    <sys:String x:Key="DR_AxisName">軸</sys:String>
+    <sys:String x:Key="DR_MinLimit">最小極限</sys:String>
+    <sys:String x:Key="DR_MaxLimit">最大極限</sys:String>
+    <sys:String x:Key="DR_LThanMinLimit">小於最小極限</sys:String>
+    <sys:String x:Key="DR_GThanMaxLimit">大於最大極限</sys:String>
+    <sys:String x:Key="DR_MinLimitShouldLThan0">最小極限不可大於0!</sys:String>
+    <sys:String x:Key="DR_MaxLimitShouldGThan0">最大極限不可小於0!</sys:String>
+    <sys:String x:Key="DR_IsAtMinLimit">到達最小極限!(Code:87)</sys:String>
+    <sys:String x:Key="DR_IsAtMaxLimit">到達最大極限!(Code:88)</sys:String>
+    <sys:String x:Key="DR_MemPos">記憶位置</sys:String>
+
+    <!--FxLengthFomulaWin-->
+    <sys:String x:Key="DR_MD">中徑</sys:String>
+    <sys:String x:Key="DR_FxLength">送線量</sys:String>
+    <sys:String x:Key="DR_Formula">公式</sys:String>
+    <sys:String x:Key="DR_TurnsLength">圈數/補圓</sys:String>
+    <sys:String x:Key="DR_AroundLength">捲曲/捲繞</sys:String>
+    <sys:String x:Key="DR_Angle">角度</sys:String>
+    <sys:String x:Key="DR_AngleBegin">開始角度</sys:String>
+    <sys:String x:Key="DR_AngleEnd">結束角度</sys:String>
+    <sys:String x:Key="DR_Setting">設定</sys:String>
+    <sys:String x:Key="DR_Add">新增</sys:String>
+    <sys:String x:Key="DR_Write">寫入</sys:String>
+
+    <!--TimelineNoteView-->
+    <sys:String x:Key="DR_MaxNoteCountTips">註記已達最大數量</sys:String>
+    <sys:String x:Key="DR_NoteHeader">註記</sys:String>
+    <sys:String x:Key="DR_NoDataTips">請先設定動作, 再填入註解</sys:String>
+    <sys:String x:Key="DR_Column">欄位</sys:String>
+    <sys:String x:Key="DR_NoSelectIconTips">請先選擇圖標再儲存</sys:String>
+    <sys:String x:Key="CustomNo">自訂編號</sys:String>
+
+    <!--MoveToColPos-->
+    <sys:String x:Key="DR_MoveToColPos">照欄到位</sys:String>
+    <sys:String x:Key="DR_TargetCol">目標欄:</sys:String>
+    <sys:String x:Key="DR_MoveToColPosMode1">直接到位</sys:String>
+    <sys:String x:Key="DR_MoveToColPosMode2">照圖到位</sys:String>
+    <sys:String x:Key="DR_CantExeState">目前狀態無法使用!</sys:String>
+    <sys:String x:Key="DR_ColFormatInputError">欄位格式輸入錯誤!</sys:String>
+    <sys:String x:Key="DR_ColNoMotionCanRun">此欄無可動動作!</sys:String>
+    <sys:String x:Key="DR_IgnoreFIO">(送線,I/O不考慮)</sys:String>
+    <sys:String x:Key="DR_ColShouldLessThan2s">此欄運動時間不能大於2秒!</sys:String>
+    <sys:String x:Key="DR_SwitchMPGtoOFF">請先將MPG切到OFF!</sys:String>
+    
+    <!--AlertWindow-->
+    <sys:String x:Key="DR_Cuase">原因</sys:String>
+    <sys:String x:Key="DR_Remedy">處理辦法</sys:String>
+
+    <!--EtherCATQuality-->
+    <sys:String x:Key="DR_SlaveInINIT">'INIT'狀態</sys:String>
+    <sys:String x:Key="DR_SlaveInPREOP">'PREOP'狀態</sys:String>
+    <sys:String x:Key="DR_SlaveInBOOT">'BOOT'狀態</sys:String>
+    <sys:String x:Key="DR_SlaveInSAFEOP">'SAFEOP'狀態</sys:String>
+    <sys:String x:Key="DR_SlaveInOP">'OP'狀態</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsError">訊號錯誤</sys:String>
+    <sys:String x:Key="DR_VPRSError">使用錯誤模組</sys:String>
+    <sys:String x:Key="DR_InitError">初始化錯誤</sys:String>
+    <sys:String x:Key="DR_SlaveDisabled">無啟用</sys:String>
+    <sys:String x:Key="DR_SlaveNO_COMM">無通訊</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsLinkError">連接訊號異常</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsMissingLink">連接訊號丟失</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsUnexpectedLink">有多餘模組連接</sys:String>
+    <sys:String x:Key="DR_ComPortA">通訊PortA</sys:String>
+    <sys:String x:Key="DR_ComPortB">通訊PortB</sys:String>
+    <sys:String x:Key="DR_ComPortC">通訊PortC</sys:String>
+    <sys:String x:Key="DR_ComPortD">通訊PortD</sys:String>
+    <sys:String x:Key="DR_PlugInPortA">左側介面</sys:String>
+    <sys:String x:Key="DR_PlugInPortB">右側介面</sys:String>
+    <sys:String x:Key="DR_DrivePortA">網路孔-輸入</sys:String>
+    <sys:String x:Key="DR_DrivePortB">網路孔-輸出</sys:String>
+
+    <!--HookEditorView-->
+    <sys:String x:Key="DR_HookModeA">模式 A</sys:String>
+    <sys:String x:Key="DR_HookModeB">模式 B</sys:String>
+    <sys:String x:Key="DR_SelectHookModeA">選擇模式A, 將清除目前夾耳軸所有動作</sys:String>
+    <sys:String x:Key="DR_HookModeAUneditable">目前夾耳為 "模式 A", 自定義運動請至 "程式設定" 更改夾耳模式至 "模式 B"</sys:String>
+    <sys:String x:Key="DR_SpeedConfirm">程式時間小於夾耳行程最短時間, 將限制產速至</sys:String>
+    <sys:String x:Key="DR_NoHookAxis">目前無夾耳</sys:String>
+    <sys:String x:Key="DR_CantNegativeAutoNextO">不能反轉, 自動填入下一原點</sys:String>
+    <sys:String x:Key="DR_ModeADesc">夾耳自動與程式同步，夾耳不另外編寫程式。</sys:String>
+    <sys:String x:Key="DR_ModeBDesc">夾耳動作1圈10000格，需自定義夾耳程式。</sys:String>
+    <sys:String x:Key="DR_HookCantUseSub">有 "夾耳動作" 或使用 "夾耳模式 A" 不可使用副程式</sys:String>
+    <sys:String x:Key="DR_SubCantUseHook">有 "副程式" 不可新增夾耳動作</sys:String>
+    <sys:String x:Key="DR_SubcantUseModeA">有 "副程式" 不可使用模式 A</sys:String>
+    <sys:String x:Key="DR_HookPosTime">夾具時間</sys:String>
+    
+    <!--FunctionOnOffV-->
+    <sys:String x:Key="DR_Default">預設值</sys:String>
+
+    <!--Utility-->
+    <sys:String x:Key="DR_ScreenOFF">關閉螢幕</sys:String>
+
+    <!--DefaultAxisParam-->
+    <sys:String x:Key="DR_AxisMotionExist">該軸目前有動作, 無法修改</sys:String>
+    <sys:String x:Key="DR_ComfirmFillInDefault">是否確定填入預設參數?</sys:String>
+
+    <!--StatusView-->
+    <sys:String x:Key="DR_IOStatus">IO狀態</sys:String>
+    <sys:String x:Key="DR_InputIOStatus">IO輸入狀態</sys:String>
+    <sys:String x:Key="DR_OutputIOStatus">IO輸出狀態</sys:String>
+    <sys:String x:Key="DR_OthersIOStatus">其他IO狀態</sys:String>
+    <sys:String x:Key="DR_Input01_01">關機</sys:String>
+    <sys:String x:Key="DR_Input01_02">Reset</sys:String>
+    <sys:String x:Key="DR_Input01_03">生產</sys:String>
+    <sys:String x:Key="DR_Input01_04">測試</sys:String>
+    <sys:String x:Key="DR_Input01_05">Key開關</sys:String>
+    <sys:String x:Key="DR_Input01_06">線架錯誤</sys:String>
+    <sys:String x:Key="DR_Input01_07">安全門</sys:String>
+    <sys:String x:Key="DR_Input01_08">供油壓力異常</sys:String>
+    <sys:String x:Key="DR_Input01_09">VR開關</sys:String>
+    <sys:String x:Key="DR_Input01_10">緊急開關</sys:String>
+    <sys:String x:Key="DR_Input01_11">A Home</sys:String>
+    <sys:String x:Key="DR_Input01_12">A+</sys:String>
+    <sys:String x:Key="DR_Input01_13">A-</sys:String>
+    <sys:String x:Key="DR_Input01_14">Y+</sys:String>
+    <sys:String x:Key="DR_Input01_15">Y-</sys:String>
+    <sys:String x:Key="DR_Input01_16">SW</sys:String>
+    <sys:String x:Key="DR_Input02_01">T1</sys:String>
+    <sys:String x:Key="DR_Input02_02">T2</sys:String>
+    <sys:String x:Key="DR_Input02_03">T3</sys:String>
+    <sys:String x:Key="DR_Input02_04">T4</sys:String>
+    <sys:String x:Key="DR_Input02_05">停機</sys:String>
+    <sys:String x:Key="DR_Input02_06">外部裝置異常</sys:String>
+    <sys:String x:Key="DR_Input02_07"></sys:String>
+    <sys:String x:Key="DR_Input02_07_405">機構夾住</sys:String>
+    <sys:String x:Key="DR_Input02_08"></sys:String>
+    <sys:String x:Key="DR_Input02_08_405">機構放開</sys:String>
+    <sys:String x:Key="DR_Input02_09"></sys:String>
+    <sys:String x:Key="DR_Input02_09_1370">F Alarm</sys:String>
+    <sys:String x:Key="DR_Input02_09_405">凸輪原點</sys:String>
+    <sys:String x:Key="DR_Input02_10">倍率1</sys:String>
+    <sys:String x:Key="DR_Input02_11">倍率0</sys:String>
+    <sys:String x:Key="DR_Input02_12">選軸4</sys:String>
+    <sys:String x:Key="DR_Input02_13">選軸3</sys:String>
+    <sys:String x:Key="DR_Input02_14">選軸2</sys:String>
+    <sys:String x:Key="DR_Input02_15">選軸1</sys:String>
+    <sys:String x:Key="DR_Input02_16">選軸0</sys:String>
+    <sys:String x:Key="DR_Input03_01">NG</sys:String>
+    <sys:String x:Key="DR_Input03_02">手輪吋動+</sys:String>
+    <sys:String x:Key="DR_Input03_03">手輪吋動-</sys:String>
+    <sys:String x:Key="DR_Input03_04">原點</sys:String>
+    <sys:String x:Key="DR_Input03_05"></sys:String>
+    <sys:String x:Key="DR_Input03_06"></sys:String>
+    <sys:String x:Key="DR_Input03_07"></sys:String>
+    <sys:String x:Key="DR_Input03_08"></sys:String>
+    <sys:String x:Key="DR_Input03_09"></sys:String>
+    <sys:String x:Key="DR_Input03_10"></sys:String>
+    <sys:String x:Key="DR_Input03_11"></sys:String>
+    <sys:String x:Key="DR_Input03_12"></sys:String>
+    <sys:String x:Key="DR_Input03_13"></sys:String>
+    <sys:String x:Key="DR_Input03_14"></sys:String>
+    <sys:String x:Key="DR_Input03_15"></sys:String>
+    <sys:String x:Key="DR_Input03_16"></sys:String>
+    <sys:String x:Key="DR_Input04_01">安全門1</sys:String>
+    <sys:String x:Key="DR_Input04_02">安全門2</sys:String>
+    <sys:String x:Key="DR_Input04_03">安全門3</sys:String>
+    <sys:String x:Key="DR_Input04_04">安全門4</sys:String>
+    <sys:String x:Key="DR_Input04_05">前方急停</sys:String>
+    <sys:String x:Key="DR_Input04_06">側邊急停</sys:String>
+    <sys:String x:Key="DR_Input04_07">後方急停</sys:String>
+    <sys:String x:Key="DR_Input04_08">線架急停</sys:String>
+    <sys:String x:Key="DR_Input04_09"></sys:String>
+    <sys:String x:Key="DR_Input04_10"></sys:String>
+    <sys:String x:Key="DR_Input04_11"></sys:String>
+    <sys:String x:Key="DR_Input04_12"></sys:String>
+    <sys:String x:Key="DR_Input04_13"></sys:String>
+    <sys:String x:Key="DR_Input04_14"></sys:String>
+    <sys:String x:Key="DR_Input04_15"></sys:String>
+    <sys:String x:Key="DR_Input04_16"></sys:String>
+    <sys:String x:Key="DR_Output01_01">警示燈 停機/啟動</sys:String>
+    <sys:String x:Key="DR_Output01_02">警示燈 錯誤</sys:String>
+    <sys:String x:Key="DR_Output01_03">大電</sys:String>
+    <sys:String x:Key="DR_Output01_04">線架加速</sys:String>
+    <sys:String x:Key="DR_Output01_05">蜂鳴器</sys:String>
+    <sys:String x:Key="DR_Output01_06">供油</sys:String>
+    <sys:String x:Key="DR_Output01_07"></sys:String>
+    <sys:String x:Key="DR_Output01_08"></sys:String>
+    <sys:String x:Key="DR_Output01_09"></sys:String>
+    <sys:String x:Key="DR_Output01_10"></sys:String>
+    <sys:String x:Key="DR_Output01_10_405">後1</sys:String>
+    <sys:String x:Key="DR_Output01_11"></sys:String>
+    <sys:String x:Key="DR_Output01_11_405">後2</sys:String>
+    <sys:String x:Key="DR_Output01_12"></sys:String>
+    <sys:String x:Key="DR_Output01_13"></sys:String>
+    <sys:String x:Key="DR_Output01_14"></sys:String>
+    <sys:String x:Key="DR_Output01_15"></sys:String>
+    <sys:String x:Key="DR_Output01_16"></sys:String>
+    <sys:String x:Key="DR_Output02_01">探針汽缸1</sys:String>
+    <sys:String x:Key="DR_Output02_02">探針汽缸2</sys:String>
+    <sys:String x:Key="DR_Output02_03">汽缸1</sys:String>
+    <sys:String x:Key="DR_Output02_04">汽缸2</sys:String>
+    <sys:String x:Key="DR_Output02_05">汽缸3</sys:String>
+    <sys:String x:Key="DR_Output02_06">汽缸4</sys:String>
+    <sys:String x:Key="DR_Output02_07">探針汽缸3</sys:String>
+    <sys:String x:Key="DR_Output02_08">探針汽缸4</sys:String>
+    <sys:String x:Key="DR_Output02_09">汽缸5</sys:String>
+    <sys:String x:Key="DR_Output02_10">汽缸6</sys:String>
+    <sys:String x:Key="DR_Output02_11">汽缸7</sys:String>
+    <sys:String x:Key="DR_Output02_12">汽缸8</sys:String>
+    <sys:String x:Key="DR_Output02_13"></sys:String>
+    <sys:String x:Key="DR_Output02_13_1370">F ALReset</sys:String>
+    <sys:String x:Key="DR_Output02_14"></sys:String>
+    <sys:String x:Key="DR_Output02_14_1370">F EnClr</sys:String>
+    <sys:String x:Key="DR_Output02_15"></sys:String>
+    <sys:String x:Key="DR_Output02_15_1370">F S-On</sys:String>
+    <sys:String x:Key="DR_Output02_16">SW</sys:String>
+    <sys:String x:Key="DR_Output03_01">安全門開關</sys:String>
+    <sys:String x:Key="DR_Output03_02"></sys:String>
+    <sys:String x:Key="DR_Output03_03"></sys:String>
+    <sys:String x:Key="DR_Output03_04"></sys:String>
+    <sys:String x:Key="DR_Output03_05"></sys:String>
+    <sys:String x:Key="DR_Output03_06"></sys:String>
+    <sys:String x:Key="DR_Output03_07"></sys:String>
+    <sys:String x:Key="DR_Output03_08"></sys:String>
+    <sys:String x:Key="DR_Output03_09"></sys:String>
+    <sys:String x:Key="DR_Output03_10"></sys:String>
+    <sys:String x:Key="DR_Output03_11"></sys:String>
+    <sys:String x:Key="DR_Output03_12"></sys:String>
+    <sys:String x:Key="DR_Output03_13"></sys:String>
+    <sys:String x:Key="DR_Output03_14"></sys:String>
+    <sys:String x:Key="DR_Output03_15"></sys:String>
+    <sys:String x:Key="DR_Output03_16"></sys:String>
+
+    <!--AxisTrack-->
+    <sys:String x:Key="DR_Source">來源</sys:String>
+    <sys:String x:Key="DR_Color">顏色</sys:String>
+    <sys:String x:Key="DR_Value">值</sys:String>
+
+    <!--License-->
+    <sys:String x:Key="DR_NoLicense">此軟體無授權無法使用,請聯絡供應商!</sys:String>
+
+    <!--Update-->
+    <sys:String x:Key="DR_UpdateNoti">更新通知</sys:String>
+    <sys:String x:Key="DR_NewVersion">新版本</sys:String>
+    <sys:String x:Key="DR_CantUpdate">無法檢查更新, 請檢查是否有網際網路!</sys:String>
+    <sys:String x:Key="DR_CantUpdateThisState">無法在目前狀態下更新程式, 請在機器靜止狀態下使用"手動更新"!</sys:String>
+    <sys:String x:Key="DR_IsLatestVersion">已經是最新版本!</sys:String>
+    <sys:String x:Key="DR_HowToManUpdate">(參數設定→一般參數→軟體資訊→手動更新)</sys:String>
+
+    <!--ModeConfigView-->
+    <sys:String x:Key="DR_HookModeSelection">夾耳模式選擇</sys:String>
+    <sys:String x:Key="DR_DisplayConfig">顯示設定</sys:String>
+
+    <!--DisplayConfigV-->
+    <sys:String x:Key="DR_SkipAir">略過汽缸</sys:String>
+    <sys:String x:Key="DR_SkipAirDes">測試時略過汽缸目前位置</sys:String>
+</ResourceDictionary>

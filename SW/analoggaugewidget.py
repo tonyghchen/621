@@ -54,7 +54,8 @@ class AnalogGaugeWidget(QWidget):
         ################################################################################################
         # DEFAULT NEEDLE COLOR
         ################################################################################################
-        self.setNeedleColor(0, 255, 0, 255)     # 指針顏色 R/G/B/透明度
+        self.setNeedleColor(80, 80, 80, 255)     # 指針顏色 R/G/B/透明度
+        #self.setNeedleColor(0, 255, 0, 255)     # 指針顏色 R/G/B/透明度
 
         ################################################################################################
         # DEFAULT NEEDLE WHEN RELEASED
@@ -262,7 +263,7 @@ class AnalogGaugeWidget(QWidget):
     ################################################################################################
     def setGaugeTheme(self, Theme=1):
 
-        Theme = 3
+        Theme = 2
         
         if Theme == 0 or Theme == None:
             self.set_scale_polygon_colors([[.00, Qt.red],
@@ -324,12 +325,15 @@ class AnalogGaugeWidget(QWidget):
                                     [0.935, QColor(30, 35, 45, 255)],
                                     [1, QColor(35, 40, 3, 255)]
             ]
-
             self.outer_circle_bg = [
-                [0.0645161, QColor(30, 35, 45, 255)],
-                [0.37788, QColor(57, 67, 86, 255)],
-                [1, QColor(30, 36, 45, 255)]
+                [0, QColor(220, 220, 220, 0)],
             ]
+
+#            self.outer_circle_bg = [
+#                [0.0645161, QColor(30, 35, 45, 255)],
+#                [0.37788, QColor(57, 67, 86, 255)],
+#                [1, QColor(30, 36, 45, 255)]
+#            ]
 
         elif Theme == 3:
             self.set_scale_polygon_colors([[.00, Qt.white]])
@@ -817,6 +821,8 @@ class AnalogGaugeWidget(QWidget):
     # SET NEEDLE COLOR
     ################################################################################################
     def setNeedleColor(self, R=50, G=50, B=50, Transparency=255):
+
+        #R = G = B = 180
         # Red: R = 0 - 255
         # Green: G = 0 - 255
         # Blue: B = 0 - 255

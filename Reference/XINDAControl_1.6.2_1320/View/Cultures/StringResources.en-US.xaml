@@ -1,0 +1,724 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:XINDAControl.View.Cultures"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!-- Global -->
+    <sys:String x:Key="DR_NoRWFRatio">No MachineType RWAddFeederRatio cant find !</sys:String>
+
+    <!-- MainWindow -->
+    <sys:String x:Key="DR_ProduceAndTest">Home Page</sys:String>
+    <sys:String x:Key="DR_FileManage">File Manage</sys:String>
+    <sys:String x:Key="DR_ParamSetting">Parameter</sys:String>
+
+    <!-- State -->
+    <sys:String x:Key="DR_AUTO">AUTO</sys:String>
+    <sys:String x:Key="DR_IDLE">EDIT</sys:String>
+    <sys:String x:Key="DR_ERROR">ERROR</sys:String>
+    <sys:String x:Key="DR_TEST">TEST</sys:String>
+    <sys:String x:Key="DR_MPG">MPG</sys:String>
+    <sys:String x:Key="DR_ZRT">ZRT</sys:String>
+    <sys:String x:Key="DR_TROUBLESHOOTING">Trouble Shooting</sys:String>
+
+    <!-- AxisParamView-->
+    <sys:String x:Key="DR_MotorType">MotorType</sys:String>
+    <sys:String x:Key="DR_MotorVendor">MotorVendor</sys:String>
+    <sys:String x:Key="DR_MotorName">MotorName</sys:String>
+    <sys:String x:Key="DR_MotorGrad">MotorGrad</sys:String>
+    <sys:String x:Key="DR_VirtualGrad">VirtualGrad</sys:String>
+    <sys:String x:Key="DR_MaxValue">MaxValue</sys:String>
+    <sys:String x:Key="DR_MinValue">MinValue</sys:String>
+    <sys:String x:Key="DR_MotorRPM">MotorRPM</sys:String>
+    <sys:String x:Key="DR_MoveCurve">MoveCurve</sys:String>
+    <sys:String x:Key="DR_IncSpeedTime">IncSpeedTime</sys:String>
+    <sys:String x:Key="DR_DecSpeedTime">DecSpeedTime</sys:String>
+    <sys:String x:Key="DR_GearNummerator">GearNummerator</sys:String>
+    <sys:String x:Key="DR_GearDenominator">GearDenominator</sys:String>
+    <sys:String x:Key="DR_Unit">Unit</sys:String>
+    <sys:String x:Key="DR_MmRatio">mmRatio</sys:String>
+    <sys:String x:Key="DR_ZRTUseModulo">ZRTUseModulo</sys:String>
+    <sys:String x:Key="DR_ProUseModulo">ProUseModulo</sys:String>
+    <sys:String x:Key="DR_ZrtSequence">ZrtSequence</sys:String>
+    <sys:String x:Key="DR_ZrtMode">ZrtMode</sys:String>
+    <sys:String x:Key="DR_ZrtFirstSpeed">ZrtFirstSpeed</sys:String>
+    <sys:String x:Key="DR_ZrtSecSpeed">ZrtSecSpeed</sys:String>
+    <sys:String x:Key="DR_ZrtPreMove">ZrtPreMove</sys:String>
+    <sys:String x:Key="DR_ZrtSet">ZrtSet</sys:String>
+    <sys:String x:Key="DR_AbsOrigin">AbsOrigin</sys:String>
+    <sys:String x:Key="DR_AxisNo">AxisNo</sys:String>
+    <sys:String x:Key="DR_OSet">OSet</sys:String>
+    <sys:String x:Key="DR_Delete">Delete</sys:String>
+    <sys:String x:Key="DR_AddAxis">AddAxis</sys:String>
+    <sys:String x:Key="DR_SetOCheck">Set</sys:String>
+    <sys:String x:Key="DR_DeleteCheck">Delete</sys:String>
+    <sys:String x:Key="DR_LimitDisable">LimitDisable</sys:String>
+    <sys:String x:Key="DR_ExceedLimit">Exceeded limit,please go back origin</sys:String>
+    <sys:String x:Key="DR_EncoderDirection">EncoderDirection</sys:String>
+    <sys:String x:Key="DR_MustOpen">Must open</sys:String>
+    <sys:String x:Key="DR_DuplicateName">Duplicate name!</sys:String>
+    <sys:String x:Key="DR_WrongOSetNotABS">This axis is not in absolute value mode, please directly fill in the origin position in column "ZrtSet"</sys:String>
+    <sys:String x:Key="DR_WrongOSetABS">This axis is in absolute value mode, please use the "OSet" button to set a new origin</sys:String>
+    <sys:String x:Key="DR_WrongOSetNone">This axis mode does not require a new origin</sys:String>
+    <sys:String x:Key="DR_SetDefaultParam">SetDefault</sys:String>
+
+    <!-- BigTableView-->
+    <sys:String x:Key="DR_Name">Name</sys:String>
+    <sys:String x:Key="DR_ManMoveValue">Value</sys:String>
+    <sys:String x:Key="DR_ManMovePower1">P1</sys:String>
+    <sys:String x:Key="DR_ManMovePower2">P2</sys:String>
+    <sys:String x:Key="DR_ManMovePower3">P3</sys:String>
+    <sys:String x:Key="DR_Complete">Complete</sys:String>
+
+    <!-- FileManage -->
+    <sys:String x:Key="DR_MainProgram">MainProgram</sys:String>
+    <sys:String x:Key="DR_SubProgram">SubProgram</sys:String>
+    <sys:String x:Key="DR_ProgramName">Program Name</sys:String>
+    <sys:String x:Key="DR_Date">Date</sys:String>
+    <sys:String x:Key="DR_CurProgram">Current Program</sys:String>
+    <sys:String x:Key="DR_ReplaceCheck">Replace</sys:String>
+    <sys:String x:Key="DR_File">File</sys:String>
+    <sys:String x:Key="DR_Yes">Yes</sys:String>
+    <sys:String x:Key="DR_No">No</sys:String>
+    <sys:String x:Key="DR_ModifySave">Modified, save</sys:String>
+    <sys:String x:Key="DR_DeleteOrNot">Delete</sys:String>
+    <sys:String x:Key="DR_Save">Save</sys:String>
+    <sys:String x:Key="DR_Open">Open</sys:String>
+    <sys:String x:Key="DR_Import">Import</sys:String>
+    <sys:String x:Key="DR_Export">Export</sys:String>
+    <sys:String x:Key="DR_Single">Single</sys:String>
+    <sys:String x:Key="DR_Multiple">Multiple</sys:String>
+    <sys:String x:Key="DR_Picture">Picture</sys:String>
+    <sys:String x:Key="DR_Photograph">Photograph</sys:String>
+    <sys:String x:Key="DR_D_NotExit">D slot does not exist and cannot be archived!</sys:String>
+    <sys:String x:Key="DR_DeletePicture">Delete picture?</sys:String>
+    <sys:String x:Key="DR_CantExport">No program, can't export!</sys:String>
+    <sys:String x:Key="DR_WrongImportFormat">Wrong format, can't import!</sys:String>
+    <sys:String x:Key="DR_WrongMachineType">Wrong machine type, can't import!</sys:String>
+    <sys:String x:Key="DR_DataException">Data exception, can't import!</sys:String>
+    <sys:String x:Key="DR_AddPictures">Add Pictures</sys:String>
+
+    <!-- GeneralParamView -->
+    <sys:String x:Key="DR_LanguagePanel">Language</sys:String>
+    <sys:String x:Key="DR_IOSwitch">I/O Switch</sys:String>
+    <sys:String x:Key="DR_FuncSwitch">Function Switch</sys:String>
+    <sys:String x:Key="DR_AdvanceSetting">Advance Setting</sys:String>
+    <sys:String x:Key="DR_AdvanceParam">Advance Param</sys:String>
+    <sys:String x:Key="DR_EnterPwd">Enter Password</sys:String>
+    <sys:String x:Key="DR_WrongPwd">Wrong Password!</sys:String>
+    <sys:String x:Key="DR_Safty">Safety</sys:String>
+    <sys:String x:Key="DR_SaftyOn">Safety Switches ON</sys:String>
+    <sys:String x:Key="DR_SaftyOff">Safety Switches OFF</sys:String>
+    <sys:String x:Key="DR_NCSlideOil">NC Slide Oil</sys:String>
+    <sys:String x:Key="DR_GlobalTouchSwitch">Global touch</sys:String>
+    <sys:String x:Key="DR_GlobalTouchEnableTips">The touch motion and "Probe Miss Limit" must be set! (Recommendation: Use in physical probe)</sys:String>
+    <sys:String x:Key="DR_EditAIDelete">Edit AI delete</sys:String>
+    <sys:String x:Key="DR_CollisionProtection">Collision protection</sys:String>
+    <sys:String x:Key="DR_SlideCollisionProtection">Slide collision protection</sys:String>
+    <sys:String x:Key="DR_ExDevice">External device</sys:String>
+    <sys:String x:Key="DR_ExRobot">Robot</sys:String>
+    <sys:String x:Key="DR_ExClip">Hook</sys:String>
+    <sys:String x:Key="DR_ExKnife">Cut</sys:String>
+    <sys:String x:Key="DR_Exception">Exception</sys:String>
+    <sys:String x:Key="DR_CollisionSwitchTips">Programs that exceed the collision avoidance limit will be warned during EDIT/TEST/AUTO.</sys:String>
+    <sys:String x:Key="DR_SafetyLock">Lock switch</sys:String>
+    <sys:String x:Key="DR_FeaturesSwitch">FeaturesSwitch</sys:String>
+    <sys:String x:Key="DR_Scope">Scope</sys:String>
+    <sys:String x:Key="DR_ManUpdate">Update</sys:String>
+
+    <!-- ManMovPanel -->
+    <sys:String x:Key="DR_BigTable">Jog Spd</sys:String>
+    <sys:String x:Key="DR_SetMotion">Set Motion</sys:String>
+    <sys:String x:Key="DR_Feeder">F</sys:String>
+    <sys:String x:Key="DR_Clr">Clr</sys:String>
+    <sys:String x:Key="DR_Power">Pow</sys:String>
+    <sys:String x:Key="DR_AxisEnable">Enable</sys:String>
+    <sys:String x:Key="DR_AxisDisable">Disable</sys:String>
+    <sys:String x:Key="DR_ManMovValueLimit1">Max is 10!</sys:String>
+    <sys:String x:Key="DR_ManMovValueLimit2">Max is 20!</sys:String>
+    <sys:String x:Key="DR_IsAtMaximumCollision">Is At Maximum Collision !(Code:100)</sys:String>
+    <sys:String x:Key="DR_IsAtMinimumCollision">Is At Minimum Collision !(Code:101)</sys:String>
+
+    <!-- MotionDataItemPropertyWindow -->
+    <sys:String x:Key="DR_StartTime">StartTime</sys:String>
+    <sys:String x:Key="DR_EndTime">EndTime</sys:String>
+    <sys:String x:Key="DR_TimeSpan">TimeSpan</sys:String>
+    <sys:String x:Key="DR_Group">Group</sys:String>
+    <sys:String x:Key="DR_Position">Position</sys:String>
+    <sys:String x:Key="DR_Distance">Distance</sys:String>
+    <sys:String x:Key="DR_Speed">Speed</sys:String>
+    <sys:String x:Key="DR_Cancel">Cancel</sys:String>
+    <sys:String x:Key="DR_TouchMissProgram">Miss Prog</sys:String>
+    <sys:String x:Key="DR_CBClear">Clear</sys:String>
+    <sys:String x:Key="DR_IsExit">is exit!</sys:String>
+    <sys:String x:Key="DR_AirPreMove">Air PreMove</sys:String>
+
+    <!-- SubProgramPropWinVM -->
+    <sys:String x:Key="DR_Reaction">Reaction</sys:String>
+    <sys:String x:Key="DR_NotExecuted">Not executed</sys:String>
+    <sys:String x:Key="DR_Execute">Execute</sys:String>
+    <sys:String x:Key="DR_TouchMissRunToEnd">Touch miss execute and end</sys:String>
+    <sys:String x:Key="DR_NGExecute">NG execute</sys:String>
+    <sys:String x:Key="DR_AlreadyHaveSubProg">Already have sub program!</sys:String>
+    <sys:String x:Key="DR_ThisColFMotion">This F motion</sys:String>
+    <sys:String x:Key="DR_SubAirSyncTime">Synchronize this column of airs timespan to</sys:String>
+
+    <!-- ParamSettingView -->
+    <sys:String x:Key="DR_GeneralParam">GeneralParam</sys:String>
+    <sys:String x:Key="DR_AxisParam">AxisParam</sys:String>
+    <sys:String x:Key="DR_MachineParam">MachineParam</sys:String>
+    <sys:String x:Key="DR_AdvancedParam">AdvancedParam</sys:String>
+
+    <!-- PowerWindow -->
+    <sys:String x:Key="DR_PowerOn">PowerOn</sys:String>
+    <sys:String x:Key="DR_ShutDown">ShutDown</sys:String>
+    <sys:String x:Key="DR_Restart">Restart</sys:String>
+    <sys:String x:Key="DR_APPClose">APP Close</sys:String>
+
+    <!-- ProdutionView -->
+    <sys:String x:Key="DR_ProSpeed">Production Speed</sys:String>
+    <sys:String x:Key="DR_CumulativeF">Cumulative Feeder</sys:String>
+    <sys:String x:Key="DR_ProduceCurNum">Current Qty</sys:String>
+    <sys:String x:Key="DR_ProduceNum">Target Qty</sys:String>
+    <sys:String x:Key="DR_TouchMissCurNum">Probe Miss Counter</sys:String>
+    <sys:String x:Key="DR_TouchMissSetNum">Probe Miss Limit</sys:String>
+    <sys:String x:Key="DR_TouchDist1">Probe 1</sys:String>
+    <sys:String x:Key="DR_TouchDist2">Probe 2</sys:String>
+    <sys:String x:Key="DR_TouchDist3">Probe 3</sys:String>
+    <sys:String x:Key="DR_TouchDist4">Probe 4</sys:String>
+    <sys:String x:Key="DR_Home">Home</sys:String>
+    <sys:String x:Key="DR_VHome">SP-Home</sys:String>
+    <sys:String x:Key="DR_Modify">Modify</sys:String>
+    <sys:String x:Key="DR_Stop">Stop Cycle</sys:String>
+    <sys:String x:Key="DR_MotionCalculate">Calculating motion ...</sys:String>
+    <sys:String x:Key="DR_MotionPrepare">Motion preparing...</sys:String>
+    <sys:String x:Key="DR_MotionProcessComplete">Complete to run!</sys:String>
+    <sys:String x:Key="DR_NoAxisTurnOn">No axis turn on, can't start!</sys:String>
+    <sys:String x:Key="DR_NoMotion">No motions, can't start!</sys:String>
+    <sys:String x:Key="DR_Close">Close</sys:String>
+    <sys:String x:Key="DR_MoveToVO">Move to Virtual O.</sys:String>
+    <sys:String x:Key="DR_VRToVO">Please use VR move to Virtual O.</sys:String>
+    <sys:String x:Key="DR_MPGToVO">Please use MPG move to Virtual O.</sys:String>
+    <sys:String x:Key="DR_CalculationInterrupt">Calculation interrupt!</sys:String>
+    <sys:String x:Key="DR_MustLessThan">must less than</sys:String>
+    <sys:String x:Key="DR_MustBiggerThan">must bigger than</sys:String>
+    <sys:String x:Key="DR_NotKeep">Not keep</sys:String>
+
+    <!--ProTimerV-->
+    <sys:String x:Key="DR_ProductionProgress">Production Progress:</sys:String>
+    <sys:String x:Key="DR_RemainingTime">Remaining Time:</sys:String>
+    <sys:String x:Key="DR_EstimatedTime">Estimated Time:</sys:String>
+
+    <!-- ProTestView -->
+    <sys:String x:Key="DR_ControlPanel">Control Panel</sys:String>
+    <sys:String x:Key="DR_ProducePanel">Produce Panel</sys:String>
+    <sys:String x:Key="DR_TimeLineLB">TimeLine</sys:String>
+    <sys:String x:Key="DR_TableLB">Table</sys:String>
+    <sys:String x:Key="DR_Repeat">Repeat</sys:String>
+    <sys:String x:Key="DR_ModeConfig">Config</sys:String>
+    <sys:String x:Key="DR_LockPage">LockPage</sys:String>
+    <sys:String x:Key="DR_LayoutChange">LayoutChange</sys:String>
+    
+    <!-- IOViewModel -->
+    <sys:String x:Key="DR_T1Touch">Probe1 Touch!</sys:String>
+    <sys:String x:Key="DR_T2Touch">Probe2 Touch!</sys:String>
+    <sys:String x:Key="DR_T3Touch">Probe3 Touch!</sys:String>
+    <sys:String x:Key="DR_T4Touch">Probe4 Touch!</sys:String>
+    <sys:String x:Key="DR_TouchMiss">Touch miss, continue or not?</sys:String>
+    <sys:String x:Key="DR_GlobalTouchMiss">Global touch miss, continue or not?</sys:String>
+    <sys:String x:Key="DR_TouchBelowDownBound">"TouchValue" is less than "DownBound", continue or not?</sys:String>
+    <sys:String x:Key="DR_TouchOverUpBound">"TouchValue" is greater than "UpBound", continue or not?</sys:String>
+    <sys:String x:Key="DR_ExFToContinue">ExFeeder error, continue or not?</sys:String>
+    <sys:String x:Key="DR_ResumeConfirm">continue or not?(Can switch TEST/AUTO mode first)</sys:String>
+    <sys:String x:Key="DR_ResetPress">Reset Pressed!</sys:String>
+    <sys:String x:Key="DR_ExFeederError">ExFeeder Error!(Code:12)</sys:String>
+    <sys:String x:Key="DR_OilError">Oil Error!(Code:13)</sys:String>
+    <sys:String x:Key="DR_SafetyError">Safety Error!(Code:14)</sys:String>
+    <sys:String x:Key="DR_ExDeviceError">External device error!(Code:15)</sys:String>
+    <sys:String x:Key="DR_EMGStopPressed">EMGStop Pressed!</sys:String>
+    <sys:String x:Key="DR_SWPressed">SW Pressed!</sys:String>
+    <sys:String x:Key="DR_EditLock">KEY Lock!</sys:String>
+    <sys:String x:Key="DR_FAlarm1370">F Alarm!(Code:16)</sys:String>
+    <sys:String x:Key="DR_OpenDuration">Open Duration</sys:String>
+    <sys:String x:Key="DR_CloseDuration">Close Duration</sys:String>
+    <sys:String x:Key="DR_OpenRemain">Open Remain</sys:String>
+    <sys:String x:Key="DR_CloseRemain">Close Remain</sys:String>
+    <sys:String x:Key="DR_OilTest">Oil Test</sys:String>
+    <sys:String x:Key="DR_Enable">Enable</sys:String>
+    <sys:String x:Key="DR_Disable">Disable</sys:String>
+    <sys:String x:Key="DR_NG">NG</sys:String>
+    <sys:String x:Key="DR_SafetyError1">Front Safety Error!</sys:String>
+    <sys:String x:Key="DR_SafetyError2">Side Safety Error!</sys:String>
+    <sys:String x:Key="DR_SafetyError3">Rear Safety Error!</sys:String>
+    <sys:String x:Key="DR_SafetyError4">Safety Error!</sys:String>
+    <sys:String x:Key="DR_PanelEStop">Panel EMGStop Pressed!</sys:String>
+    <sys:String x:Key="DR_FrontEStop">Front EMGStop Pressed!</sys:String>
+    <sys:String x:Key="DR_SideEStop">Side EMGStop Pressed!</sys:String>
+    <sys:String x:Key="DR_RearEStop">Rear EMGStop Pressed!</sys:String>
+    <sys:String x:Key="DR_DecoilorEStop">Decoilor EMGStop Pressed!!</sys:String>
+
+    <!-- TimeLineEditorView -->
+    <sys:String x:Key="DR_DragTimeReset">Drag time reset</sys:String>
+    <sys:String x:Key="DR_PlsSetGroup">Please setting Group first!</sys:String>
+
+    <!-- TimeLineEditorViewModel -->
+    <sys:String x:Key="DR_ExceedMax">Exceed Max</sys:String>
+    <sys:String x:Key="DR_ExceedMin">Exceed Min</sys:String>
+    <sys:String x:Key="DR_MoveTips">Modify back motion?</sys:String>
+    <sys:String x:Key="DR_GroupTips">Please set group color!</sys:String>
+    <sys:String x:Key="DR_ReCalMotions">Recalculate motions?</sys:String>
+    <sys:String x:Key="DR_AskUseModulo">Whether to find the nearest home?</sys:String>
+    <sys:String x:Key="DR_PreMotionAlreadyHome">The previous motion is already at the home!</sys:String>
+    <sys:String x:Key="DR_PlsSelectInsertCol">Please select the table column to insert the motions!(Code:53)</sys:String>
+    <sys:String x:Key="DR_SelectTableToAddMotions">Motion can only be added after selecting "Table" to edit!</sys:String>
+
+    <!-- TableEditor -->
+    <sys:String x:Key="DR_PositionChangedConfirm">Changed confirm?</sys:String>
+    <sys:String x:Key="DR_ColumnDeleteConfirm">Delete column?</sys:String>
+    <sys:String x:Key="DR_WrongFormat">Wrong format!</sys:String>
+    <sys:String x:Key="DR_InsertEmptyColumn">Please insert to empty column!</sys:String>
+    <sys:String x:Key="DR_Addition">Addition</sys:String>
+    <sys:String x:Key="DR_Deletion">Deletion</sys:String>
+    <sys:String x:Key="DR_CheckAndToModifyAgain">Modified fail, please check prog and modify again!</sys:String>
+
+    <sys:String x:Key="DR_Undo">Undo</sys:String>
+    <sys:String x:Key="DR_Redo">Redo</sys:String>
+    <sys:String x:Key="DR_TimeResetConfirm">Confirm to reset back to the un-drag time, you can still use the undo to recovery?</sys:String>
+
+    <sys:String x:Key="DR_Overlapping">Motion timing overlapped. Please set different start time !</sys:String>
+    <sys:String x:Key="DR_EmptyMotion">Position no change. Please set different positions from current and previous one !</sys:String>
+    <sys:String x:Key="DR_SP_EP_Diff">Position discontinuous. Please set the start position continuing from previous end position !</sys:String>
+    <sys:String x:Key="DR_ProgramO">Is not set home in the end. Please set zero at the end of program. !</sys:String>
+    <sys:String x:Key="DR_CantSamePos">Position no change. Please set different positions from current and previous one.</sys:String>
+    <sys:String x:Key="DR_CantSameNextPos">Position no change. Please set different positions from current and next one.</sys:String>
+    <sys:String x:Key="DR_FeederOver100">Feeder over 100mm!</sys:String>
+    <sys:String x:Key="DR_IsAirColumn">Have air motion, can't add axis motion!</sys:String>
+    <sys:String x:Key="DR_ProgNotHome">The end of the program is not at the home.</sys:String>
+    <sys:String x:Key="DR_WhetherVirtualO">Whether use Virtual Origin?</sys:String>
+    <sys:String x:Key="DR_ProgramCheck1">The first motion end position is the same as the last motion end position!</sys:String>
+    <sys:String x:Key="DR_ProgramCheck2">The first motion start position is different from the last motion end position!</sys:String>
+    <sys:String x:Key="DR_AlreadyHaveMotion">There is already an motion at this point in time!</sys:String>
+    <sys:String x:Key="DR_TouchFMustMoveTogether">and F motion, must move together.</sys:String>
+    <sys:String x:Key="DR_HaveMotionCantAddSubProg">Have motions, cant add sub program!</sys:String>
+    <sys:String x:Key="DR_HaveSubProgCantAddMotion">Have sub program, cant add motion!</sys:String>
+    <sys:String x:Key="DR_VirtualOUpdate">Virtual Origin is updated!</sys:String>
+    <sys:String x:Key="DR_SetRpeeatRangeError">Repeat range can not is null value!</sys:String>
+    <sys:String x:Key="DR_CheckRepeatRange">Repeat range motion is not continuous!</sys:String>
+    <sys:String x:Key="DR_CheckColumnStartTimeAction">There is an motion overlapped to the time of the "Repeat Start Column", please check the timeline position!</sys:String>
+    <sys:String x:Key="DR_CheckColumnEndTimeAction">There is an motion overlapped to the time of the "Repeat End Column", please check the timeline position!</sys:String>
+    <sys:String x:Key="DR_CheckUpperLimit">The upper limit has beed reached!</sys:String>
+    <sys:String x:Key="DR_CheckTableStartAndEnd">Start is larger than end!</sys:String>
+    <sys:String x:Key="DR_CheckColumn">Column have overlap!</sys:String>
+    <sys:String x:Key="DR_TimeMovedCantAddMotion">This column has moved time and can't add motion!</sys:String>
+    <sys:String x:Key="DR_RepeatInvalid">The repeat function is invalid and has been disable, please adjust the repeat range!</sys:String>
+    <sys:String x:Key="DR_RepeatCheck1">entry position</sys:String>
+    <sys:String x:Key="DR_RepeatCheck2">exit position</sys:String>
+    <sys:String x:Key="DR_ShouldBeTheSame">should be the same</sys:String>
+    <sys:String x:Key="DR_and">and</sys:String>
+    <sys:String x:Key="DR_at">at</sys:String>
+    <sys:String x:Key="DR_willCollide">will collide</sys:String>
+    <sys:String x:Key="DR_CantBeforePos">The axis movement cannot be reversed, The input position is smaller than the previous position</sys:String>
+    <sys:String x:Key="DR_CantAfterPos">The axis movement cannot be reversed, The input position is greater than the following position</sys:String>
+    <sys:String x:Key="DR_CollisionTips">("Parameter"->"GeneralParam"->"Collision protection")</sys:String>
+
+    <!--FlashMode-->
+    <sys:String x:Key="DR_FlashMode">FlashMode</sys:String>
+    <sys:String x:Key="DR_FlashEditAlert">FlashMode can't edit, please turn off FlashMode!</sys:String>
+    <sys:String x:Key="DR_FlashCheckPassed">Program check passed,FlashMode Enabled!</sys:String>
+    <sys:String x:Key="DR_MotionsShouldOverlap">Should overlap second spring motions to first!</sys:String>
+    <sys:String x:Key="DR_FlashTurnOnAsk">"Whether to enable FlashMode to turn on, will first perform program check!"</sys:String>
+    <sys:String x:Key="DR_FlashDisable">FlashMode Disable!</sys:String>
+    <sys:String x:Key="DR_FlashCantUseG5">FlashMode can't be used with repeat function!</sys:String>
+    <sys:String x:Key="DR_FlashCantUseHookModeA">FlashMode can't be used with hook mode A!</sys:String>
+    <sys:String x:Key="DR_FlashCantUseSub">FlashMode can't be used with subprogram!</sys:String>
+    <sys:String x:Key="DR_FlashCantUseTAdjust">FlashMode can't be used with T Adjust!</sys:String>
+    
+    <!-- ProduceViewModel -->
+    <sys:String x:Key="DR_ProduceNumReach">Production is completed!</sys:String>
+    <sys:String x:Key="DR_MissNumReach">Miss number reach!</sys:String>
+    <sys:String x:Key="DR_HomingTips">Please Homing!</sys:String>
+
+    <!-- MachineParam -->
+    <sys:String x:Key="DR_MachineType">Machine Type</sys:String>
+    <sys:String x:Key="DR_SoftInfo">Software Information</sys:String>
+    <sys:String x:Key="DR_SoftVer">Version</sys:String>
+    <sys:String x:Key="DR_SerialNo">Serial No.</sys:String>
+    <sys:String x:Key="DR_ControlUnit">Control Unit</sys:String>
+
+    <!-- UIControl -->
+    <sys:String x:Key="DR_Confirm">Confirm</sys:String>
+    <sys:String x:Key="DR_Alert">Alert</sys:String>
+    <sys:String x:Key="DR_TroubleShooting">Trouble Shooting</sys:String>
+    <sys:String x:Key="DR_UIControlString1">Column</sys:String>
+    <sys:String x:Key="DR_UIControlString2"></sys:String>
+
+    <!--SelectHomeWin-->
+    <sys:String x:Key="DR_UnSelect">Un/select</sys:String>
+
+    <!--AlertVM-->
+    <sys:String x:Key="DR_EnClrDialog">The motor may have been unplugged or replaced battery. Confirm to clear error! After confirmation, PC will auto turned off and please turn the machine power back on!(Code:39)</sys:String>
+    <sys:String x:Key="DR_ServoError">ServoError(Code:40)</sys:String>
+    <sys:String x:Key="DR_DriveConnectionException">Drive connection exception(Code:41)</sys:String>
+    <sys:String x:Key="DR_UIConnectionError">The communication is abnormal or the program closes abnormally, please confirm the connection(Code:106)</sys:String>
+    <sys:String x:Key="DR_FServoError">The axis F cannot be closed due to safety considerations</sys:String>
+    
+    <!--ZRT-->
+    <sys:String x:Key="DR_RWMoveToSensorByMan">Guide the RW to the origin.</sys:String>
+    <sys:String x:Key="DR_HomeBeforeRun">must homing before run!</sys:String>
+
+    <!--EtherCAT Quality-->
+    <sys:String x:Key="DR_MasterError">Master error !(Code:42)</sys:String>
+    <sys:String x:Key="DR_ErrorCode">Error code</sys:String>
+    <sys:String x:Key="DR_LostFrames">Connection quality error, lost frames</sys:String>
+
+    <!--RepeatTable-->
+    <sys:String x:Key="DR_StartColumn">StartColumn</sys:String>
+    <sys:String x:Key="DR_EndColumn">EndColumn</sys:String>
+    <sys:String x:Key="DR_RepeatTimes">RepeatTimes</sys:String>
+
+    <!--ErrorCodePDF-->
+    <sys:String x:Key="DR_Vendor">Vendor</sys:String>
+    <sys:String x:Key="DR_VandorPDF">PDF Vendor:</sys:String>
+
+    <!--Cut-->
+    <sys:String x:Key="DR_FastCut">Fast Cutting</sys:String>
+    <sys:String x:Key="DR_CantExeCutState">Can't run cutting program!</sys:String>
+    <sys:String x:Key="DR_CutWin1">Run</sys:String>
+    <sys:String x:Key="DR_CutWin2">cutting program?</sys:String>
+    <sys:String x:Key="DR_AutoRun">Auto run</sys:String>
+    <sys:String x:Key="DR_VRControl">VR control</sys:String>
+    <sys:String x:Key="DR_TurnOffVR">Please turn off VR!</sys:String>
+    <sys:String x:Key="DR_NoChoiceCutProgram">No cutting program is chosen!</sys:String>
+    <sys:String x:Key="DR_Homing">Homing</sys:String>
+    <sys:String x:Key="DR_SubCutting">Cutting</sys:String>
+
+    <!--SubProgramTool-->
+    <sys:String x:Key="DR_SubProgramCheck1">There can be no other motions at this time!</sys:String>
+    <sys:String x:Key="DR_SubProgramCheck2">Start position should be</sys:String>
+    <sys:String x:Key="DR_SubProgramCheck3">End position should be</sys:String>
+    <sys:String x:Key="DR_SubProgramTips" xml:space="preserve">
+• Case 1 Fast cutter
+ 1. Wire feeding (judge RQ and RW position by yourself).
+ 2. Cutter motion.
+ 3. Set Home/VirtualO of each axis.
+
+• Case 2 Touch miss execute and end
+ 1. It is recommended to insert in the column after the Touch motion, and can not overlap with other motion time.
+ 2. Slider back to Home/VirtualO.
+ 3. Wire feeding (judge the position of RQ and RW by yourself).
+ 4. Cutter motion.
+ 5. It is recommended to shrink the wire back.
+ 6. Set Home/VirtualO of each axis (same as the Home of the spring program).
+
+• Case 2 air
+ 1. When the air and other axes are in the same column, the airs cannot adjust the timespan.
+ 2. When there are multiple airs in the same column, the last set timespan will prevail.
+        
+Notice:
+ 1.Subprogram can't be used with FlashMode.
+    </sys:String>
+    
+    <!--TouchFunc-->
+    <sys:String x:Key="DR_TAdjust">T Adjust</sys:String>
+    <sys:String x:Key="DR_Touch">Touch</sys:String>
+    <sys:String x:Key="DR_TouchMotion">T Motion</sys:String>
+    <sys:String x:Key="DR_TouchValue">T Value</sys:String>
+    <sys:String x:Key="DR_UpBound">T Value UpBound</sys:String>
+    <sys:String x:Key="DR_DownBound">T Value DownBound</sys:String>
+    <sys:String x:Key="DR_AdjustMotion">Ad. Motion</sys:String>
+    <sys:String x:Key="DR_AdjustUpBound">Ad. Up</sys:String>
+    <sys:String x:Key="DR_AdjustDownBound">Ad. Down</sys:String>
+    <sys:String x:Key="DR_AdjustValue">Ad. Value</sys:String>
+    <sys:String x:Key="DR_OD">OD</sys:String>
+    <sys:String x:Key="DR_WD">WD</sys:String>
+    <sys:String x:Key="DR_NumOfTurns">Turns</sys:String>
+    <sys:String x:Key="DR_Pitch">Pitch</sys:String>
+    <sys:String x:Key="DR_PTolerance">Pos Tol.</sys:String>
+    <sys:String x:Key="DR_NTolerance">Neg Tol.</sys:String>
+    <sys:String x:Key="DR_AdjustRangeUp">Range Up</sys:String>
+    <sys:String x:Key="DR_AdjustRangeDown">Range Down</sys:String>
+    <sys:String x:Key="DR_SelectTFMotion">Please select the touch feeder motion !</sys:String>
+    <sys:String x:Key="DR_CheckAdjustUpBound1">"Ad. up" cannot be divisible!</sys:String>
+    <sys:String x:Key="DR_CheckAdjustUpBound2">"Ad. up" cannot be less than the "ad. motion"</sys:String>
+    <sys:String x:Key="DR_CheckAdjustDownBound1">"Ad. down" cannot be divisible!</sys:String>
+    <sys:String x:Key="DR_CheckAdjustDownBound2">"Ad. down" cannot be greater than than the "ad. motion"</sys:String>
+    <sys:String x:Key="DR_CheckAdjustValue">"Ad. value" cannot be divisible!</sys:String>
+    <sys:String x:Key="DR_TAdjustProCheck">incomplete settings cannot be executed, please turn off !(Code:68)</sys:String>
+    <sys:String x:Key="DR_Count">Count</sys:String>
+    <sys:String x:Key="DR_Clear">Clear</sys:String>
+    <sys:String x:Key="DR_MotionLinkToDataCheck1">"Feeder motion" missing, please setting!(Code:69)</sys:String>
+    <sys:String x:Key="DR_MotionLinkToDataCheck2">"Touch motion" missing, please setting!(Code:70)</sys:String>
+    <sys:String x:Key="DR_MotionLinkToDataCheck3">"Adjust motion" missing, please setting!(Code:71)</sys:String>
+    <sys:String x:Key="DR_FeederIsModPlsSet">"Feeder motion" has been modified, please reset!(Code:72)</sys:String>
+    <sys:String x:Key="DR_TouchIsModPlsSet">"Touch motion" has been modified, please reset!(Code:73)</sys:String>
+    <sys:String x:Key="DR_AdjustMotionIsModPlsSet">"Adjust motion" has been modified, please reset!(Code:74)</sys:String>
+    <sys:String x:Key="DR_AdjustPos">Ad. Pos</sys:String>
+    <sys:String x:Key="DR_RangeUpShouldGThanT">"Range up" should greater than "T Value" !(Code:75)</sys:String>
+    <sys:String x:Key="DR_RangeUpShouldLessThanF">"Range up" should less than "feeder" !(Code:76)</sys:String>
+    <sys:String x:Key="DR_RangeUpShouldLessThanUpBound">"Range up" should less than "touch upbound" !(Code:77)</sys:String>
+    <sys:String x:Key="DR_RangeDownShouldLThanT">"Range down" should less than "T Value" !(Code:78)</sys:String>
+    <sys:String x:Key="DR_RangeDownShouldGThan0">"Range down" should greater than 0 !(Code:79)</sys:String>
+    <sys:String x:Key="DR_RangeDownShouldGThanDownBound">"Range down" should greater than "touch downbound" !(Code:80)</sys:String>
+    <sys:String x:Key="DR_AdUpShouldGThanMotion">"Ad. up" should greater than "ad. motion" !(Code:81)</sys:String>
+    <sys:String x:Key="DR_AdUpShouldLessThanMax">"Ad. up" is greater than "ad. motion max"(Code:82)</sys:String>
+    <sys:String x:Key="DR_AdDownShouldLThanMotion">"Ad. down" should less than "ad. motion" !(Code:83)</sys:String>
+    <sys:String x:Key="DR_AdDownShouldGThanMin">"Ad. down" is less than "ad. motion min"(Code:84)</sys:String>
+    <sys:String x:Key="DR_UpBoundShouldLThanF">"Touch upbound" should less than "feeder", please modify "Pos Tol." !(Code:85)</sys:String>
+    <sys:String x:Key="DR_DownBoundShouldGThan0">"Touch downbound" should greater than 0, please modify "Neg Tol." !(Code:86)</sys:String>
+    <sys:String x:Key="DR_CloseTAdjustConfirm">Confirm close T Adjust ? Page :</sys:String>
+    <sys:String x:Key="DR_HasBeenUsed">has been used!</sys:String>
+    <sys:String x:Key="DR_CumulativeChart">Cumulative Chart</sys:String>
+
+    <!--HistoryV-->
+    <sys:String x:Key="DR_History">History</sys:String>
+    <sys:String x:Key="DR_RecordType">Type</sys:String>
+    <sys:String x:Key="DR_Message">Message</sys:String>
+    <sys:String x:Key="DR_UnexpectedShutdown">An unexpected shutdown has occurred, which may cause data loss or the system cannot be turned on. Before turning off the power, please press the "Power button on the upper right of the screen" to shut down the computer first</sys:String>
+
+    <!--AxesProgramLimitV-->
+    <sys:String x:Key="DR_AxesProgramLimit">Limit</sys:String>
+    <sys:String x:Key="DR_AxisName">Axis</sys:String>
+    <sys:String x:Key="DR_MinLimit">Min limit</sys:String>
+    <sys:String x:Key="DR_MaxLimit">Max limit</sys:String>
+    <sys:String x:Key="DR_LThanMinLimit">less than min limit</sys:String>
+    <sys:String x:Key="DR_GThanMaxLimit">greater than max limit</sys:String>
+    <sys:String x:Key="DR_MinLimitShouldLThan0">Min limit should less than 0!</sys:String>
+    <sys:String x:Key="DR_MaxLimitShouldGThan0">Max limit should greater than 0!</sys:String>
+    <sys:String x:Key="DR_IsAtMinLimit">Is at min limit!(Code:87)</sys:String>
+    <sys:String x:Key="DR_IsAtMaxLimit">Is at max limit!(Code:88)</sys:String>
+    <sys:String x:Key="DR_MemPos">Set pos</sys:String>
+
+    <!--FxLengthFomulaWin-->
+    <sys:String x:Key="DR_MD">MD</sys:String>
+    <sys:String x:Key="DR_FxLength">FxLength</sys:String>
+    <sys:String x:Key="DR_Formula">Formula</sys:String>
+    <sys:String x:Key="DR_TurnsLength">TurnsLength</sys:String>
+    <sys:String x:Key="DR_AroundLength">AroundLength</sys:String>
+    <sys:String x:Key="DR_Angle">Angle</sys:String>
+    <sys:String x:Key="DR_AngleBegin">AngleBegin</sys:String>
+    <sys:String x:Key="DR_AngleEnd">AngleEnd</sys:String>
+    <sys:String x:Key="DR_Setting">Setting</sys:String>
+    <sys:String x:Key="DR_Add">Add</sys:String>
+    <sys:String x:Key="DR_Write">Write</sys:String>
+
+    <!--TimelineNoteView-->
+    <sys:String x:Key="DR_MaxNoteCountTips">The maximum number of comments has been reached.</sys:String>
+    <sys:String x:Key="DR_NoteHeader">Comment</sys:String>
+    <sys:String x:Key="DR_NoDataTips">Please set the action first, and then fill in the comment.</sys:String>
+    <sys:String x:Key="DR_Column">Column</sys:String>
+    <sys:String x:Key="DR_NoSelectIconTips">Please select the icon before saving</sys:String>
+    <sys:String x:Key="CustomNo">Custom No</sys:String>
+
+    <!--MoveToColPos-->
+    <sys:String x:Key="DR_MoveToColPos">MoveToColPos</sys:String>
+    <sys:String x:Key="DR_TargetCol">Column:</sys:String>
+    <sys:String x:Key="DR_MoveToColPosMode1">Directly</sys:String>
+    <sys:String x:Key="DR_MoveToColPosMode2">Follow table</sys:String>
+    <sys:String x:Key="DR_CantExeState">Can't run !</sys:String>
+    <sys:String x:Key="DR_ColFormatInputError">Column format input error !</sys:String>
+    <sys:String x:Key="DR_ColNoMotionCanRun">No motions in this column !</sys:String>
+    <sys:String x:Key="DR_IgnoreFIO">(Ignore Feeder , I/O)</sys:String>
+    <sys:String x:Key="DR_ColShouldLessThan2s">The time of this column cannot be greater than 2 seconds !</sys:String>
+    <sys:String x:Key="DR_SwitchMPGtoOFF">Please switch MPG to OFF first!</sys:String>
+
+    <!--AlertWindow-->
+    <sys:String x:Key="DR_Cuase">Cuase</sys:String>
+    <sys:String x:Key="DR_Remedy">Remedy</sys:String>
+
+    <!--EtherCATQuality-->
+    <sys:String x:Key="DR_SlaveInINIT">'INIT' state</sys:String>
+    <sys:String x:Key="DR_SlaveInPREOP">'PREOP' state</sys:String>
+    <sys:String x:Key="DR_SlaveInBOOT">'BOOT' state</sys:String>
+    <sys:String x:Key="DR_SlaveInSAFEOP">'SAFEOP' state</sys:String>
+    <sys:String x:Key="DR_SlaveInOP">'OP' state</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsError">Signals error</sys:String>
+    <sys:String x:Key="DR_VPRSError">Wrong module</sys:String>
+    <sys:String x:Key="DR_InitError">Initialization error occurred</sys:String>
+    <sys:String x:Key="DR_SlaveDisabled">Disabled</sys:String>
+    <sys:String x:Key="DR_SlaveNO_COMM">No communication</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsLinkError">Signals link error</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsMissingLink">Signals missing link</sys:String>
+    <sys:String x:Key="DR_SlaveSignalsUnexpectedLink">Signals unexpected link</sys:String>
+    <sys:String x:Key="DR_ComPortA">Communication port A</sys:String>
+    <sys:String x:Key="DR_ComPortB">Communication port B</sys:String>
+    <sys:String x:Key="DR_ComPortC">Communication port C</sys:String>
+    <sys:String x:Key="DR_ComPortD">Communication port D</sys:String>
+    <sys:String x:Key="DR_PlugInPortA">Left interface</sys:String>
+    <sys:String x:Key="DR_PlugInPortB">Right interface</sys:String>
+    <sys:String x:Key="DR_DrivePortA">Network socket - input</sys:String>
+    <sys:String x:Key="DR_DrivePortB">Network socket - output</sys:String>
+
+    <!--HookEditorView-->
+    <sys:String x:Key="DR_HookModeA">Mode A</sys:String>
+    <sys:String x:Key="DR_HookModeB">Mode B</sys:String>
+    <sys:String x:Key="DR_SelectHookModeA">Select mode A, all current motion of the hook will be cleared</sys:String>
+    <sys:String x:Key="DR_HookModeAUneditable">Currently hook mode is "Mode A", please go to "Program Config" and change to "Mode B" for custom motion</sys:String>
+    <sys:String x:Key="DR_SpeedConfirm">The program time is less than the shortest time of Hook motion, which will limit the production speed to</sys:String>
+    <sys:String x:Key="DR_NoHookAxis">No Hook</sys:String>
+    <sys:String x:Key="DR_CantNegativeAutoNextO">Can not move negative, automatically fill in the next ZRT</sys:String>
+    <sys:String x:Key="DR_ModeADesc">The hook will be automatically synchronized with the program, and the hook does not edit another program separately.</sys:String>
+    <sys:String x:Key="DR_ModeBDesc">The hook motion is one turn in 10,000 grads, and the hook needs to custom program.</sys:String>
+    <sys:String x:Key="DR_HookCantUseSub">There is any "hook motion" or use "hook mode A", subprograms cannot be used</sys:String>
+    <sys:String x:Key="DR_SubCantUseHook">Hook motion cannot be added if have any "sub-program"</sys:String>
+    <sys:String x:Key="DR_SubcantUseModeA">Hook mode A cannot be used if have any "sub-program"</sys:String>
+    <sys:String x:Key="DR_HookPosTime">CatchTime</sys:String>
+    
+    <!--FunctionOnOffV-->
+    <sys:String x:Key="DR_Default">Default</sys:String>
+
+    <!--Utility-->
+    <sys:String x:Key="DR_ScreenOFF">Screen OFF</sys:String>
+
+    <!--DefaultAxisParam-->
+    <sys:String x:Key="DR_AxisMotionExist">Can not Modify. This axis has motion.</sys:String>
+    <sys:String x:Key="DR_ComfirmFillInDefault">Whether to fill in the default parameters?</sys:String>
+
+    <!--StatusView-->
+    <sys:String x:Key="DR_IOStatus">IO Status</sys:String>
+    <sys:String x:Key="DR_InputIOStatus">IO In</sys:String>
+    <sys:String x:Key="DR_OutputIOStatus">IO Out</sys:String>
+    <sys:String x:Key="DR_OthersIOStatus">IO Others</sys:String>
+    <sys:String x:Key="DR_Input01_01">Power OFF</sys:String>
+    <sys:String x:Key="DR_Input01_02">Reset</sys:String>
+    <sys:String x:Key="DR_Input01_03">Produce</sys:String>
+    <sys:String x:Key="DR_Input01_04">Test</sys:String>
+    <sys:String x:Key="DR_Input01_05">Key Switch</sys:String>
+    <sys:String x:Key="DR_Input01_06">ExFeeder Error</sys:String>
+    <sys:String x:Key="DR_Input01_07">Safty</sys:String>
+    <sys:String x:Key="DR_Input01_08">Oil Error</sys:String>
+    <sys:String x:Key="DR_Input01_09">VR Switch</sys:String>
+    <sys:String x:Key="DR_Input01_10">Emergency Stop</sys:String>
+    <sys:String x:Key="DR_Input01_11">A Home</sys:String>
+    <sys:String x:Key="DR_Input01_12">A+</sys:String>
+    <sys:String x:Key="DR_Input01_13">A-</sys:String>
+    <sys:String x:Key="DR_Input01_14">Y+</sys:String>
+    <sys:String x:Key="DR_Input01_15">Y-</sys:String>
+    <sys:String x:Key="DR_Input01_16">SW</sys:String>
+    <sys:String x:Key="DR_Input02_01">T1</sys:String>
+    <sys:String x:Key="DR_Input02_02">T2</sys:String>
+    <sys:String x:Key="DR_Input02_03">T3</sys:String>
+    <sys:String x:Key="DR_Input02_04">T4</sys:String>
+    <sys:String x:Key="DR_Input02_05">Stop Cycle</sys:String>
+    <sys:String x:Key="DR_Input02_06">External device error</sys:String>
+    <sys:String x:Key="DR_Input02_07"></sys:String>
+    <sys:String x:Key="DR_Input02_07_405">機構夾住</sys:String>
+    <sys:String x:Key="DR_Input02_08"></sys:String>
+    <sys:String x:Key="DR_Input02_08_405">機構放開</sys:String>
+    <sys:String x:Key="DR_Input02_09"></sys:String>
+    <sys:String x:Key="DR_Input02_09_1370">F Alarm</sys:String>
+    <sys:String x:Key="DR_Input02_09_405">凸輪原點</sys:String>
+    <sys:String x:Key="DR_Input02_10">M1</sys:String>
+    <sys:String x:Key="DR_Input02_11">M0</sys:String>
+    <sys:String x:Key="DR_Input02_12">Axis select 4</sys:String>
+    <sys:String x:Key="DR_Input02_13">Axis select 3</sys:String>
+    <sys:String x:Key="DR_Input02_14">Axis select 2</sys:String>
+    <sys:String x:Key="DR_Input02_15">Axis select 1</sys:String>
+    <sys:String x:Key="DR_Input02_16">Axis select 0</sys:String>
+    <sys:String x:Key="DR_Input03_01">NG</sys:String>
+    <sys:String x:Key="DR_Input03_02">MPG+</sys:String>
+    <sys:String x:Key="DR_Input03_03">MPG-</sys:String>
+    <sys:String x:Key="DR_Input03_04">Home</sys:String>
+    <sys:String x:Key="DR_Input03_05"></sys:String>
+    <sys:String x:Key="DR_Input03_06"></sys:String>
+    <sys:String x:Key="DR_Input03_07"></sys:String>
+    <sys:String x:Key="DR_Input03_08"></sys:String>
+    <sys:String x:Key="DR_Input03_09"></sys:String>
+    <sys:String x:Key="DR_Input03_10"></sys:String>
+    <sys:String x:Key="DR_Input03_11"></sys:String>
+    <sys:String x:Key="DR_Input03_12"></sys:String>
+    <sys:String x:Key="DR_Input03_13"></sys:String>
+    <sys:String x:Key="DR_Input03_14"></sys:String>
+    <sys:String x:Key="DR_Input03_15"></sys:String>
+    <sys:String x:Key="DR_Input03_16"></sys:String>
+    <sys:String x:Key="DR_Input04_01">Front Safety</sys:String>
+    <sys:String x:Key="DR_Input04_02">Side Safety</sys:String>
+    <sys:String x:Key="DR_Input04_03">Rear Safety</sys:String>
+    <sys:String x:Key="DR_Input04_04">Safety</sys:String>
+    <sys:String x:Key="DR_Input04_05">Front EMG Stop</sys:String>
+    <sys:String x:Key="DR_Input04_06">Side EMG Stop</sys:String>
+    <sys:String x:Key="DR_Input04_07">Back EMG Stop</sys:String>
+    <sys:String x:Key="DR_Input04_08">ExFeeder EMG Stop</sys:String>
+    <sys:String x:Key="DR_Input04_09"></sys:String>
+    <sys:String x:Key="DR_Input04_10"></sys:String>
+    <sys:String x:Key="DR_Input04_11"></sys:String>
+    <sys:String x:Key="DR_Input04_12"></sys:String>
+    <sys:String x:Key="DR_Input04_13"></sys:String>
+    <sys:String x:Key="DR_Input04_14"></sys:String>
+    <sys:String x:Key="DR_Input04_15"></sys:String>
+    <sys:String x:Key="DR_Input04_16"></sys:String>
+    <sys:String x:Key="DR_Output01_01">Light standby/operation</sys:String>
+    <sys:String x:Key="DR_Output01_02">Light error</sys:String>
+    <sys:String x:Key="DR_Output01_03">Strong Current</sys:String>
+    <sys:String x:Key="DR_Output01_04">ExFeeder Speed Up</sys:String>
+    <sys:String x:Key="DR_Output01_05">buzzer</sys:String>
+    <sys:String x:Key="DR_Output01_06">Oil supply</sys:String>
+    <sys:String x:Key="DR_Output01_07"></sys:String>
+    <sys:String x:Key="DR_Output01_08"></sys:String>
+    <sys:String x:Key="DR_Output01_09"></sys:String>
+    <sys:String x:Key="DR_Output01_10"></sys:String>
+    <sys:String x:Key="DR_Output01_10_405">後1</sys:String>
+    <sys:String x:Key="DR_Output01_11"></sys:String>
+    <sys:String x:Key="DR_Output01_11_405">後2</sys:String>
+    <sys:String x:Key="DR_Output01_12"></sys:String>
+    <sys:String x:Key="DR_Output01_13"></sys:String>
+    <sys:String x:Key="DR_Output01_14"></sys:String>
+    <sys:String x:Key="DR_Output01_15"></sys:String>
+    <sys:String x:Key="DR_Output01_16"></sys:String>
+    <sys:String x:Key="DR_Output02_01">T air1</sys:String>
+    <sys:String x:Key="DR_Output02_02">T air2</sys:String>
+    <sys:String x:Key="DR_Output02_03">air1</sys:String>
+    <sys:String x:Key="DR_Output02_04">air2</sys:String>
+    <sys:String x:Key="DR_Output02_05">air3</sys:String>
+    <sys:String x:Key="DR_Output02_06">air4</sys:String>
+    <sys:String x:Key="DR_Output02_07">T air3</sys:String>
+    <sys:String x:Key="DR_Output02_08">T air4</sys:String>
+    <sys:String x:Key="DR_Output02_09">air5</sys:String>
+    <sys:String x:Key="DR_Output02_10">air6</sys:String>
+    <sys:String x:Key="DR_Output02_11">air7</sys:String>
+    <sys:String x:Key="DR_Output02_12">air8</sys:String>
+    <sys:String x:Key="DR_Output02_13"></sys:String>
+    <sys:String x:Key="DR_Output02_13_1370">F ALReset</sys:String>
+    <sys:String x:Key="DR_Output02_14"></sys:String>
+    <sys:String x:Key="DR_Output02_14_1370">F EnClr</sys:String>
+    <sys:String x:Key="DR_Output02_15"></sys:String>
+    <sys:String x:Key="DR_Output02_15_1370">F S-On</sys:String>
+    <sys:String x:Key="DR_Output02_16">SW</sys:String>
+    <sys:String x:Key="DR_Output03_01">Safty Switch</sys:String>
+    <sys:String x:Key="DR_Output03_02"></sys:String>
+    <sys:String x:Key="DR_Output03_03"></sys:String>
+    <sys:String x:Key="DR_Output03_04"></sys:String>
+    <sys:String x:Key="DR_Output03_05"></sys:String>
+    <sys:String x:Key="DR_Output03_06"></sys:String>
+    <sys:String x:Key="DR_Output03_07"></sys:String>
+    <sys:String x:Key="DR_Output03_08"></sys:String>
+    <sys:String x:Key="DR_Output03_09"></sys:String>
+    <sys:String x:Key="DR_Output03_10"></sys:String>
+    <sys:String x:Key="DR_Output03_11"></sys:String>
+    <sys:String x:Key="DR_Output03_12"></sys:String>
+    <sys:String x:Key="DR_Output03_13"></sys:String>
+    <sys:String x:Key="DR_Output03_14"></sys:String>
+    <sys:String x:Key="DR_Output03_15"></sys:String>
+    <sys:String x:Key="DR_Output03_16"></sys:String>
+
+    <!--AxisTrack-->
+    <sys:String x:Key="DR_Source">Source</sys:String>
+    <sys:String x:Key="DR_Color">Color</sys:String>
+    <sys:String x:Key="DR_Value">Value</sys:String>
+
+    <!--License-->
+    <sys:String x:Key="DR_NoLicense">This software cannot be used without authorization, please contact the supplier!</sys:String>
+    
+    <!--Update-->
+    <sys:String x:Key="DR_UpdateNoti">Update Notification</sys:String>
+    <sys:String x:Key="DR_NewVersion">New version</sys:String>
+    <sys:String x:Key="DR_CantUpdate">Unable to check for updates, please check if there is internet!</sys:String>
+    <sys:String x:Key="DR_CantUpdateThisState">Unable to update the program in the current state, please use "Update" when the machine is standill!</sys:String>
+    <sys:String x:Key="DR_IsLatestVersion">Already the latest version!</sys:String>
+    <sys:String x:Key="DR_HowToManUpdate">(Parameter → GeneralParam → Software Information → Update)</sys:String>
+
+    <!--ModeConfigView-->
+    <sys:String x:Key="DR_HookModeSelection">Hook Mode Selection</sys:String>
+    <sys:String x:Key="DR_DisplayConfig">Display Config</sys:String>
+
+    <!--DisplayConfigV-->
+    <sys:String x:Key="DR_SkipAir">Skip Air</sys:String>
+    <sys:String x:Key="DR_SkipAirDes">Skip the current position of the air during the test</sys:String>
+</ResourceDictionary>
