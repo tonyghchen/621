@@ -122,12 +122,7 @@ gVersion = "0.0.1"
 # ----------------------------------------------------------------------
 # Globle Definition
 # ----------------------------------------------------------------------
-# Graph Setup
-y1       = []
-x        = []
-width    = []
-
-BarColor = pg.mkBrush(color=(0, 0, 230))        # R G B
+#BarColor = pg.mkBrush(color=(0, 0, 230))        # R G B
 
 # ------------------------------------------------------------------
 #   Parameter
@@ -142,33 +137,30 @@ gdicGraphBarh       = dict()        # Graph Text
 # Table Mode
 defDefaultTableCol  = 0
 defDefaultTableRow  = 0
-
 defTableMaxCol      = 1000            # default Table total Rows
 defTablePageCol     = 10
 giEditTableCurRow   = defDefaultTableRow
 giEditTableLastRow  = giEditTableCurRow
 giEditTableCurCol   = defDefaultTableCol    # Default Row at N
 giEditTableLastCol  = giEditTableCurCol
-
-
 gdicTableTemp       = dict()    # Keyin Tamp 為按下 Enter 暫存用
 
 # ------------------------------------------------------------------
-#   Parameter
+#   plt Graphic 
 # ------------------------------------------------------------------
-Graph_line_1 = pg.InfiniteLine(movable=True,  angle=90) #Vertical Line Display
-Graph_line_2 = pg.InfiniteLine(movable=False, angle=90) #Vertical Line Display
-Graph1_Label = None
-
-# Mapline Setting
-GraphLableXPos = 1
-GraphLableYPos = -3
 plt.style.use('dark_background')            # Set black ground
-Graphfig, Graphax = plt.subplots()
-Graphline       = Graphax.axvline(GraphLableXPos, color='r', linestyle='-', linewidth=1)
-Graphline_2     = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
-GraphlineLable  = Graphax.text(GraphLableXPos , GraphLableYPos, GraphLableXPos , ha='left', va='top', color='r')
-gGraphline_Click = 0
+# Mapline Setting
+GraphLableXPos      = 1
+GraphLableYPos      = -3
+Graphfig, Graphax   = plt.subplots()
+gaGraphline         = Graphax.axvline(GraphLableXPos, color='r', linestyle='-', linewidth=1)
+gaGraphline_2       = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
+gaGraphlineLable    = Graphax.text(GraphLableXPos , GraphLableYPos, GraphLableXPos , ha='left', va='top', color='r')
+
+giGraphline_Click   = 0
+giGraphBarh_Click   = 0
+giGraphCurX         = 0
+giGraphCurY         = 0
 
 # ----------------------------------------------------------------------
 # Main Window
@@ -524,7 +516,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 giEditTableCurCol = 0       # Always on bottom side
 
         elif  sKeyDirection == "PageDown":
-
             giEditTableLastCol = giEditTableCurCol
 
             if giEditTableCurCol >= defTableMaxCol :   # check Row change to bottom side
@@ -612,7 +603,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
 
 #        self.Graph_DisplayUpdate()
-#         Graph_line_1.sigDragged.connect(self.Graph_LineMove)    # Line move event
         
         # Windows Key interrupt initialize
         self.Init_Keyinterrupt()
@@ -655,8 +645,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     # Event Functions 
     # ----------------------------------------------------------------------
-    # Description:  Graph_mouse_click
-    # Function:     Graphic screen mouse click 
+    # Description:  TableWidget_clicked
+    # Function:     TableWidget clicked Row/Col check
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
@@ -677,23 +667,35 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_mouse_click(self,event):
 
-        global  gGraphline_Click
+        global  giGraphline_Click,  giGraphBarh_Click
+        global  giGraphCurX, giGraphCurY
 
-        if event.button == 1 and event.inaxes == Graphax:
+        if event.button == 1 and event.inaxes == Graphax and event.ydata is not None:
+            lGraphX = gaGraphline.get_xdata()    
 
-            lGraphX = Graphline.get_xdata()       
-
-            if lGraphX[0] == round(event.xdata) :
-                gGraphline_Click = 1
+            if ( lGraphX[0] == round(event.xdata)) and (event.ydata > EditTable.ArrEDIT_TableList["X1"].get("Location_Y")+5):
+                giGraphline_Click = 1
             else:
-                gGraphline_Click = 0
-            
-            print("Click:",lGraphX[0], ",Graph:", round(event.xdata))
+                giGraphline_Click = 0
 
-        # Check mouse click x, y position
-#        if event.ydata is not None:
-#            print("Event Y:", event.ydata , "Event X:", event.xdata)
-
+                # Check mouse click x, y position
+                giGraphCurX = round(event.xdata,1)
+                giGraphCurY = round(event.ydata,1)
+                # 先確認是否按到 Barh
+                liBarhFound = 0 
+                for lsAxis, lData in gdicTableData.items():
+                    liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
+                    for lx_Position, lsWidth in lData.items(): 
+                        if (liYDisplay <= giGraphCurY <= (liYDisplay + 10)) and ( lx_Position < giGraphCurX <= (lx_Position + int(lsWidth))):
+                            liBarhFound = 1
+                # Found Barh press               
+                if liBarhFound == 1:
+                    giGraphBarh_Click = 1
+                    self.Graph_TableDisplay()
+                    giGraphBarh_Click = 0
+                    print("Event X:", giGraphCurX , "Event Y:", giGraphCurY)
+                else:
+                    print("No Barh press")
 
     # ----------------------------------------------------------------------
     # Description:  Graph_mouse_release 滑鼠Button 放開事件處理函數
@@ -704,25 +706,26 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def Graph_mouse_release(self, event):
 
         global  gdicTableData
-        global  gGraphline_Click
+        global  giGraphline_Click
 
         NewTableData = dict()       # New shift locations
 
-        if event.button == 1 and event.inaxes == Graphax and gGraphline_Click == 1:
+        if event.button == 1 and event.inaxes == Graphax and giGraphline_Click == 1:
+
             liXShift = round(event.xdata)
-            Graphline.set_xdata(liXShift)
+            print("Mouse Release X:", liXShift )
+            gaGraphline.set_xdata(liXShift)
 
-            for lsAxis, lData in gdicTableData.items():
-                NewTableData[lsAxis] = {}               # Create new dictionary
-                for lx_Position, lsWidth in lData.items():   
-
-                    if gdicTableData[lsAxis].get(lx_Position) is not None:
-                        NewTableData[lsAxis][liXShift] = gdicTableData[lsAxis][lx_Position]
-
-            gdicTableData = NewTableData.copy()         # 複製新移動位置
-            self.Graph_TableDisplay()
+            #for lsAxis, lData in gdicTableData.items():
+            #    NewTableData[lsAxis] = {}               # Create new dictionary
+            #    for lx_Position, lsWidth in lData.items():   
+            #        if gdicTableData[lsAxis].get(lx_Position) is not None:
+            #            NewTableData[lsAxis][liXShift] = gdicTableData[lsAxis][lx_Position]
+            #gdicTableData = NewTableData.copy()         # 複製新移動位置
+            #self.Graph_TableDisplay()
+            Graphfig.canvas.draw()      # Update display
         
-        gGraphline_Click = 0
+        giGraphline_Click = 0
 
     # ----------------------------------------------------------------------
     # Description:  Graph_mouse_move 滑鼠移動事件處理函數
@@ -732,16 +735,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_mouse_move(self, event):
 
-        global  GraphlineLable
-        global  gGraphline_Click
+        global  gaGraphlineLable
+        global  giGraphline_Click
 
-        if event.button == 1 and event.inaxes == Graphax and gGraphline_Click == 1:
-            Graphline.set_xdata(event.xdata)           
+        if event.button == 1 and event.inaxes == Graphax and giGraphline_Click == 1:
+            gaGraphline.set_xdata(event.xdata)           
             x_position = round(event.xdata)
 
-            GraphlineLable.set_text(str("  "))      # Clear original
-            GraphlineLable.set_position((x_position, GraphLableYPos))   # Set display position
-            GraphlineLable.set_text(str(x_position))                    # Set display value
+            gaGraphlineLable.set_text(str("  "))      # Clear original
+            gaGraphlineLable.set_position((x_position, GraphLableYPos))   # Set display position
+            gaGraphlineLable.set_text(str(x_position))                    # Set display value
             Graphfig.canvas.draw()
                    
 
@@ -756,6 +759,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         lxlimMax = 0
         global  gdicGraphText
         global  gdicGraphBarh
+        global  giGraphline_Click, giGraphBarh_Click 
 
         for lsAxis, lData in gdicTableData.items():
             lx_Position = 0         # Set initiall value
@@ -781,8 +785,16 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 if gdicTableData[lsAxis][lx_Position] is not None:
                     coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
                     gdicGraphText[lsAxis][lx_Position] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value
-                    gdicGraphBarh[lsAxis][lx_Position] = Graphax.broken_barh(coord_list, (liYDisplay, 8), 
+
+                    # Mouse click check
+                    if  (giGraphBarh_Click == 1) and (  liYDisplay <= giGraphCurY <= (liYDisplay + 10)) and ( lx_Position < giGraphCurX <= (lx_Position + int(lsWidth))):
+                        gdicGraphBarh[lsAxis][lx_Position] = Graphax.broken_barh(coord_list, (liYDisplay, 8), 
+                                                            facecolors = "Red") # Bar 顯示
+                    else: 
+                        gdicGraphBarh[lsAxis][lx_Position] = Graphax.broken_barh(coord_list, (liYDisplay, 8), 
                                                             facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Color")) # Bar 顯示
+                    
+                    coord_list.clear()                                                  # Clear Display Array
                     # Find out Max X Lim display
                     lxlimData = lx_Position + int(lsWidth)
                     if lxlimData > lxlimMax :
@@ -808,33 +820,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         #Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
         #Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
 
-
-    # ----------------------------------------------------------------------
-    # Description:  Init UI 
-    # Function:     initUi
-    # Input :       
-    # Return:       None
-    # ----------------------------------------------------------------------
-    def Graph_LineMove(self):
-
-        global  Graph_line_1, Graph_line_2, Graph1_Label
-
-        Graph_line_2.setValue(Graph_line_1.value()+10)
-        Graph_line_1.setCursor(QCursor(Qt.CursorShape.PointingHandCursor)) # ClosedHandCursor
-
-        #if Graph1_Label is not None:   # 如果已經存在InfLineLabel對象，則從圖形中刪除它
-        #    self.plotwidget.removeItem(Graph1_Label)            
-        sDisplayVal = Graph_line_1.value()
-        #Graph1_Label.setPos(QtCore.QPointF(Graph_line_1.pos().x(),10.8))     # 在座標周 Y = 10 位置顯示
-        Graph1_Label.setText(DataFormat.Digs2Dot0_Format.format(sDisplayVal))
-
-        #Graph1_Label = pg.InfLineLabel(Graph_line_1, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal)) #, anchor=(-1, 1))             # 顯示數值       
-        font = QtGui.QFont("Arial", 10)  # 創建一個 Arial 字型，大小為 10
-        Graph1_Label.setFont(font)
-        #self.plotwidget.addItem(Graph1_Label)  
-
-        #sDisplayVal2 = Graph_line_2.value()
-        #Graph2_Label = pg.InfLineLabel(Graph_line_2, movable = False, position = 0.1, text = DataFormat.Digs2Dot0_Format.format(sDisplayVal2)) #, anchor=(-1, 1))             # 顯示數值
 
     # ----------------------------------------------------------------------
     # Description:  fTimeLine_Right
