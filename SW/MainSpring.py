@@ -161,6 +161,7 @@ giGraphline_Click   = 0
 giGraphBarh_Click   = 0
 giGraphCurX         = 0
 giGraphCurY         = 0
+giGraphAxisX_Max    = 10
 
 # ----------------------------------------------------------------------
 # Main Window
@@ -475,7 +476,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 giEditTableCurRow -= 1
                 giEditTableLastCol = giEditTableCurCol
 
-
        # Key Down
         elif sKeyDirection == "Down":
             giEditTableLastRow = giEditTableCurRow
@@ -638,6 +638,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         Graphfig.canvas.mpl_connect('button_press_event', self.Graph_mouse_click)
         Graphfig.canvas.mpl_connect('motion_notify_event',self.Graph_mouse_move)
         Graphfig.canvas.mpl_connect('button_release_event', self.Graph_mouse_release)
+        Graphfig.canvas.mpl_connect("scroll_event", self.Graph_mouse_scroll)
 
         # tableWidget event handling
         self.tableWidget.cellClicked.connect(self.TableWidget_clicked)  
@@ -645,19 +646,33 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     # Event Functions 
     # ----------------------------------------------------------------------
-    # Description:  TableWidget_clicked
-    # Function:     TableWidget clicked Row/Col check
+    # Description:  Graph_mouse_scroll
+    # Function:     Mouse scroll down 滑鼠按鈕滾輪
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
-    def TableWidget_clicked(self, row, column):
+    def Graph_mouse_scroll(self,event):
 
-        global giEditTableCurCol, giEditTableCurRow
+        global  giGraphAxisX_Max
 
-        # Update column, row
-        giEditTableCurCol = column
-        giEditTableCurRow = row
-        print("Clicked cell:", row, "Colume:", column)
+        if event.button == 'up':  # 滚轮向上滚动
+            giGraphAxisX_Max = giGraphAxisX_Max * 2
+            plt.xlim(0,giGraphAxisX_Max)     # Set Y display range
+            plt.xticks(np.arange(0, giGraphAxisX_Max, int(giGraphAxisX_Max/10)))       # 设置x轴的刻度值为10的倍数
+            Graphfig.canvas.draw()
+            print("Scroll up!")
+            # 执行向上滚动的操作
+
+        elif event.button == 'down':  # 滚轮向下滚动
+            giGraphAxisX_Max = giGraphAxisX_Max /2
+            if giGraphAxisX_Max < 10:
+                giGraphAxisX_Max = 10
+
+            plt.xlim(0,giGraphAxisX_Max)     # Set Y display range
+            plt.xticks(np.arange(0, giGraphAxisX_Max, int(giGraphAxisX_Max/10)))       # 设置x轴的刻度值为10的倍数
+            Graphfig.canvas.draw()
+            print("Scroll down!")
+            # 执行向下滚动的操作
 
     # ----------------------------------------------------------------------
     # Description:  TableWidget_clicked
@@ -669,7 +684,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         global  giGraphline_Click,  giGraphBarh_Click
         global  giGraphCurX, giGraphCurY
-
+             
+        # 鼠标左键
         if event.button == 1 and event.inaxes == Graphax and event.ydata is not None:
             lGraphX = gaGraphline.get_xdata()    
 
@@ -696,6 +712,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     print("Event X:", giGraphCurX , "Event Y:", giGraphCurY)
                 else:
                     print("No Barh press")
+
+        elif event.button == 3:  # 鼠标右键
+            print("Right button clicked!")
 
     # ----------------------------------------------------------------------
     # Description:  Graph_mouse_release 滑鼠Button 放開事件處理函數
@@ -747,6 +766,21 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             gaGraphlineLable.set_text(str(x_position))                    # Set display value
             Graphfig.canvas.draw()
                    
+    # ----------------------------------------------------------------------
+    # Description:  TableWidget_clicked
+    # Function:     TableWidget clicked Row/Col check
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def TableWidget_clicked(self, row, column):
+
+        global giEditTableCurCol, giEditTableCurRow
+
+        # Update column, row
+        giEditTableCurCol = column
+        giEditTableCurRow = row
+        print("Clicked cell:", row, "Colume:", column)
+
 
     # ----------------------------------------------------------------------
     # Description:  Graph_TableDisplay
@@ -760,6 +794,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  gdicGraphText
         global  gdicGraphBarh
         global  giGraphline_Click, giGraphBarh_Click 
+        global  giGraphAxisX_Max
 
         for lsAxis, lData in gdicTableData.items():
             lx_Position = 0         # Set initiall value
@@ -802,8 +837,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if lxlimMax < 10:       lxlimMax = 10       # <10 resize
             
+        giGraphAxisX_Max = lxlimMax
         plt.xlim(0,lxlimMax)     # Set Y display range
-        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
+        plt.xticks(np.arange(0, giGraphAxisX_Max, int(giGraphAxisX_Max/10)))       # 设置x轴的刻度值为10的倍数
         Graphfig.canvas.draw()
 
     # ----------------------------------------------------------------------
@@ -855,9 +891,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         globals()[gaGraphBarh].remove()
         globals()[gaGraphBarh] = None
 
-
         gaGraphBarh = "Graph_"+str("X4")
-
         globals()[gaGraphBarh].remove()
         globals()[gaGraphBarh] = None
 
