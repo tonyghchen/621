@@ -156,6 +156,8 @@ Graphfig, Graphax   = plt.subplots()
 gaGraphline         = Graphax.axvline(GraphLableXPos, color='r', linestyle='-', linewidth=1)
 gaGraphline_2       = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
 gaGraphlineLable    = Graphax.text(GraphLableXPos , GraphLableYPos, GraphLableXPos , ha='left', va='top', color='r')
+giGraphSpanSize     = 10
+gaGraphSpan         = [None] * giGraphSpanSize
 
 giGraphline_Click   = 0
 giGraphBarh_Click   = 0
@@ -601,9 +603,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget.horizontalHeader().setVisible(True)                    # Table Widge initialize
         self.tableWidget_VHeader.verticalHeader().setVisible(True)
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
-
-#        self.Graph_DisplayUpdate()
-        
+       
         # Windows Key interrupt initialize
         self.Init_Keyinterrupt()
 
@@ -627,6 +627,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.graphicsView.setScene(scene)  # 创建一个 QGraphicsView 对象并设置场景
         self.graphicsView.setAlignment(Qt.AlignLeft | Qt.AlignTop)
 
+        self.Graph_TableDisplay()
+
         # 自动缩放场景以适应视图的大小
         #self.graphicsView.fitInView(scene.sceneRect(), Qt.IgnoreAspectRatio)
 
@@ -642,7 +644,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # tableWidget event handling
         self.tableWidget.cellClicked.connect(self.TableWidget_clicked)  
-
+        
     # ----------------------------------------------------------------------
     # Event Functions 
     # ----------------------------------------------------------------------
@@ -657,8 +659,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if event.button == 'up':  # 滚轮向上滚动
             giGraphAxisX_Max = giGraphAxisX_Max * 2
-            plt.xlim(0,giGraphAxisX_Max)     # Set Y display range
-            plt.xticks(np.arange(0, giGraphAxisX_Max, int(giGraphAxisX_Max/10)))       # 设置x轴的刻度值为10的倍数
+            self.Graph_AxisDisplay(giGraphAxisX_Max)
             Graphfig.canvas.draw()
             print("Scroll up!")
             # 执行向上滚动的操作
@@ -668,8 +669,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             if giGraphAxisX_Max < 10:
                 giGraphAxisX_Max = 10
 
-            plt.xlim(0,giGraphAxisX_Max)     # Set Y display range
-            plt.xticks(np.arange(0, giGraphAxisX_Max, int(giGraphAxisX_Max/10)))       # 设置x轴的刻度值为10的倍数
+            self.Graph_AxisDisplay(giGraphAxisX_Max)
             Graphfig.canvas.draw()
             print("Scroll down!")
             # 执行向下滚动的操作
@@ -691,7 +691,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
             if ( lGraphX[0] == round(event.xdata)) and (event.ydata > EditTable.ArrEDIT_TableList["X1"].get("Location_Y")+5):
                 giGraphline_Click = 1
-            else:
+            else: 
                 giGraphline_Click = 0
 
                 # Check mouse click x, y position
@@ -783,8 +783,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
 
     # ----------------------------------------------------------------------
-    # Description:  Graph_TableDisplay
-    # Function:     Bar 數值的顯示
+    # Description:  Graphen Barh and Text 數值的顯示
+    # Function:     Graph_TableDisplay
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
@@ -794,7 +794,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  gdicGraphText
         global  gdicGraphBarh
         global  giGraphline_Click, giGraphBarh_Click 
-        global  giGraphAxisX_Max
 
         for lsAxis, lData in gdicTableData.items():
             lx_Position = 0         # Set initiall value
@@ -819,16 +818,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 # Display Setting
                 if gdicTableData[lsAxis][lx_Position] is not None:
                     coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
-                    gdicGraphText[lsAxis][lx_Position] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value
+                    gdicGraphText[lsAxis][lx_Position] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center',color="Yellow") # Disply Barh width value
 
                     # Mouse click check
                     if  (giGraphBarh_Click == 1) and (  liYDisplay <= giGraphCurY <= (liYDisplay + 10)) and ( lx_Position < giGraphCurX <= (lx_Position + int(lsWidth))):
                         gdicGraphBarh[lsAxis][lx_Position] = Graphax.broken_barh(coord_list, (liYDisplay, 8), 
-                                                            facecolors = "Red") # Bar 顯示
+                                                            facecolors = "Red") # Bar 顯示                  
+                        # 設定 Barh 框顏色
+                        gdicGraphBarh[lsAxis][lx_Position].set_edgecolor('white')
                     else: 
                         gdicGraphBarh[lsAxis][lx_Position] = Graphax.broken_barh(coord_list, (liYDisplay, 8), 
-                                                            facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Color")) # Bar 顯示
-                    
+                                                            facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Barh Color")) # Bar 顯示
+                        # 設定 Barh 框顏色
+                        gdicGraphBarh[lsAxis][lx_Position].set_edgecolor(EditTable.ArrEDIT_TableList[lsAxis].get("Border Color"))
+
                     coord_list.clear()                                                  # Clear Display Array
                     # Find out Max X Lim display
                     lxlimData = lx_Position + int(lsWidth)
@@ -836,41 +839,47 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                         lxlimMax = lxlimData
 
         if lxlimMax < 10:       lxlimMax = 10       # <10 resize
-            
-        giGraphAxisX_Max = lxlimMax
-        plt.xlim(0,lxlimMax)     # Set Y display range
-        plt.xticks(np.arange(0, giGraphAxisX_Max, int(giGraphAxisX_Max/10)))       # 设置x轴的刻度值为10的倍数
+        
+        self.Graph_AxisDisplay(lxlimMax)
         Graphfig.canvas.draw()
 
     # ----------------------------------------------------------------------
-    # Description:  Init UI 
-    # Function:     initUi
+    # Description:  Graph Axis X limit and Span
+    # Function:     Graph_AxisDisplay
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
-    def Graph_DisplayUpdate(self):
+    def Graph_AxisDisplay(self, lxlimMax):
 
-        print("Test")
+        global  giGraphAxisX_Max
+        global  gaGraphSpan
 
-        #Graph_X1= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (20, 9), facecolors =('tab:red'))
-        #Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
-        #Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
+        for i in range(0, giGraphSpanSize-1):
+            if gaGraphSpan[i] is not None:
+                gaGraphSpan[i].remove()
+                gaGraphSpan[i] = None
 
+        plt.xlim(0,lxlimMax)     # Set Y display range
+        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/giGraphSpanSize)))       # 设置x轴的刻度值为10的倍数
+
+        xticks = plt.xticks()[0]
+        color_interval = 'lightgray'  # 區間顏色
+
+        for i in range(len(xticks) - 1):
+            if int(i%2) == 0:
+                gaGraphSpan[i] = plt.axvspan(xticks[i], xticks[i+1], facecolor= color_interval, alpha=0.2)            
+
+        giGraphAxisX_Max = lxlimMax
 
     # ----------------------------------------------------------------------
-    # Description:  fTimeLine_Right
-    # Function:     Initail Various Table Data
+    # Description:  F5 Click Event
+    # Function:     f5RowClick
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
     def f5RowClick(self):
 
         #Graph_X1.remove()     # 清除特定的绘图范围
-
-#        xDisplay = 200
-#        plt.xlim(0,xDisplay)     # Set display range
-#        plt.xticks(np.arange(0, xDisplay, int(xDisplay/10)))       # 设置x轴的刻度值为10的倍数
-
 
         # 清除Y軸範圍在10到50的broken_barh
         for collection in plt.gca().collections:
@@ -882,18 +891,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
 
     def f4RowClick(self):
-
-        #if  Graph_X2 is not None:
-        #    Graph_X2.remove()     # 清除特定的绘图范围        
-
-        gaGraphBarh = "Graph_"+str("X2")
-
-        globals()[gaGraphBarh].remove()
-        globals()[gaGraphBarh] = None
-
-        gaGraphBarh = "Graph_"+str("X4")
-        globals()[gaGraphBarh].remove()
-        globals()[gaGraphBarh] = None
 
         Graphfig.canvas.draw()              # Refresh Display
 

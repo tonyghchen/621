@@ -39,14 +39,14 @@ def fEDIT_GetAsixCode(GCode):
 #               Table Data
 # --------------------------------------------------------
 ArrEDIT_TableList= {
-    "X1"       :{ "Location"  : 0,  "Location_Y":  185,  "Color" :   "blue"   },
-    "X2"       :{ "Location"  : 1,  "Location_Y":  175,  "Color" :   "#FFcc00"},
-    "X3"       :{ "Location"  : 2,  "Location_Y":  165,  "Color" :   "blue"   },
-    "X4"       :{ "Location"  : 3,  "Location_Y":  155,  "Color" :   "#FFcc00"  },
-    "X5"       :{ "Location"  : 4,  "Location_Y":  145,  "Color" :   "blue"   },
-    "X6"       :{ "Location"  : 5,  "Location_Y":  135,  "Color" :   "#FFcc00"  },
-    "X7"       :{ "Location"  : 6,  "Location_Y":  125,  "Color" :   "blue"   },
-    "X8"       :{ "Location"  : 7,  "Location_Y":  115,  "Color" :   "#FFcc00"  },
+    "X1"       :{ "Location"  : 0,  "Location_Y":  185,  "Barh Color" :   "#000080" ,"Border Color" :   "blue" },
+    "X2"       :{ "Location"  : 1,  "Location_Y":  175,  "Barh Color" :   "#ccaa00" ,"Border Color" :   "blue" },
+    "X3"       :{ "Location"  : 2,  "Location_Y":  165,  "Barh Color" :   "#000080" ,"Border Color" :   "blue" },
+    "X4"       :{ "Location"  : 3,  "Location_Y":  155,  "Barh Color" :   "#ccaa00" ,"Border Color" :   "blue" },
+    "X5"       :{ "Location"  : 4,  "Location_Y":  145,  "Barh Color" :   "#000080" ,"Border Color" :   "blue" },
+    "X6"       :{ "Location"  : 5,  "Location_Y":  135,  "Barh Color" :   "#ccaa00" ,"Border Color" :   "blue" },
+    "X7"       :{ "Location"  : 6,  "Location_Y":  125,  "Barh Color" :   "#000080" ,"Border Color" :   "blue" },
+    "X8"       :{ "Location"  : 7,  "Location_Y":  115,  "Barh Color" :   "#ccaa00" ,"Border Color" :   "blue" },
     }
 
 
