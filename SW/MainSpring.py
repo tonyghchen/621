@@ -68,11 +68,10 @@ import os
 import Language as Language
 import EditTable as EditTable
 import DataFormat as DataFormat
-import ast
-
 import matplotlib.pyplot as plt
 import pyqtgraph as pg
 import numpy as np
+import math
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QSlider, QLabel, QGraphicsView
 from PyQt5.QtGui  import QCursor, QColor, QPainter,QPixmap
@@ -156,20 +155,20 @@ Graphfig, Graphax   = plt.subplots()
 gaGraphline         = Graphax.axvline(GraphLableXPos, color='r', linestyle='-', linewidth=1)
 gaGraphline_2       = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
 gaGraphlineLable    = Graphax.text(GraphLableXPos , GraphLableYPos, GraphLableXPos , ha='left', va='top', color='r')
-giGraphSpanSize     = 10
-gaGraphSpan         = [None] * giGraphSpanSize
+defGraphSpanSize    = 10
+gaGraphSpan         = [None] * defGraphSpanSize
 
 giGraphline_Click   = 0
 giGraphBarh_Click   = 0
 giGraphCurX         = 0
 giGraphCurY         = 0
 giGraphAxisX_Max    = 10
+defxlimMax          = 100000
 
 # ----------------------------------------------------------------------
 # Main Window
 # ----------------------------------------------------------------------
 class MyMainWindow(QMainWindow, Ui_MainWindow):
-
     
     #-------------------------------------------------------------
     # Initialize Windows Key interrupt
@@ -425,26 +424,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
                 gdicTableData[lAxisName][giEditTableCurCol]= str(lsAxisData)
 
-
             self.Graph_TableDisplay()
-
-            # if gdicTableData[giEditTableCurCol].get(lAxisName) is None:
-            #     gdicTableData[giEditTableCurCol][lAxisName] = None
-
-            # lsAxisData = gdicTableData[giEditTableCurCol].get(lAxisName)
-
-            # if lsAxisData is None:
-            #     gdicTableData[giEditTableCurCol][lAxisName] = iKeyNumber 
-            # else:
-            #     if len(lsAxisData) >= 4 :
-            #         lsAxisData = lsAxisData[1:]
-
-            #     lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
-            #     gdicTableData[giEditTableCurCol][lAxisName] = str(lsAxisData)
-        
             self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[lAxisName][giEditTableCurCol])))  # Col 1 display reset
 
-            #print("Data:", gdicTableData[giEditTableCurCol][lAxisName])
         print("Data:", gdicTableData)
             
     # ----------------------------------------------------------------------
@@ -530,8 +512,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 #        self.fEdit_SelectedColorUpdate()       
 
     # ----------------------------------------------------------------------
-    # Description:  Edit
-    # Function:     Initail Various Table Data
+    # Description:  Table Data Initialize
+    # Function:     fEdit_InitTableData
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
@@ -548,7 +530,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         gdicTableTemp["Col"] = 0
 
     # ----------------------------------------------------------------------
-    # Description:  Init UI 
+    # Description:  UI initialize
     # Function:     initUi
     # Input :       
     # Return:       None
@@ -609,32 +591,23 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         # 隐藏 matplotlib 工具条
         # https://developer.aliyun.com/article/396490
-        Graphax.get_yaxis().set_visible(False)           # Y 座標隱藏
-        Graphax.xaxis.set_ticks_position('top')          # X 座標顯示在上邊
+        Graphax.get_yaxis().set_visible(False)          # Y 座標隱藏
+        Graphax.xaxis.set_ticks_position('top')         # X 座標顯示在上邊
+        Graphax.tick_params(axis='x', labelsize= 8.5)     # 軸字型大小設定
 
         #ax.tick_params(axis='x', pad=-10)
         Graphax.grid(True, color='white', linestyle='--', linewidth=0.5)   # 顯示 Vertical line
-        #Graphax.axvspan(2, 18, facecolor='gray', alpha=0.3)    
         # 添加文字標籤
         plt.ylim(0,200)     # Set Y display range
-        plt.xlim(0,10)     # Set Y display range
 
-        canvas = FigureCanvas(Graphfig)  # 创建一个 FigureCanvas 对象
+        canvas  = FigureCanvas(Graphfig)                # 创建一个 FigureCanvas 对象
         canvas.setGeometry(self.graphicsView.rect())
-        scene = QGraphicsScene()  # 创建一个 QGraphicsScene 对象并设置大小
+        scene   = QGraphicsScene()                      # 创建一个 QGraphicsScene 对象并设置大小
         scene.setSceneRect(60, 45, 600, 600)
-        scene.addWidget(canvas)  # 将 FigureCanvas 添加到 QGraphicsScene 中
-        self.graphicsView.setScene(scene)  # 创建一个 QGraphicsView 对象并设置场景
+        scene.addWidget(canvas)                         # 将 FigureCanvas 添加到 QGraphicsScene 中
+        self.graphicsView.setScene(scene)               # 创建一个 QGraphicsView 对象并设置场景
         self.graphicsView.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-
         self.Graph_TableDisplay()
-
-        # 自动缩放场景以适应视图的大小
-        #self.graphicsView.fitInView(scene.sceneRect(), Qt.IgnoreAspectRatio)
-
-        # 设置 canvas 在 graphicsView 中的位置和大小
-        #canvas_rect = QRect(-80, 0, 600, 500)
-        #canvas.setGeometry(canvas_rect)
 
         # Graph event handling
         Graphfig.canvas.mpl_connect('button_press_event', self.Graph_mouse_click)
@@ -658,14 +631,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  giGraphAxisX_Max
 
         if event.button == 'up':  # 滚轮向上滚动
-            giGraphAxisX_Max = giGraphAxisX_Max * 2
+            giGraphAxisX_Max = giGraphAxisX_Max * 10
             self.Graph_AxisDisplay(giGraphAxisX_Max)
             Graphfig.canvas.draw()
             print("Scroll up!")
             # 执行向上滚动的操作
 
         elif event.button == 'down':  # 滚轮向下滚动
-            giGraphAxisX_Max = giGraphAxisX_Max /2
+            giGraphAxisX_Max = giGraphAxisX_Max /10
             if giGraphAxisX_Max < 10:
                 giGraphAxisX_Max = 10
 
@@ -790,10 +763,13 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def Graph_TableDisplay(self):
 
-        lxlimMax = 0
         global  gdicGraphText
         global  gdicGraphBarh
         global  giGraphline_Click, giGraphBarh_Click 
+
+        #lxlimMax = giGraphAxisX_Max
+
+        lxlimMax = 0
 
         for lsAxis, lData in gdicTableData.items():
             lx_Position = 0         # Set initiall value
@@ -838,7 +814,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     if lxlimData > lxlimMax :
                         lxlimMax = lxlimData
 
-        if lxlimMax < 10:       lxlimMax = 10       # <10 resize
+        #if lxlimMax < giGraphAxisX_Max:       lxlimMax = giGraphAxisX_Max       # <10 resize
         
         self.Graph_AxisDisplay(lxlimMax)
         Graphfig.canvas.draw()
@@ -854,16 +830,32 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  giGraphAxisX_Max
         global  gaGraphSpan
 
-        for i in range(0, giGraphSpanSize-1):
+        if lxlimMax <10:        lxlimMax = 10
+
+        # Delete last Span color
+        for i in range(0, defGraphSpanSize-1):
             if gaGraphSpan[i] is not None:
                 gaGraphSpan[i].remove()
                 gaGraphSpan[i] = None
 
+        if  lxlimMax >= defxlimMax :
+            lxlimMax = defxlimMax
+
+        # 計算是否是 10 的指數
+        log_base_10 = math.log10(lxlimMax)
+        # 檢查對數是否為整數
+        if( log_base_10.is_integer() == False):
+            exponent = math.ceil(math.log10(lxlimMax))
+            lxlimMax = int(math.pow(10, exponent))
+     
         plt.xlim(0,lxlimMax)     # Set Y display range
-        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/giGraphSpanSize)))       # 设置x轴的刻度值为10的倍数
+        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/defGraphSpanSize)))       # 设置x轴的刻度值为10的倍数
 
         xticks = plt.xticks()[0]
         color_interval = 'lightgray'  # 區間顏色
+
+        # Add new Span color
+        gaGraphSpan = [None] * (len(xticks) - 1)
 
         for i in range(len(xticks) - 1):
             if int(i%2) == 0:
