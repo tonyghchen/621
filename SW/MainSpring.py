@@ -73,9 +73,10 @@ import pyqtgraph as pg
 import numpy as np
 import math
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QSlider, QLabel, QGraphicsView
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QPushButton, QGraphicsView,QGraphicsRectItem
 from PyQt5.QtGui  import QCursor, QColor, QPainter,QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt,QRectF, QPropertyAnimation
+
 #from analoggaugewidget import *
 from Ui_MainForm import *
 
@@ -157,6 +158,7 @@ gaGraphline_2       = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
 gaGraphlineLable    = Graphax.text(GraphLableXPos , GraphLableYPos, GraphLableXPos , ha='left', va='top', color='r')
 defGraphSpanSize    = 10
 gaGraphSpan         = [None] * defGraphSpanSize
+gaGraphSpanText     = [None] * defGraphSpanSize
 
 giGraphline_Click   = 0
 giGraphBarh_Click   = 0
@@ -589,16 +591,12 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # Windows Key interrupt initialize
         self.Init_Keyinterrupt()
 
-        # 隐藏 matplotlib 工具条
-        # https://developer.aliyun.com/article/396490
+        # plt Graph initialize 
         Graphax.get_yaxis().set_visible(False)          # Y 座標隱藏
         Graphax.xaxis.set_ticks_position('top')         # X 座標顯示在上邊
         Graphax.tick_params(axis='x', labelsize= 8.5)     # 軸字型大小設定
-
-        #ax.tick_params(axis='x', pad=-10)
         Graphax.grid(True, color='white', linestyle='--', linewidth=0.5)   # 顯示 Vertical line
-        # 添加文字標籤
-        plt.ylim(0,200)     # Set Y display range
+        plt.ylim(0,200)                                 # Set Y axix range
 
         canvas  = FigureCanvas(Graphfig)                # 创建一个 FigureCanvas 对象
         canvas.setGeometry(self.graphicsView.rect())
@@ -606,6 +604,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         scene.setSceneRect(60, 45, 600, 600)
         scene.addWidget(canvas)                         # 将 FigureCanvas 添加到 QGraphicsScene 中
         self.graphicsView.setScene(scene)               # 创建一个 QGraphicsView 对象并设置场景
+        
+        #self.parentWidget().resize(800, 800)            # 調整視窗大小
+        #self.graphicsView.parent().resize(800, 800)
         self.graphicsView.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         self.Graph_TableDisplay()
 
@@ -618,6 +619,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         # tableWidget event handling
         self.tableWidget.cellClicked.connect(self.TableWidget_clicked)  
         
+        # Switch Button
+
+
     # ----------------------------------------------------------------------
     # Event Functions 
     # ----------------------------------------------------------------------
@@ -754,7 +758,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         giEditTableCurRow = row
         print("Clicked cell:", row, "Colume:", column)
 
-
     # ----------------------------------------------------------------------
     # Description:  Graphen Barh and Text 數值的顯示
     # Function:     Graph_TableDisplay
@@ -829,15 +832,20 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         global  giGraphAxisX_Max
         global  gaGraphSpan
+        global  gaGraphSpanText
 
         if lxlimMax <10:        lxlimMax = 10
 
         # Delete last Span color
-        for i in range(0, defGraphSpanSize-1):
+        for i in range(len(gaGraphSpan)-1):
             if gaGraphSpan[i] is not None:
                 gaGraphSpan[i].remove()
                 gaGraphSpan[i] = None
-
+            # Span Text refresh
+            if gaGraphSpanText[i] is not None:
+                gaGraphSpanText[i].remove()
+                gaGraphSpanText[i] = None
+           
         if  lxlimMax >= defxlimMax :
             lxlimMax = defxlimMax
 
@@ -848,18 +856,27 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             exponent = math.ceil(math.log10(lxlimMax))
             lxlimMax = int(math.pow(10, exponent))
      
-        plt.xlim(0,lxlimMax)     # Set Y display range
-        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/defGraphSpanSize)))       # 设置x轴的刻度值为10的倍数
-
+        plt.xlim(0,lxlimMax)                # Set Y display range
+        # lxlimMax+1 是顯示軸最後數值
+        plt.xticks(np.arange(0, lxlimMax+1, int(lxlimMax/defGraphSpanSize)))       # 设置x轴的刻度值为10的倍数
         xticks = plt.xticks()[0]
         color_interval = 'lightgray'  # 區間顏色
 
         # Add new Span color
-        gaGraphSpan = [None] * (len(xticks) - 1)
+        gaGraphSpan = [None] * (len(xticks))
 
-        for i in range(len(xticks) - 1):
+        for i in range(len(xticks)-1):
+            start = int(xticks[i])
+            end = int(xticks[i + 1])
+            range_label = f'{start}-{end}'  # 範圍文字
+            x_pos = (start + end) / 2  # 標籤的 x 位置
+            y_pos = EditTable.ArrEDIT_TableList["X1"].get("Location_Y") + 10  # 標籤的 y 位置（可以自行調整）
+
             if int(i%2) == 0:
-                gaGraphSpan[i] = plt.axvspan(xticks[i], xticks[i+1], facecolor= color_interval, alpha=0.2)            
+                gaGraphSpan[i] = plt.axvspan(start, end, facecolor= color_interval, alpha=0.2)            
+
+            #plt.text(x_pos, y_pos, "            ", ha='center', va='center', fontsize=8)  # 添加文字標籤
+            gaGraphSpanText[i] = plt.text(x_pos, y_pos, range_label, ha='center', va='center', fontsize=6)  # 添加文字標籤
 
         giGraphAxisX_Max = lxlimMax
 
@@ -879,13 +896,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             if (heights >= 10).any() and (heights <= 50).any():
                 collection.remove()
         
-        plt.draw()          # Refresh Display
-
-
     def f4RowClick(self):
 
-        Graphfig.canvas.draw()              # Refresh Display
-
+        plt.draw()          # Refresh Display
 
         #xDisplay = 1000
         #plt.xlim(0,xDisplay)     # Set display range
