@@ -1,0 +1,19 @@
+class MyClass(object):
+    def __init__(self):
+        self._param=None
+    def getParam(self):
+        print("getParam:",self._param)
+        return self._param
+    def setParam(self,value):
+        print("setParam:",self._param)
+        self._param=value
+    def delParam(self):
+       print("delParam:",self._param)
+       del self._param
+
+    param=property(getParam,setParam,delParam)
+if __name__=="__main__":
+    cls=MyClass()
+    cls.param=10
+    print("current param :",cls.param)
+    del cls.param

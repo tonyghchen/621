@@ -62,12 +62,18 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     # ----------------------------------------------------------------------
     def f5RowClick(self):
 
-        self.label_F5.text= 'F5'
+        button='F5'
+        self.label_F5.setText(button)
+        byte_button=bytes(button,'utf-8')
+        ser.write(byte_button)
         print("Label F5")
 
     def f4RowClick(self):
 
-        self.label_F4.setText('F4')
+        button='F4'
+        self.label_F4.setText(button)
+        byte_button=bytes(button,'utf-8')
+        ser.write(byte_button)
         print("Label F4")
 
 
