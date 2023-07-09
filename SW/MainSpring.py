@@ -68,15 +68,15 @@ import os
 import Language as Language
 import EditTable as EditTable
 import DataFormat as DataFormat
-import ast
-
 import matplotlib.pyplot as plt
 import pyqtgraph as pg
 import numpy as np
+import math
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QSlider, QLabel, QGraphicsView
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidgetItem, QPushButton, QGraphicsView,QGraphicsRectItem
 from PyQt5.QtGui  import QCursor, QColor, QPainter,QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt,QRectF, QPropertyAnimation
+
 #from analoggaugewidget import *
 from Ui_MainForm import *
 
@@ -156,17 +156,21 @@ Graphfig, Graphax   = plt.subplots()
 gaGraphline         = Graphax.axvline(GraphLableXPos, color='r', linestyle='-', linewidth=1)
 gaGraphline_2       = Graphax.axvline(10, color='b', linestyle='-', linewidth=1)
 gaGraphlineLable    = Graphax.text(GraphLableXPos , GraphLableYPos, GraphLableXPos , ha='left', va='top', color='r')
+defGraphSpanSize    = 10
+gaGraphSpan         = [None] * defGraphSpanSize
+gaGraphSpanText     = [None] * defGraphSpanSize
 
 giGraphline_Click   = 0
 giGraphBarh_Click   = 0
 giGraphCurX         = 0
 giGraphCurY         = 0
+giGraphAxisX_Max    = 10
+defxlimMax          = 100000
 
 # ----------------------------------------------------------------------
 # Main Window
 # ----------------------------------------------------------------------
 class MyMainWindow(QMainWindow, Ui_MainWindow):
-
     
     #-------------------------------------------------------------
     # Initialize Windows Key interrupt
@@ -422,26 +426,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
                 gdicTableData[lAxisName][giEditTableCurCol]= str(lsAxisData)
 
-
             self.Graph_TableDisplay()
-
-            # if gdicTableData[giEditTableCurCol].get(lAxisName) is None:
-            #     gdicTableData[giEditTableCurCol][lAxisName] = None
-
-            # lsAxisData = gdicTableData[giEditTableCurCol].get(lAxisName)
-
-            # if lsAxisData is None:
-            #     gdicTableData[giEditTableCurCol][lAxisName] = iKeyNumber 
-            # else:
-            #     if len(lsAxisData) >= 4 :
-            #         lsAxisData = lsAxisData[1:]
-
-            #     lsAxisData  = int(lsAxisData) * 10 + int(iKeyNumber)              
-            #     gdicTableData[giEditTableCurCol][lAxisName] = str(lsAxisData)
-        
             self.tableWidget.setItem(giEditTableCurRow, giEditTableCurCol, QTableWidgetItem(str(gdicTableData[lAxisName][giEditTableCurCol])))  # Col 1 display reset
 
-            #print("Data:", gdicTableData[giEditTableCurCol][lAxisName])
         print("Data:", gdicTableData)
             
     # ----------------------------------------------------------------------
@@ -474,7 +461,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             else:
                 giEditTableCurRow -= 1
                 giEditTableLastCol = giEditTableCurCol
-
 
        # Key Down
         elif sKeyDirection == "Down":
@@ -528,8 +514,8 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 #        self.fEdit_SelectedColorUpdate()       
 
     # ----------------------------------------------------------------------
-    # Description:  Edit
-    # Function:     Initail Various Table Data
+    # Description:  Table Data Initialize
+    # Function:     fEdit_InitTableData
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
@@ -546,7 +532,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         gdicTableTemp["Col"] = 0
 
     # ----------------------------------------------------------------------
-    # Description:  Init UI 
+    # Description:  UI initialize
     # Function:     initUi
     # Input :       
     # Return:       None
@@ -601,63 +587,69 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         self.tableWidget.horizontalHeader().setVisible(True)                    # Table Widge initialize
         self.tableWidget_VHeader.verticalHeader().setVisible(True)
         self.tableWidget.setCurrentCell(giEditTableCurRow, giEditTableCurCol)   # Set default Cell location
-
-#        self.Graph_DisplayUpdate()
-        
+       
         # Windows Key interrupt initialize
         self.Init_Keyinterrupt()
 
-        # 隐藏 matplotlib 工具条
-        # https://developer.aliyun.com/article/396490
-        Graphax.get_yaxis().set_visible(False)           # Y 座標隱藏
-        Graphax.xaxis.set_ticks_position('top')          # X 座標顯示在上邊
-
-        #ax.tick_params(axis='x', pad=-10)
+        # plt Graph initialize 
+        Graphax.get_yaxis().set_visible(False)          # Y 座標隱藏
+        Graphax.xaxis.set_ticks_position('top')         # X 座標顯示在上邊
+        Graphax.tick_params(axis='x', labelsize= 8.5)     # 軸字型大小設定
         Graphax.grid(True, color='white', linestyle='--', linewidth=0.5)   # 顯示 Vertical line
-        #Graphax.axvspan(2, 18, facecolor='gray', alpha=0.3)    
-        # 添加文字標籤
-        plt.ylim(0,200)     # Set Y display range
-        plt.xlim(0,10)     # Set Y display range
+        plt.ylim(0,200)                                 # Set Y axix range
 
-        canvas = FigureCanvas(Graphfig)  # 创建一个 FigureCanvas 对象
+        canvas  = FigureCanvas(Graphfig)                # 创建一个 FigureCanvas 对象
         canvas.setGeometry(self.graphicsView.rect())
-        scene = QGraphicsScene()  # 创建一个 QGraphicsScene 对象并设置大小
+        scene   = QGraphicsScene()                      # 创建一个 QGraphicsScene 对象并设置大小
         scene.setSceneRect(60, 45, 600, 600)
-        scene.addWidget(canvas)  # 将 FigureCanvas 添加到 QGraphicsScene 中
-        self.graphicsView.setScene(scene)  # 创建一个 QGraphicsView 对象并设置场景
+        scene.addWidget(canvas)                         # 将 FigureCanvas 添加到 QGraphicsScene 中
+        self.graphicsView.setScene(scene)               # 创建一个 QGraphicsView 对象并设置场景
+        
+        #self.parentWidget().resize(800, 800)            # 調整視窗大小
+        #self.graphicsView.parent().resize(800, 800)
         self.graphicsView.setAlignment(Qt.AlignLeft | Qt.AlignTop)
-
-        # 自动缩放场景以适应视图的大小
-        #self.graphicsView.fitInView(scene.sceneRect(), Qt.IgnoreAspectRatio)
-
-        # 设置 canvas 在 graphicsView 中的位置和大小
-        #canvas_rect = QRect(-80, 0, 600, 500)
-        #canvas.setGeometry(canvas_rect)
+        self.Graph_TableDisplay()
 
         # Graph event handling
         Graphfig.canvas.mpl_connect('button_press_event', self.Graph_mouse_click)
         Graphfig.canvas.mpl_connect('motion_notify_event',self.Graph_mouse_move)
         Graphfig.canvas.mpl_connect('button_release_event', self.Graph_mouse_release)
+        Graphfig.canvas.mpl_connect("scroll_event", self.Graph_mouse_scroll)
 
         # tableWidget event handling
         self.tableWidget.cellClicked.connect(self.TableWidget_clicked)  
+        
+        # Switch Button
+
 
     # ----------------------------------------------------------------------
     # Event Functions 
     # ----------------------------------------------------------------------
-    # Description:  TableWidget_clicked
-    # Function:     TableWidget clicked Row/Col check
+    # Description:  Graph_mouse_scroll
+    # Function:     Mouse scroll down 滑鼠按鈕滾輪
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
-    def TableWidget_clicked(self, row, column):
+    def Graph_mouse_scroll(self,event):
 
-        global giEditTableCurCol, giEditTableCurRow
+        global  giGraphAxisX_Max
 
-        # Update column, row
-        giEditTableCurCol = column
-        giEditTableCurRow = row
-        print("Clicked cell:", row, "Colume:", column)
+        if event.button == 'up':  # 滚轮向上滚动
+            giGraphAxisX_Max = giGraphAxisX_Max * 10
+            self.Graph_AxisDisplay(giGraphAxisX_Max)
+            Graphfig.canvas.draw()
+            print("Scroll up!")
+            # 执行向上滚动的操作
+
+        elif event.button == 'down':  # 滚轮向下滚动
+            giGraphAxisX_Max = giGraphAxisX_Max /10
+            if giGraphAxisX_Max < 10:
+                giGraphAxisX_Max = 10
+
+            self.Graph_AxisDisplay(giGraphAxisX_Max)
+            Graphfig.canvas.draw()
+            print("Scroll down!")
+            # 执行向下滚动的操作
 
     # ----------------------------------------------------------------------
     # Description:  TableWidget_clicked
@@ -669,13 +661,14 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         global  giGraphline_Click,  giGraphBarh_Click
         global  giGraphCurX, giGraphCurY
-
+             
+        # 鼠标左键
         if event.button == 1 and event.inaxes == Graphax and event.ydata is not None:
             lGraphX = gaGraphline.get_xdata()    
 
             if ( lGraphX[0] == round(event.xdata)) and (event.ydata > EditTable.ArrEDIT_TableList["X1"].get("Location_Y")+5):
                 giGraphline_Click = 1
-            else:
+            else: 
                 giGraphline_Click = 0
 
                 # Check mouse click x, y position
@@ -696,6 +689,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                     print("Event X:", giGraphCurX , "Event Y:", giGraphCurY)
                 else:
                     print("No Barh press")
+
+        elif event.button == 3:  # 鼠标右键
+            print("Right button clicked!")
 
     # ----------------------------------------------------------------------
     # Description:  Graph_mouse_release 滑鼠Button 放開事件處理函數
@@ -747,19 +743,36 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             gaGraphlineLable.set_text(str(x_position))                    # Set display value
             Graphfig.canvas.draw()
                    
+    # ----------------------------------------------------------------------
+    # Description:  TableWidget_clicked
+    # Function:     TableWidget clicked Row/Col check
+    # Input :       
+    # Return:       None
+    # ----------------------------------------------------------------------
+    def TableWidget_clicked(self, row, column):
+
+        global giEditTableCurCol, giEditTableCurRow
+
+        # Update column, row
+        giEditTableCurCol = column
+        giEditTableCurRow = row
+        print("Clicked cell:", row, "Colume:", column)
 
     # ----------------------------------------------------------------------
-    # Description:  Graph_TableDisplay
-    # Function:     Bar 數值的顯示
+    # Description:  Graphen Barh and Text 數值的顯示
+    # Function:     Graph_TableDisplay
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
     def Graph_TableDisplay(self):
 
-        lxlimMax = 0
         global  gdicGraphText
         global  gdicGraphBarh
         global  giGraphline_Click, giGraphBarh_Click 
+
+        #lxlimMax = giGraphAxisX_Max
+
+        lxlimMax = 0
 
         for lsAxis, lData in gdicTableData.items():
             lx_Position = 0         # Set initiall value
@@ -784,46 +797,92 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 # Display Setting
                 if gdicTableData[lsAxis][lx_Position] is not None:
                     coord_list.append((lx_Position, int(lsWidth)))                      # 轉換成座標
-                    gdicGraphText[lsAxis][lx_Position] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center') # Disply Barh width value
+                    gdicGraphText[lsAxis][lx_Position] = Graphax.text(lx_Position + int(lsWidth)/2, liYDisplay+4, int(lsWidth), ha='center', va='center',color="Yellow") # Disply Barh width value
 
                     # Mouse click check
                     if  (giGraphBarh_Click == 1) and (  liYDisplay <= giGraphCurY <= (liYDisplay + 10)) and ( lx_Position < giGraphCurX <= (lx_Position + int(lsWidth))):
                         gdicGraphBarh[lsAxis][lx_Position] = Graphax.broken_barh(coord_list, (liYDisplay, 8), 
-                                                            facecolors = "Red") # Bar 顯示
+                                                            facecolors = "Red") # Bar 顯示                  
+                        # 設定 Barh 框顏色
+                        gdicGraphBarh[lsAxis][lx_Position].set_edgecolor('white')
                     else: 
                         gdicGraphBarh[lsAxis][lx_Position] = Graphax.broken_barh(coord_list, (liYDisplay, 8), 
-                                                            facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Color")) # Bar 顯示
-                    
+                                                            facecolors =EditTable.ArrEDIT_TableList[lsAxis].get("Barh Color")) # Bar 顯示
+                        # 設定 Barh 框顏色
+                        gdicGraphBarh[lsAxis][lx_Position].set_edgecolor(EditTable.ArrEDIT_TableList[lsAxis].get("Border Color"))
+
                     coord_list.clear()                                                  # Clear Display Array
                     # Find out Max X Lim display
                     lxlimData = lx_Position + int(lsWidth)
                     if lxlimData > lxlimMax :
                         lxlimMax = lxlimData
 
-        if lxlimMax < 10:       lxlimMax = 10       # <10 resize
-            
-        plt.xlim(0,lxlimMax)     # Set Y display range
-        plt.xticks(np.arange(0, lxlimMax, int(lxlimMax/10)))       # 设置x轴的刻度值为10的倍数
+        #if lxlimMax < giGraphAxisX_Max:       lxlimMax = giGraphAxisX_Max       # <10 resize
+        
+        self.Graph_AxisDisplay(lxlimMax)
         Graphfig.canvas.draw()
 
     # ----------------------------------------------------------------------
-    # Description:  Init UI 
-    # Function:     initUi
+    # Description:  Graph Axis X limit and Span
+    # Function:     Graph_AxisDisplay
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
-    def Graph_DisplayUpdate(self):
+    def Graph_AxisDisplay(self, lxlimMax):
 
-        print("Test")
+        global  giGraphAxisX_Max
+        global  gaGraphSpan
+        global  gaGraphSpanText
 
-        #Graph_X1= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (20, 9), facecolors =('tab:red'))
-        #Graph_X2= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (10, 9), facecolors =('tab:blue'))
-        #Graph_X3= plt.broken_barh([(10, 50), (100, 20), (130, 10)], (0, 9),  facecolors =('tab:red'))
+        if lxlimMax <10:        lxlimMax = 10
 
+        # Delete last Span color
+        for i in range(len(gaGraphSpan)-1):
+            if gaGraphSpan[i] is not None:
+                gaGraphSpan[i].remove()
+                gaGraphSpan[i] = None
+            # Span Text refresh
+            if gaGraphSpanText[i] is not None:
+                gaGraphSpanText[i].remove()
+                gaGraphSpanText[i] = None
+           
+        if  lxlimMax >= defxlimMax :
+            lxlimMax = defxlimMax
+
+        # 計算是否是 10 的指數
+        log_base_10 = math.log10(lxlimMax)
+        # 檢查對數是否為整數
+        if( log_base_10.is_integer() == False):
+            exponent = math.ceil(math.log10(lxlimMax))
+            lxlimMax = int(math.pow(10, exponent))
+     
+        plt.xlim(0,lxlimMax)                # Set Y display range
+        # lxlimMax+1 是顯示軸最後數值
+        plt.xticks(np.arange(0, lxlimMax+1, int(lxlimMax/defGraphSpanSize)))       # 设置x轴的刻度值为10的倍数
+        xticks = plt.xticks()[0]
+        color_interval = 'lightgray'  # 區間顏色
+
+        # Add new Span color
+        gaGraphSpan = [None] * (len(xticks))
+
+        for i in range(len(xticks)-1):
+            start = int(xticks[i])
+            end = int(xticks[i + 1])
+            range_label = f'{start}-{end}'  # 範圍文字
+            x_pos = (start + end) / 2  # 標籤的 x 位置
+            y_pos = EditTable.ArrEDIT_TableList["X1"].get("Location_Y") + 10  # 標籤的 y 位置（可以自行調整）
+
+            if int(i%2) == 0:
+                gaGraphSpan[i] = plt.axvspan(start, end, facecolor= color_interval, alpha=0.2)            
+
+            #plt.text(x_pos, y_pos, "            ", ha='center', va='center', fontsize=8)  # 添加文字標籤
+            gaGraphSpanText[i] = plt.text(x_pos, y_pos, range_label, ha='center', va='center', fontsize=6)  # 添加文字標籤
+
+        giGraphAxisX_Max = lxlimMax
 
     # ----------------------------------------------------------------------
-    # Description:  fTimeLine_Right
-    # Function:     Initail Various Table Data
+    # Description:  F5 Click Event
+    # Function:     f5RowClick
     # Input :       
     # Return:       None
     # ----------------------------------------------------------------------
@@ -831,38 +890,15 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         #Graph_X1.remove()     # 清除特定的绘图范围
 
-#        xDisplay = 200
-#        plt.xlim(0,xDisplay)     # Set display range
-#        plt.xticks(np.arange(0, xDisplay, int(xDisplay/10)))       # 设置x轴的刻度值为10的倍数
-
-
         # 清除Y軸範圍在10到50的broken_barh
         for collection in plt.gca().collections:
             heights = collection.get_paths()[0].vertices[:, 1]
             if (heights >= 10).any() and (heights <= 50).any():
                 collection.remove()
         
-        plt.draw()          # Refresh Display
-
-
     def f4RowClick(self):
 
-        #if  Graph_X2 is not None:
-        #    Graph_X2.remove()     # 清除特定的绘图范围        
-
-        gaGraphBarh = "Graph_"+str("X2")
-
-        globals()[gaGraphBarh].remove()
-        globals()[gaGraphBarh] = None
-
-
-        gaGraphBarh = "Graph_"+str("X4")
-
-        globals()[gaGraphBarh].remove()
-        globals()[gaGraphBarh] = None
-
-        Graphfig.canvas.draw()              # Refresh Display
-
+        plt.draw()          # Refresh Display
 
         #xDisplay = 1000
         #plt.xlim(0,xDisplay)     # Set display range
