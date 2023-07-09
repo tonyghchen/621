@@ -540,15 +540,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def initUI(self):
         
         # 创建一个 QSlider 控件
-        #self.slider = QSlider(Qt.Horizontal, self)
-        self.horizontalSlider.setFocusPolicy(Qt.NoFocus)
-        self.horizontalSlider.setRange(10, 800)               # 设置滑块的取值范围
-        self.horizontalSlider.setValue(50)                    # 设置滑块的初始值
-        #self.horizontalSlider.setGeometry(30, 40, 100, 30)    # 设置滑块的位置和大小
-
-        self.horizontalSlider.valueChanged[int].connect(self.changeValue)  # 绑定滑块的 valueChanged 信号和 changeValue 槽函数
-        self.horizontalSlider_gauge.valueChanged[int].connect(self.changeGaugeValue)  # 绑定滑块的 valueChanged 信号和 changeValue 槽函数
-
         #self.horizontalSlider_gauge.setTickPosition(2)          # 下方加入刻度線
         #self.horizontalSlider_gauge.setTickInterval(50)         # 刻度線間距 ( 會有十條刻度線 )
 
@@ -621,7 +612,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         
         # Switch Button
 
-
     # ----------------------------------------------------------------------
     # Event Functions 
     # ----------------------------------------------------------------------
@@ -679,8 +669,9 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
                 for lsAxis, lData in gdicTableData.items():
                     liYDisplay = EditTable.ArrEDIT_TableList[lsAxis].get("Location_Y")      # Display Y Location                   
                     for lx_Position, lsWidth in lData.items(): 
-                        if (liYDisplay <= giGraphCurY <= (liYDisplay + 10)) and ( lx_Position < giGraphCurX <= (lx_Position + int(lsWidth))):
-                            liBarhFound = 1
+                        if lsWidth is not None:
+                            if (liYDisplay <= giGraphCurY <= (liYDisplay + 10)) and ( lx_Position < giGraphCurX <= (lx_Position + int(lsWidth))):
+                                liBarhFound = 1
                 # Found Barh press               
                 if liBarhFound == 1:
                     giGraphBarh_Click = 1
@@ -708,7 +699,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
 
         if event.button == 1 and event.inaxes == Graphax and giGraphline_Click == 1:
 
-            liXShift = round(event.xdata)
+            liXShift = [round(event.xdata)]
             print("Mouse Release X:", liXShift )
             gaGraphline.set_xdata(liXShift)
 
@@ -735,7 +726,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
         global  giGraphline_Click
 
         if event.button == 1 and event.inaxes == Graphax and giGraphline_Click == 1:
-            gaGraphline.set_xdata(event.xdata)           
+            gaGraphline.set_xdata([event.xdata])
             x_position = round(event.xdata)
 
             gaGraphlineLable.set_text(str("  "))      # Clear original
@@ -870,7 +861,7 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
             end = int(xticks[i + 1])
             range_label = f'{start}-{end}'  # 範圍文字
             x_pos = (start + end) / 2  # 標籤的 x 位置
-            y_pos = EditTable.ArrEDIT_TableList["X1"].get("Location_Y") + 10  # 標籤的 y 位置（可以自行調整）
+            y_pos = EditTable.ArrEDIT_TableList["X1"].get("Location_Y") + 12  # 標籤的 y 位置（可以自行調整）
 
             if int(i%2) == 0:
                 gaGraphSpan[i] = plt.axvspan(start, end, facecolor= color_interval, alpha=0.2)            
@@ -917,27 +908,6 @@ class MyMainWindow(QMainWindow, Ui_MainWindow):
     def changeGaugeValue(self, value):
         #self.label_Gauge.setText(str(value))  # 更新 QLabel 的文本
         self.widget.updateValue(value)
-
-    # ----------------------------------------------------------------------
-    # Description:  Init UI 
-    # Function:     initUi
-    # Input :       
-    # Return:       None
-    # ----------------------------------------------------------------------
-    # 重写 QWidget 的绘图事件，绘制一个方框
-    def paintEvent(self, event):
-
-        painter = QPainter(self)                # 创建一个 QPainter 对象，用于绘制图形
-        painter.setPen(QColor(0, 0, 0))         # 设置画笔的颜色为黑色
-        painter.setBrush(QColor(0, 0, 255))     # 设置画刷的颜色为白色
-        # 计算方框的位置和大小，使其在窗口中居中显示
-
-        x = 50 #(self.width() - self.horizontalSlider.value()) / 2
-        y = 520 #(self.height() - self.horizontalSlider.value()) / 2
-        width = self.horizontalSlider.value()
-        height = 30 #self.horizontalSlider.value()
-        # 绘制方框
-        painter.drawRect(x, y, width, height)
 
     # ----------------------------------------------------------------------
     # Description:  Main Window initialize
